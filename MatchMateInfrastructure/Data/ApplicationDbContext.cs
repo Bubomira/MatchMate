@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using MatchMateInfrastructure.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MatchMate.Data
@@ -9,5 +10,9 @@ namespace MatchMate.Data
             : base(options)
         {
         }
+
+        public DbSet<Interest> Interests { get; set; }
+        public DbSet<UserInterest> UsersInterests { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
 }
