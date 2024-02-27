@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MatchMateInfrastructure.Models
 {
@@ -20,9 +19,9 @@ namespace MatchMateInfrastructure.Models
 
         [Required]
         [Comment("User Id, part of the composite key")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = null!;
 
         [ForeignKey(nameof(UserId))]
-        public ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; } = null!;
     }
 }
