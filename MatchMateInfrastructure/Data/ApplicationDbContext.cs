@@ -11,6 +11,7 @@ namespace MatchMate.Data
         {
         }
 
+        public DbSet<Message> Messages { get; set; }
         public DbSet<Interest> Interests { get; set; }
         public DbSet<UserInterest> UsersInterests { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }

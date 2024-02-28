@@ -26,5 +26,10 @@ namespace MatchMateInfrastructure.Models
         [InverseProperty("ReceivingUser")]
         public IList<Offer> ReeceivedOffers { get; set; } = new List<Offer>();
 
+        [InverseProperty("Receiver")]
+        public IList<Message> ReceivedMessages { get; set; } = new List<Message>();
+
+        [InverseProperty("Sender")]
+        public IList<Message> SednedMessages { get; set; } = new List<Message>();
     }
 }
