@@ -22,5 +22,11 @@ namespace MatchMateInfrastructure
             public const int MaxDescriptionLength = 300;
             public const int MinDescriptionLength = 10;
         }
+
+        public static class MessageConstants
+        {
+            public const int MaxContentLength = 300;
+            public const int MinContentLength = 2;
+        }
     }
 }
