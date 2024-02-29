@@ -29,13 +29,10 @@ namespace MatchMateInfrastructure.Models
         [Comment("A brief desription of the activity")]
         public string Description { get; set; } = string.Empty;
 
-        [Column(TypeName ="decimal(9,6)")]
-        [Comment("Latitude of the offer's location")]
-        public decimal Latitude { get; set; }
-
-        [Column(TypeName = "decimal(9,6)")]
-        [Comment("Longitude of the offer's location")]
-        public decimal Longitude { get; set; }
+        [Required]
+        [MaxLength(MaxPlaceLength)]
+        [Comment("The location with words of the meeting")]
+        public string Place { get; set; }
 
         [Required]
         [Comment("The id of the user who made the offer")]
