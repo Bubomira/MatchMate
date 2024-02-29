@@ -31,5 +31,11 @@ namespace MatchMateInfrastructure
             public const int MaxContentLength = 300;
             public const int MinContentLength = 2;
         }
+
+        public static class ApplicationUserDataConstants
+        {
+            public const int MaxBioLength = 150;
+            public const int MinBioLength = 10;
+        }
     }
 }
