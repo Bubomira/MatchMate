@@ -28,7 +28,7 @@ namespace MatchMate.Models.OfferViewModels
 
         public string ReceivingUserId { get; set; } = string.Empty;
 
-        public IList<UserOfferViewModel> Friends { get; set; } = new List<UserOfferViewModel>();
+        public IList<UserOfferModel> Friends { get; set; } = new List<UserOfferModel>();
 
     }
 }

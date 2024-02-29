@@ -1,6 +1,6 @@
 ﻿namespace MatchMate.Models.UsersViewModels
 {
-    public class UserOfferViewModel
+    public class UserOfferModel
     {
         public string UserId { get; set; }
 
