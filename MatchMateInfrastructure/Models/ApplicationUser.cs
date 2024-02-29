@@ -1,8 +1,9 @@
-﻿using MatchMateInfrastructure.Enums;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
+using static MatchMateInfrastructure.DataConstants.ApplicationUserDataConstants;
 
 namespace MatchMateInfrastructure.Models
 {
@@ -12,6 +13,11 @@ namespace MatchMateInfrastructure.Models
         [Required]
         [Comment("Birthday of a user who has to be over 16 years old")]
         public DateTime Birthday { get; set; }
+
+        [Required]
+        [MaxLength(MaxBioLength)]
+        [Comment("Short information for the user")]
+        public string Bio { get; set; } = string.Empty;
         public IList<UserInterest> UsersInterests { get; set; } = new List<UserInterest>();
 
         [InverseProperty("Sender")]
