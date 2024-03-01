@@ -1,11 +1,13 @@
-using MatchMate.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AttachDbContext(builder.Configuration)
-    .AttachIdentity();
+    .AttachIdentity()
+    .AttachServices();
+
+builder.Services.AddRazorPages();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 builder.Services.AddControllersWithViews();
 

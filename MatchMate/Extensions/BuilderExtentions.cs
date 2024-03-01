@@ -1,4 +1,6 @@
 ﻿using MatchMate.Data;
+using MatchMateCore.Interfaces.MongoInterfaces;
+using MatchMateCore.Services.MongoServices;
 using MatchMateInfrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AttachServices(this IServiceCollection services)
         {
-            //to do: add services
+            services.AddSingleton<IProfilePictureInterface, ProfilePictureService>();
             return services;
         }
     }
