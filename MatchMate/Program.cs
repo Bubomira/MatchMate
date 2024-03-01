@@ -4,6 +4,8 @@ builder.Services.AttachDbContext(builder.Configuration)
     .AttachIdentity()
     .AttachServices();
 
+builder.Services.AddRazorPages();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
