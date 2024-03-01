@@ -23,7 +23,7 @@ namespace MatchMateCore.Services.MongoServices
                (await _profilePictureCollection.FindAsync(pp => pp.UserId == userId))
                .FirstOrDefaultAsync();
 
-            return profilePicture.Picture;
+            return profilePicture?.Picture;
         }
 
         public async Task SaveProfilePictureToMongoAsync(string userId, string file)

@@ -11,7 +11,6 @@ namespace MatchMateInfrastructure.MongoModels
 
         public string UserId { get; set; } = string.Empty;
 
-        [BsonRepresentation(BsonType.Binary)]
         public string Picture { get; set; } = string.Empty;
     }
 }
