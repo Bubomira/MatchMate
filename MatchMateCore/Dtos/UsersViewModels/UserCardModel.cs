@@ -1,5 +1,5 @@
 ﻿
-namespace MatchMate.Models.UsersViewModels
+namespace MatchMateCore.Dtos.UsersViewModels
 {
     public class UserCardModel
     {
