@@ -1,6 +1,6 @@
-﻿using MatchMateInfrastructure.Enums;
+﻿
 
-namespace MatchMate.Models.OfferViewModels
+namespace MatchMateCore.Dtos.OfferViewModels
 {
     public class OfferDetailsModel : OfferPreviewModel
     {

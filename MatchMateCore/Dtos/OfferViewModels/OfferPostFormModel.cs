@@ -4,7 +4,7 @@ using static MatchMateInfrastructure.ErrorMessages;
 using static MatchMateInfrastructure.DataConstants.OfferConstants;
 using MatchMate.Models.UsersViewModels;
 
-namespace MatchMate.Models.OfferViewModels
+namespace MatchMateCore.Dtos.OfferViewModels
 {
     public class OfferPostFormModel
     {
