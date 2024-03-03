@@ -1,4 +1,4 @@
-﻿namespace namespace MatchMateCore.Dtos.UsersViewModels
+﻿namespace MatchMateCore.Dtos.UsersViewModels
 {
     public class UserOfferModel
     {
