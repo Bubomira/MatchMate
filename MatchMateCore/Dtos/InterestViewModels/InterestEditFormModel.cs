@@ -2,7 +2,7 @@
 
 namespace MatchMateCore.Dtos.InterestViewModels
 {
-    internal class InterestEditFormModel : InterestPostFormModel
+    public class InterestEditFormModel : InterestPostFormModel
     {
         [Required]
         public int Id { get; set; }

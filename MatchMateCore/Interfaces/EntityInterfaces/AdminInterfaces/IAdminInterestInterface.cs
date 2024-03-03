@@ -4,8 +4,8 @@ namespace MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces
 {
     internal interface IAdminInterestInterface
     {
-        public Task AddNewInterest(InterestPostFormModel interestPostModel);
-        public Task EditInterest(InterestEditFormModel interestPostModel);
-        public Task DeleteInterest(int interestId);
+        public Task AddNewInterestAsync(InterestPostFormModel interestPostModel);
+        public Task EditInterestAsync(InterestEditFormModel interestPostModel);
+        public Task DeleteInterestAsync(int interestId);
     }
 }
