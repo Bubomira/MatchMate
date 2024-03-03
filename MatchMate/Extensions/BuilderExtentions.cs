@@ -1,6 +1,6 @@
-﻿using MatchMate.Data;
-using MatchMateCore.Interfaces.MongoInterfaces;
+﻿using MatchMateCore.Interfaces.MongoInterfaces;
 using MatchMateCore.Services.MongoServices;
+using MatchMateInfrastructure.Data;
 using MatchMateInfrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

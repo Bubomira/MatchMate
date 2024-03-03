@@ -1,6 +1,7 @@
-﻿using MatchMate.Data;
+﻿
 using MatchMateCore.Dtos.InterestViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces;
+using MatchMateInfrastructure.Data;
 using MatchMateInfrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 

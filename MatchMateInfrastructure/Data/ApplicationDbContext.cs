@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace MatchMate.Data
+namespace MatchMateInfrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

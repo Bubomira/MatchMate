@@ -2,7 +2,7 @@
 
 using static MatchMateInfrastructure.ErrorMessages;
 using static MatchMateInfrastructure.DataConstants.OfferConstants;
-using MatchMate.Models.UsersViewModels;
+using MatchMateCore.Dtos.UsersViewModels;
 
 namespace MatchMateCore.Dtos.OfferViewModels
 {

@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using MatchMate.Data;
+﻿
 using MatchMateCore.Dtos.InterestViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+using MatchMateInfrastructure.Data;
 using MatchMateInfrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
