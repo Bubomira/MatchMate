@@ -9,7 +9,7 @@ namespace MatchMateCore.Dtos.UsersViewModels
 
         public string Bio { get; set; } = string.Empty;
 
-        public int Age { get; set; }
+        public DateTime Birthday { get; set; }
 
         public IList<string> Interests { get; set; } = new List<string>();
 

@@ -33,11 +33,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
 
 
         public Task<List<InterestModel>> GetAllInterestsAsync() =>
-            _context.Interests.Select(i => new InterestModel()
-            {
-                Id = i.Id,
-                Name = i.Name
-            }).ToListAsync();
+            _context.Interests.Select(i => new InterestModel(i.Id,i.Name)).ToListAsync();
 
 
         public async Task RemoveInterestFromUserCollectionAsync(int interestId, string userId)
