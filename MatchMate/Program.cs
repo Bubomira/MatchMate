@@ -6,9 +6,6 @@ builder.Services.AttachDbContext(builder.Configuration)
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
