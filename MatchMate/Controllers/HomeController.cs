@@ -1,6 +1,9 @@
-﻿using MatchMate.Models;
+﻿using MatchMate.Helpers;
+using MatchMate.Models;
+using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace MatchMate.Controllers
 {
@@ -8,9 +11,13 @@ namespace MatchMate.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IProfilePictureInterface _profilePictureService;
+
+        public HomeController(ILogger<HomeController> logger
+            , IProfilePictureInterface profilePictureInterface)
         {
             _logger = logger;
+            _profilePictureService = profilePictureInterface;
         }
 
         public IActionResult Index()
@@ -18,15 +25,27 @@ namespace MatchMate.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public async  Task<IActionResult> Privacy()
         {
-            return View();
+           var profilePicture=await _profilePictureService.GetProfilePictureFromMongoAsync("13");
+
+            return View("Privacy",profilePicture);
+
+        }
+
+        public async Task<IActionResult> Save(IFormFile file)
+        {
+          string stringFile= FileConverter.ConvertFormFileToString(file);
+
+          await _profilePictureService.SaveProfilePictureToMongoAsync("12", stringFile);
+
+            return RedirectToAction(nameof(Privacy));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { /*RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier */});
         }
     }
 }

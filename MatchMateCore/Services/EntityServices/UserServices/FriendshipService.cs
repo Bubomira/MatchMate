@@ -1,6 +1,7 @@
-﻿using MatchMate.Data;
+﻿
 using MatchMateCore.Dtos.UsersViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+using MatchMateInfrastructure.Data;
 using MatchMateInfrastructure.Enums;
 using MatchMateInfrastructure.Models;
 using Microsoft.EntityFrameworkCore;

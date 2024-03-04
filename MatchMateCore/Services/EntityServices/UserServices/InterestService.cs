@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using MatchMate.Data;
+﻿
 using MatchMateCore.Dtos.InterestViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+using MatchMateInfrastructure.Data;
 using MatchMateInfrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,9 +31,16 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             await _context.UsersInterests
             .AnyAsync(ui => ui.UserId == userId && ui.InterestId == interestId);
 
+        public Task<List<InterestModel>> GetAllInterestsForCurrentUserAsync(string userId) =>
+           _context.Interests.Select(i => new InterestModel(i.Id, i.Name)
+           {
+               IsChecked = i.UserInterest.Any(ui=>ui.UserId==userId)
+           }).ToListAsync();
 
-        public Task<List<InterestModel>> GetAllInterestsAsync() =>
-            _context.Interests.Select(i => new InterestModel(i.Id,i.Name)).ToListAsync();
+        public async Task<bool> CheckIfUserHasAtLeastThreeInterests(string userId) =>
+            _context.UsersInterests.Where(ui => ui.UserId == userId)
+            .Count() > 3;
+       
 
 
         public async Task RemoveInterestFromUserCollectionAsync(int interestId, string userId)

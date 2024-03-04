@@ -1,4 +1,4 @@
-﻿using MatchMate.Data;
+﻿using MatchMateInfrastructure.Data;
 using MatchMateCore.Dtos.UsersViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using Microsoft.EntityFrameworkCore;
