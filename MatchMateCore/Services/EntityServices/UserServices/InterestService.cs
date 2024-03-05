@@ -40,7 +40,9 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             .Where(ui => ui.UserId == userId)
             .Count() > 3;
 
-
+        public Task<bool> CheckIfInterestExists(int interestId) =>
+             _repository.All<Interest>()
+            .AnyAsync(i => i.Id == interestId);
 
         public async Task RemoveInterestFromUserCollectionAsync(int interestId, string userId)
         {
