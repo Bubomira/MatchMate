@@ -1,33 +1,34 @@
 ﻿
 using MatchMateCore.Dtos.UsersViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
-using MatchMateInfrastructure.Data;
-using MatchMateInfrastructure.Enums;
 using MatchMateInfrastructure.Models;
+using MatchMateInfrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace MatchMateCore.Services.EntityServices.UserServices
 {
     public class FriendshipService : IFriendshipInterface
     {
-        private readonly ApplicationDbContext _context;
-        public FriendshipService(ApplicationDbContext applicationDbContext)
+        private readonly IRepository _repository;
+        public FriendshipService(IRepository repository)
         {
-            _context = applicationDbContext;
+            _repository = repository;
         }
         public async Task AcceptFriendRequestAsync(string senderId, string receiverId)
         {
             var friendship = await FindFriendshipAsync(senderId, receiverId);
 
-            friendship.Status = FriendshipStatus.Active;
+            friendship.IsActive = true;
 
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
 
-        public Task<List<UserCardModel>> GetAllFriendsAsync(string userId) =>
-             _context.Friendships
-             .Where(f => f.Status == FriendshipStatus.Active &&
+        public Task<List<UserCardModel>> GetAllFriendsAsync(string userId, int page) =>
+             _repository.AllReadOnly<Friendship>()
+             .Where(f => f.IsActive == true &&
              (f.SenderId == userId || f.ReceiverId == userId))
+              .Skip(15 * page)
+              .Take(15)
              .Select(f => new UserCardModel()
              {
                  UserId = f.SenderId == userId ? f.ReceiverId : f.SenderId,
@@ -45,38 +46,25 @@ namespace MatchMateCore.Services.EntityServices.UserServices
         {
             var friendship = await FindFriendshipAsync(senderId, receiverId);
 
-            friendship.Status = FriendshipStatus.Rejected;
+            _repository.Remove<Friendship>(friendship);
 
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
 
         public async Task SendFriendRequestAsync(string senderId, string receiverId)
         {
-            var friendship = await _context.Friendships
-                .FirstOrDefaultAsync(f => f.SenderId == senderId && f.ReceiverId == receiverId);
-
-            if (friendship == null)
+            await _repository.AddAsync<Friendship>(new Friendship()
             {
-                Friendship newFriendship = new Friendship()
-                {
-                    SenderId = senderId,
-                    ReceiverId = receiverId,
-                    Status = FriendshipStatus.Pending,
-                };
+                SenderId = senderId,
+                ReceiverId = receiverId,
+                IsActive = false,
+            });
 
-                await _context.Friendships.AddAsync(newFriendship);
-            }
-            else
-            {
-                friendship.Status = FriendshipStatus.Pending;
-            }
-
-            await _context.SaveChangesAsync();
-
+            await _repository.SaveChangesAsync();
         }
-
         public Task<List<UserCardModel>> ViewAllPendingRequestAsync(string receiverId) =>
-            _context.Friendships.Where(f => f.ReceiverId == receiverId && f.Status == FriendshipStatus.Pending)
+            _repository.AllReadOnly<Friendship>()
+            .Where(f => f.ReceiverId == receiverId && f.IsActive == false)
             .Select(f => new UserCardModel()
             {
                 UserId = f.Sender.Id,
@@ -89,7 +77,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
 
 
         private Task<Friendship?> FindFriendshipAsync(string senderId, string receiverId) =>
-            _context.Friendships
+            _repository.AllReadOnly<Friendship>()
             .FirstOrDefaultAsync(f => f.SenderId == senderId && f.ReceiverId == receiverId);
     }
 }

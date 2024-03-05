@@ -19,8 +19,9 @@ namespace MatchMateInfrastructure.Models
         public int Id { get; set; }
 
         [Required]
-        [Comment("The status of a friendship request, can be rejected, pending, active")]
-        public FriendshipStatus Status { get; set; } = FriendshipStatus.Pending;
+        [Comment("The status of a friendship request, can be  pending or active")]
+        
+        public bool IsActive { get; set; }
 
         [Required]
         [Comment("The id of the person who sends a friendship request")]

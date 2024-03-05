@@ -10,6 +10,6 @@ namespace MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces
         public Task<List<UserCardModel>> ViewAllPendingRequestAsync(string receiverId);
         public Task AcceptFriendRequestAsync(string senderId, string receiverId);
 
-        public Task<List<UserCardModel>> GetAllFriendsAsync(string userId);
+        public Task<List<UserCardModel>> GetAllFriendsAsync(string userId,int page);
     }
 }

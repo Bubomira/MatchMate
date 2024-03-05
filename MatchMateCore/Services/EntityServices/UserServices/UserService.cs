@@ -1,24 +1,29 @@
-﻿using MatchMateInfrastructure.Data;
-using MatchMateCore.Dtos.UsersViewModels;
+﻿using MatchMateCore.Dtos.UsersViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+using MatchMateInfrastructure.Models;
+using MatchMateInfrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace MatchMateCore.Services.EntityServices.UserServices
 {
     public class UserService : IUserInterface
     {
-        private readonly ApplicationDbContext _context;
-        public UserService(ApplicationDbContext applicationDbContext)
+        private readonly IRepository _repository;
+        public UserService(IRepository repository)
         {
-            _context = applicationDbContext;
+            _repository = repository;
         }
         public async Task<List<UserCardModel>> GetUsersWithTheSameInterests(string userId, int pageCount)
         {
-            var userInterestIds = await _context.UsersInterests.Where(ui => ui.UserId == userId)
+            var userInterestIds = await _repository.AllReadOnly<UserInterest>()
+                .Where(ui => ui.UserId == userId)
                 .Select(ui => ui.InterestId)
                 .ToListAsync();
 
-            return await _context.UsersInterests.Where(ui => userInterestIds.Contains(ui.InterestId))
+            return await _repository.AllReadOnly<UserInterest>()
+                   .Where(ui => userInterestIds.Contains(ui.InterestId))
+                   .Skip(3 * pageCount)
+                   .Take(3)
                    .Select(ui => new UserCardModel()
                    {
                        UserId = ui.UserId,
@@ -27,8 +32,6 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                        Birthday = ui.User.Birthday,
                        Interests = ui.User.UsersInterests.Select(uui => uui.Interest.Name).ToList()
                    })
-                   .Skip(3 * pageCount)
-                   .Take(3)
                    .ToListAsync();
 
         }
