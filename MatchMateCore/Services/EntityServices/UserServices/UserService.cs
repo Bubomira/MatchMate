@@ -13,6 +13,16 @@ namespace MatchMateCore.Services.EntityServices.UserServices
         {
             _repository = repository;
         }
+
+        public async Task AddUserBio(string userBio, string userId)
+        {
+            var user = await _repository.All<ApplicationUser>()
+                .FirstOrDefaultAsync(au => au.Id == userId);
+
+            user.Bio = userBio;
+
+            await _repository.SaveChangesAsync();
+        }
         public async Task<List<UserCardModel>> GetUsersWithTheSameInterests(string userId, int pageCount)
         {
             var userInterestIds = await _repository.AllReadOnly<UserInterest>()
