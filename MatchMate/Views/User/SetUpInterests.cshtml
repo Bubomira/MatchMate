@@ -1,0 +1,36 @@
+﻿@model List<InterestModel>
+
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+            <h4 class="modal-title fs-5 text-center" id="exampleModalLabel">Now you have to pick at least 3 interests!</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+           <form class="d-flex flex-column align-items-center" method="post">
+               <div class="modal-body">
+                       <section class="d-flex flex-wrap gap-2">
+                          @for (int i = 0; i < Model.Count; i++)
+                          {
+                             <input type="checkbox" class="btn-check flex-grow-1" name="@Model[i].Id" id="@Model[i].Id" >
+                             <label class="btn btn-outline-success flex-grow-1" for="@Model[i].Id">@Model[i].Name</label><br>
+                          }  
+                       </section>                  
+               </div>
+               <div class="modal-footer">
+                    <input asp-controller="Interest" asp-action="AddMany" type="submit" class="btn btn-primary mt-2 pb-2"  value="I'm ready"/>
+               </div>
+           </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+   $(window).on('load', function() {
+    $('#exampleModal').modal('show');
+   });
+</script>
