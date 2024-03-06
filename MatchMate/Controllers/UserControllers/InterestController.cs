@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
-using MatchMateCore.Dtos.InterestViewModels;
 using System.Security.Claims;
 
 namespace MatchMate.Controllers.UserControllers
@@ -31,10 +30,22 @@ namespace MatchMate.Controllers.UserControllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddMany(IFormCollection formCollection)
+        {
+            for (int i = 0; i < formCollection.Keys.Count-1; i++)
+            {
+                int interestId = int.Parse(formCollection.Keys.ToArray()[i]);
+                await _interestInterface.AddInterestToUserCollectionAsync(interestId, User.Id());
+            }
+            return RedirectToAction("SetUpProfilePicture", "User");
+        }
+
         public async Task<IActionResult> Remove(int id)
         {
             if (await _interestInterface.CheckIfInterestIsAttachedToUser(id, User.Id()) &&
-                await _interestInterface.CheckIfUserHasAtLeastThreeInterests(User.Id()))
+                await _interestInterface.CheckIfUserHasAtLeastXInterests(User.Id(),4))
             {
                 await _interestInterface.RemoveInterestFromUserCollectionAsync(id, User.Id());
 

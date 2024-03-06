@@ -25,23 +25,6 @@ namespace MatchMate.Controllers
             return View();
         }
 
-        public async  Task<IActionResult> Privacy()
-        {
-           var profilePicture=await _profilePictureService.GetProfilePictureFromMongoAsync("13");
-
-            return View("Privacy",profilePicture);
-
-        }
-
-        public async Task<IActionResult> Save(IFormFile file)
-        {
-          string stringFile= FileConverter.ConvertFormFileToString(file);
-
-          await _profilePictureService.SaveProfilePictureToMongoAsync("12", stringFile);
-
-            return RedirectToAction(nameof(Privacy));
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

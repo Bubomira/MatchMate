@@ -35,10 +35,10 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                 IsChecked = i.UserInterest.Any(ui => ui.UserId == userId)
             }).ToListAsync();
 
-        public async Task<bool> CheckIfUserHasAtLeastThreeInterests(string userId) =>
+        public async Task<bool> CheckIfUserHasAtLeastXInterests(string userId,int comparison) =>
             _repository.All<UserInterest>()
             .Where(ui => ui.UserId == userId)
-            .Count() > 3;
+            .Count() >= comparison;
 
         public Task<bool> CheckIfInterestExists(int interestId) =>
              _repository.All<Interest>()
