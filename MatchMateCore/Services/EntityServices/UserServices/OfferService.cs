@@ -1,6 +1,9 @@
 ﻿using MatchMateCore.Dtos.OfferViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+using MatchMateInfrastructure.Enums;
+using MatchMateInfrastructure.Models;
 using MatchMateInfrastructure.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace MatchMateCore.Services.EntityServices.UserServices
 {
@@ -12,23 +15,44 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             _repository = repository;
         }
 
-        public Task<List<OfferPreviewModel>> GetAllCancelledOffers(string userId)
+        public async Task AddOffer(OfferPostFormModel offerPostFormModel, string senderId)
         {
-            throw new NotImplementedException();
-        }
-        public Task AddOffer(string senderId)
-        {
-            throw new NotImplementedException();
+            var offer = new Offer()
+            {
+                Description = offerPostFormModel.Description,
+                Place = offerPostFormModel.Place,
+                Title = offerPostFormModel.Title,
+                Status = OfferStatus.Pending,
+                SuggestingUserId = senderId,
+                ReceivingUserId = offerPostFormModel.ReceivingUserId
+            };
+
+            await _repository.AddAsync<Offer>(offer);
+
+            await _repository.SaveChangesAsync();
+
         }
 
-        public Task DeleteOffer(int offerId)
+        public async Task DeleteOffer(int offerId)
         {
-            throw new NotImplementedException();
+            var offer = await _repository.All<Offer>()
+                .FirstOrDefaultAsync(o => o.Id == offerId);
+
+            _repository.Remove<Offer>(offer);
+
+            await _repository.SaveChangesAsync();
         }
 
-        public Task EditOffer(OfferEditFormModel offerEditFormModel)
+        public async Task EditOffer(OfferEditFormModel offerEditFormModel)
         {
-            throw new NotImplementedException();
+            var offer = await _repository.All<Offer>()
+               .FirstOrDefaultAsync(o => o.Id == offerEditFormModel.Id);
+
+            offer.Title = offerEditFormModel.Title;
+            offer.Description = offerEditFormModel.Description;
+            offer.Place = offerEditFormModel.Place;
+
+            await _repository.SaveChangesAsync();
         }
 
         public Task<List<OfferPreviewModel>> GetAllAcceptedOffers(string userId)
