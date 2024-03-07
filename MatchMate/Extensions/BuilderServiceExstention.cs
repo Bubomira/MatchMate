@@ -17,6 +17,7 @@ using MatchMateCore.Services.MongoServices;
             services.AddScoped<IInterestInterface, InterestService>();
             services.AddScoped<IUserInterface, UserService>();
             services.AddScoped<IFriendshipInterface, FriendshipService>();
+            services.AddScoped<IOfferInterface, OfferService>();
 
             //Admin services
             services.AddScoped<IAdminInterestInterface, AdminInterestService>();

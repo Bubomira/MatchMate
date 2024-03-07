@@ -24,6 +24,9 @@ namespace MatchMateCore.Dtos.OfferViewModels
              ErrorMessage = StringLengthErrorMessage)]
         public string Place { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public string Time { get; set; } = string.Empty;
+
         public string SuggestingUserId { get; set; } = string.Empty;
 
         public string ReceivingUserId { get; set; } = string.Empty;
