@@ -7,5 +7,7 @@ namespace MatchMateCore.Dtos.OfferViewModels
         public string Description { get; set; } = string.Empty;
 
         public string Place { get; set; } = string.Empty;
+
+        public string Time { get; set; } = string.Empty;
     }
 }
