@@ -32,7 +32,11 @@ namespace MatchMateInfrastructure.Models
         [Required]
         [MaxLength(MaxPlaceLength)]
         [Comment("The location with words of the meeting")]
-        public string Place { get; set; }
+        public string Place { get; set; } = string.Empty;
+
+        [Required]
+        [Comment("The date of the offer")]
+        public DateTime Time { get; set; }
 
         [Required]
         [Comment("The id of the user who made the offer")]
