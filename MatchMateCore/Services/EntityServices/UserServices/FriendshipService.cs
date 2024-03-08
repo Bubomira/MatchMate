@@ -32,7 +32,6 @@ namespace MatchMateCore.Services.EntityServices.UserServices
              .Select(f => new UserCardModel()
              {
                  UserId = f.SenderId == userId ? f.ReceiverId : f.SenderId,
-                 Birthday = f.SenderId == userId ? f.Receiver.Birthday : f.Sender.Birthday,
                  Bio = f.SenderId == userId ? f.Receiver.Bio : f.Sender.Bio,
                  Username = f.SenderId == userId ? f.Receiver.UserName : f.Sender.UserName,
                  Interests = f.SenderId == userId ?
@@ -70,7 +69,6 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                 UserId = f.Sender.Id,
                 Bio = f.Sender.Bio,
                 Username = f.Sender.UserName,
-                Birthday = f.Sender.Birthday,
                 Interests = f.Sender.UsersInterests.Select(ui => ui.Interest.Name).ToList(),
             })
             .ToListAsync();
