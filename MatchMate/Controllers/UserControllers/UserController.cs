@@ -23,6 +23,19 @@ namespace MatchMate.Controllers.UserControllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var users = await _userService.GetUsersWithTheSameInterests(User.Id(),0);
+
+            foreach (var user in users)
+            {
+                user.ImageUrl = await _profilePictureService.GetProfilePictureFromMongoAsync(user.UserId);
+            }
+
+            return View(users);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> SetUpBio()
         {
             return View();
@@ -40,7 +53,7 @@ namespace MatchMate.Controllers.UserControllers
         {
             if (await _interestService.CheckIfUserHasAtLeastXInterests(User.Id(), 3))
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Interest");
             }
 
             var interests = await _interestService.GetAllInterestsForCurrentUserAsync(User.Id() );

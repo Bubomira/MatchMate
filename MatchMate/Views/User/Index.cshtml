@@ -1,0 +1,10 @@
+﻿@model List<UserCardModel>
+
+<h2 class="mb-4 mt-4 text-center">Let the matching begin!</h2>
+
+<div class="d-flex flex-wrap card-group justify-content-center gap-4">
+    @foreach (var userCard in Model)
+    {
+        <partial name="_UserCardPartial" model="@userCard" />
+    }
+</div>

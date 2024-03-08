@@ -31,16 +31,16 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                 .ToListAsync();
 
             return await _repository.AllReadOnly<UserInterest>()
-                   .Where(ui => userInterestIds.Contains(ui.InterestId))
+                   .Where(ui => userInterestIds.Contains(ui.InterestId) && ui.UserId!=userId)
+                   .GroupBy(ui=>ui.UserId)
                    .Skip(3 * pageCount)
                    .Take(3)
                    .Select(ui => new UserCardModel()
                    {
-                       UserId = ui.UserId,
-                       Bio = ui.User.Bio,
-                       Username = ui.User.UserName,
-                       Birthday = ui.User.Birthday,
-                       Interests = ui.User.UsersInterests.Select(uui => uui.Interest.Name).ToList()
+                       UserId = ui.First().UserId,
+                       Bio = ui.First().User.Bio,
+                       Username = ui.First().User.UserName,
+                       Interests = ui.First().User.UsersInterests.Select(uui => uui.Interest.Name).ToList()
                    })
                    .ToListAsync();
 
