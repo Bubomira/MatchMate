@@ -43,7 +43,6 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                        Interests = ui.First().User.UsersInterests.Select(uui => uui.Interest.Name).ToList()
                    })
                    .ToListAsync();
-
         }
     }
 }
