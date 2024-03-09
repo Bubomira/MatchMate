@@ -4,6 +4,7 @@ using MatchMateCore.Dtos.UsersViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using System.Security.Claims;
 
 namespace MatchMate.Controllers.UserControllers
@@ -23,16 +24,22 @@ namespace MatchMate.Controllers.UserControllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber)
         {
-            var users = await _userService.GetUsersWithTheSameInterests(User.Id(),0);
+            UserMatchList userPage = new UserMatchList()
+            {
+                Users = await _userService.GetUsersWithTheSameInterests(User.Id(), pageNumber-1),
+                CurrentPageNumber =pageNumber,
+                PrevoiusPageNumber = pageNumber-1,
+                NextPageNumber = pageNumber+1
+            };
 
-            foreach (var user in users)
+            foreach (var user in userPage.Users)
             {
                 user.ImageUrl = await _profilePictureService.GetProfilePictureFromMongoAsync(user.UserId);
             }
 
-            return View(users);
+            return View(userPage);
         }
 
         [HttpGet]
@@ -44,7 +51,7 @@ namespace MatchMate.Controllers.UserControllers
         [HttpPost]
         public async Task<IActionResult> SetUpBio(UserBioModel userBioModel)
         {
-            await _userService.AddUserBio(userBioModel.Bio,User.Id());
+            await _userService.AddUserBio(userBioModel.Bio, User.Id());
 
             return RedirectToAction(nameof(SetUpInterests));
         }
@@ -53,10 +60,10 @@ namespace MatchMate.Controllers.UserControllers
         {
             if (await _interestService.CheckIfUserHasAtLeastXInterests(User.Id(), 3))
             {
-                return RedirectToAction("Index","Interest");
+                return RedirectToAction("Index", "Interest");
             }
 
-            var interests = await _interestService.GetAllInterestsForCurrentUserAsync(User.Id() );
+            var interests = await _interestService.GetAllInterestsForCurrentUserAsync(User.Id());
             return View(interests);
         }
 

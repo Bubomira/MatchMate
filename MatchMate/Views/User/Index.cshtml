@@ -1,10 +1,25 @@
-﻿@model List<UserCardModel>
+﻿@model UserMatchList
 
 <h2 class="mb-4 mt-4 text-center">Let the matching begin!</h2>
 
-<div class="d-flex flex-wrap card-group justify-content-center gap-4">
-    @foreach (var userCard in Model)
+<section class="d-flex align-items-center justify-content-center gap-2">
+    @if (Model.PrevoiusPageNumber == 0)
     {
-        <partial name="_UserCardPartial" model="@userCard" />
+       <p class="page-item page-link disabled" >&laquo;</p>        
     }
-</div>
+    else
+    {
+       <p class="page-item">
+         <a class="page-link align-self-center" asp-action="Index" asp-route-pageNumber="@Model.PrevoiusPageNumber">&laquo;</a>
+       </p>        
+    }
+  <div class="d-flex flex-wrap card-group justify-content-center gap-4">
+      @foreach (var userCard in Model.Users)
+      {
+          <partial name="_UserCardPartial" model="@userCard" />
+      }
+  </div>
+  <p class="page-item">
+      <a class="page-link asp-action="Index" asp-route-pageNumber="@Model.NextPageNumber" align-self-center" >&raquo;</a>
+  </p>
+</section>
