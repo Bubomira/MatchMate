@@ -34,6 +34,11 @@ namespace MatchMate.Controllers.UserControllers
                 NextPageNumber = pageNumber+1
             };
 
+            if (userPage.Users.Count()==0)
+            {
+                return RedirectToAction(nameof(Index),new { pageNumber=1});
+            }
+
             foreach (var user in userPage.Users)
             {
                 user.ImageUrl = await _profilePictureService.GetProfilePictureFromMongoAsync(user.UserId);
