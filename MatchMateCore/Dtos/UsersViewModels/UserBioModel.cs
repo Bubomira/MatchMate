@@ -8,9 +8,10 @@ namespace MatchMateCore.Dtos.UsersViewModels
     public class UserBioModel
     {
 
-        [Required(ErrorMessage =RequiredErrorMessage)]
-        [StringLength(MaxBioLength,MinimumLength =MinBioLength,
-            ErrorMessage =StringLengthErrorMessage)]
-        public string Bio { get; set; }
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(MaxBioLength, MinimumLength = MinBioLength,
+            ErrorMessage = StringLengthErrorMessage)]
+        public string Bio { get; set; } = string.Empty;
+        public bool HasBio { get; set; } = false;
     }
 }
