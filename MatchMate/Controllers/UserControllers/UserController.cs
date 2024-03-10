@@ -4,7 +4,6 @@ using MatchMateCore.Dtos.UsersViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using System.Security.Claims;
 
 namespace MatchMate.Controllers.UserControllers
@@ -21,6 +20,15 @@ namespace MatchMate.Controllers.UserControllers
             _userService = matchingService;
             _interestService = interestInterface;
             _profilePictureService = profilePictureInterface;
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userService.GetCurrentUserInfo(User.Id());
+            user.Interests = await _interestService.GetAllInterestsForCurrentUserAsync(User.Id());
+            user.ImageUrl = await _profilePictureService.GetProfilePictureFromMongoAsync(User.Id());
+
+            return View(user);
         }
 
         [HttpGet]
