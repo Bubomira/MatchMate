@@ -1,0 +1,17 @@
+﻿@model List<InterestModel>
+<section >
+    <h5 >Here are your added interests:</h5>
+    <section class="d-flex pt-1 flex-wrap  gap-2 mb-3">
+        @foreach(var interest in Model.Where(i=>i.IsChecked==true))
+        {
+          <a class="btn btn-success" asp-controller="Interest" asp-action="Remove" asp-route-id="@interest.Id">@interest.Name</a>
+         }
+    </section>
+    <h5>Other interests you could add:</h4>
+    <section class="d-flex pt-1 flex-wrap gap-2">
+        @foreach (var interest in Model.Where(i=>i.IsChecked==false))
+        {
+           <a class="btn btn-outline-primary" asp-controller="Interest" asp-action="Add" asp-route-id="@interest.Id">@interest.Name</a>
+        }
+    </section>
+</section>

@@ -14,6 +14,18 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             _repository = repository;
         }
 
+        public async Task<UserProfileModel?> GetCurrentUserInfo(string userId) =>
+           await _repository.AllReadOnly<ApplicationUser>()
+            .Where(au => au.Id == userId)
+            .Select(au => new UserProfileModel()
+            {
+                Bio = au.Bio,
+                UserId = au.Id,
+                Username = au.UserName
+            })
+            .FirstOrDefaultAsync();
+
+
         public async Task AddUserBio(string userBio, string userId)
         {
             var user = await _repository.All<ApplicationUser>()
@@ -31,8 +43,8 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                 .ToListAsync();
 
             return await _repository.AllReadOnly<UserInterest>()
-                   .Where(ui => userInterestIds.Contains(ui.InterestId) && ui.UserId!=userId)
-                   .GroupBy(ui=>ui.UserId)
+                   .Where(ui => userInterestIds.Contains(ui.InterestId) && ui.UserId != userId)
+                   .GroupBy(ui => ui.UserId)
                    .Skip(3 * pageCount)
                    .Take(3)
                    .Select(ui => new UserCardModel()

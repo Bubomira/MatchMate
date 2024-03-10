@@ -14,12 +14,6 @@ namespace MatchMate.Controllers.UserControllers
         {
             _interestInterface = interestInterface;
         }
-        public async Task<IActionResult> Index()
-        {
-            var interests = await _interestInterface.GetAllInterestsForCurrentUserAsync(User.Id());
-
-            return View(interests);
-        }
 
         public async Task<IActionResult> Add(int id)
         {
@@ -28,7 +22,7 @@ namespace MatchMate.Controllers.UserControllers
             {
                 await _interestInterface.AddInterestToUserCollectionAsync(id, User.Id());
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Profile","User");
         }
 
         [HttpPost]
@@ -50,7 +44,7 @@ namespace MatchMate.Controllers.UserControllers
                 await _interestInterface.RemoveInterestFromUserCollectionAsync(id, User.Id());
 
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Profile", "User");
         }
 
     }

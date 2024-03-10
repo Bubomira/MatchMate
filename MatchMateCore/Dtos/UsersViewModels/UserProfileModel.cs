@@ -1,7 +1,9 @@
 ﻿
+using MatchMateCore.Dtos.InterestViewModels;
+
 namespace MatchMateCore.Dtos.UsersViewModels
 {
-    public class UserCardModel
+    public class UserProfileModel
     {
         public string UserId { get; set; } = string.Empty;
 
@@ -11,8 +13,6 @@ namespace MatchMateCore.Dtos.UsersViewModels
 
         public string ImageUrl { get; set; } = string.Empty;
 
-        public IList<string> Interests { get; set; } = new List<string>();
-
-
+        public IList<InterestModel> Interests { get; set; } = new List<InterestModel>();
     }
 }
