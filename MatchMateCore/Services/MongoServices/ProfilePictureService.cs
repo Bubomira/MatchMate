@@ -17,6 +17,15 @@ namespace MatchMateCore.Services.MongoServices
 
             _profilePictureCollection = mongoDatabase.GetCollection<ProfilePicture>(CollectionName);
         }
+        public async Task ChangeProfilePictureMongoAsync(string userId, string file)
+        {
+            var profilePictureObj = Builders<ProfilePicture>.Filter.Eq(p => p.UserId, userId);
+
+            var update = Builders<ProfilePicture>.Update.Set(profilePicture => profilePicture.Picture, file);
+
+            await _profilePictureCollection.UpdateOneAsync(profilePictureObj, update);
+
+        }
         public async Task<string> GetProfilePictureFromMongoAsync(string userId)
         {
             var profilePicture = await
