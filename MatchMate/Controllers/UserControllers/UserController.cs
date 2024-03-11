@@ -59,6 +59,10 @@ namespace MatchMate.Controllers.UserControllers
         [HttpGet]
         public async Task<IActionResult> SetUpBio()
         {
+            if (await _userService.CheckIfUserHasBio(User.Id()))
+            {
+                return RedirectToAction(nameof(Profile));
+            }
             UserBioModel userBioModel = new UserBioModel() { HasBio = false };
 
             return View("_SetUpBioPartial", userBioModel);
@@ -72,7 +76,7 @@ namespace MatchMate.Controllers.UserControllers
 
             if (userBioModel.HasBio)
             {
-                return RedirectToAction("Profile", "User");
+                return RedirectToAction(nameof(Profile));
             }
 
             return RedirectToAction(nameof(SetUpInterests));
@@ -82,7 +86,7 @@ namespace MatchMate.Controllers.UserControllers
         {
             if (await _interestService.CheckIfUserHasAtLeastXInterests(User.Id(), 3))
             {
-                return RedirectToAction("Profile", "User");
+                return RedirectToAction(nameof(Profile));
             }
 
             var interests = await _interestService.GetAllInterestsForCurrentUserAsync(User.Id());
@@ -92,6 +96,11 @@ namespace MatchMate.Controllers.UserControllers
         [HttpGet]
         public async Task<IActionResult> SetUpProfilePicture()
         {
+            var pfp = await _profilePictureService.GetProfilePictureFromMongoAsync(User.Id());
+            if (pfp != null)
+            {
+                return RedirectToAction(nameof(Profile));
+            }
             return View("_SetUpProfilePicturePartial",true);
         }
 
