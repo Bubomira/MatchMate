@@ -2,16 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using MatchMate.Attributes;
 using MatchMateInfrastructure.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Encodings.Web;
 
 namespace MatchMate.Areas.Identity.Pages.Account
 {
@@ -20,7 +17,6 @@ namespace MatchMate.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
-        private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
 
         public RegisterModel(
@@ -88,9 +84,8 @@ namespace MatchMate.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            public string Birthday { get; set; }
-
-            public string Bio { get; set; }
+            [IsAtLeastSixteen]
+            public DateTime Birthday { get; set; }
         }
 
 
@@ -109,7 +104,6 @@ namespace MatchMate.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -117,16 +111,10 @@ namespace MatchMate.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
-                 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("SetUpBio", "User");
+
                 }
                 foreach (var error in result.Errors)
                 {

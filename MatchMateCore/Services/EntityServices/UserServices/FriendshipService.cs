@@ -23,6 +23,11 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             await _repository.SaveChangesAsync();
         }
 
+        public Task<bool> CheckIfThereIsARelationShipBetweenUsers(string firstUserId, string secondUserId) =>
+            _repository.AllReadOnly<Friendship>()
+            .AnyAsync(f => (f.SenderId == firstUserId && f.ReceiverId == secondUserId)
+            || (f.SenderId==secondUserId && f.ReceiverId==firstUserId));
+
         public Task<List<UserCardModel>> GetAllFriendsAsync(string userId, int page) =>
              _repository.AllReadOnly<Friendship>()
              .Where(f => f.IsActive == true &&

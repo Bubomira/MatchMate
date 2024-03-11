@@ -56,5 +56,10 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                    })
                    .ToListAsync();
         }
+
+        public Task<bool> CheckIfUserHasBio(string userId) =>
+            _repository.AllReadOnly<ApplicationUser>()
+            .AnyAsync(au => au.Id == userId && !string.IsNullOrEmpty(au.Bio));
+        
     }
 }

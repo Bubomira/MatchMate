@@ -9,7 +9,7 @@ namespace MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces
         public Task RejectFriendRequestAsync(string senderId, string receiverId);
         public Task<List<UserCardModel>> ViewAllPendingRequestAsync(string receiverId);
         public Task AcceptFriendRequestAsync(string senderId, string receiverId);
-
+        public Task<bool> CheckIfThereIsARelationShipBetweenUsers(string firstUserId, string secondUserId);
         public Task<List<UserCardModel>> GetAllFriendsAsync(string userId,int page);
     }
 }
