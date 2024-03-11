@@ -6,8 +6,7 @@ using System.Security.Claims;
 
 namespace MatchMate.Controllers.UserControllers
 {
-    [Authorize]
-    public class InterestController : Controller
+    public class InterestController : BaseController
     {
         private readonly IInterestInterface _interestInterface;
         public InterestController(IInterestInterface interestInterface)
