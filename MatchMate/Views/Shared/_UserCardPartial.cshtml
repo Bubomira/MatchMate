@@ -9,6 +9,23 @@
           <p class="card-text">@Model.Bio</p>
           <p class="card-text">@String.Join(", ",Model.Interests)</p>
       </section>
-      <a asp-action="Add" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Send request!</a>
+        @if (Model.IsActiveFriendship)
+        {
+            <section class="d-flex gap-2">
+                 <a asp-action="LoadConversation" asp-controller="Message" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Message</a>
+                 <a asp-action="Create" asp-controller="Offer" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Create offfer</a>
+            </section>
+        }
+        else if (Model.IsPendingFriendship)
+        {
+             <section class="d-flex gap-2">
+                 <a asp-action="Accept" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Accept</a>
+                 <a asp-action="Reject" asp-controller="Friendshp" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Reject</a>
+            </section>
+        }
+        else
+        {
+            <a asp-action="Add" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Send request!</a>           
+        }
   </div>
 </div>

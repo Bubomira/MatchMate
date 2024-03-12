@@ -1,0 +1,6 @@
+﻿@model UserMatchList
+
+@foreach (var userCard in Model.Users)
+{
+    <partial name="_UserCardPartial" model="@userCard" />
+}

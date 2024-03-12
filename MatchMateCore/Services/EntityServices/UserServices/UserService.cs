@@ -43,7 +43,9 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                 .ToListAsync();
 
             return await _repository.AllReadOnly<UserInterest>()
-                   .Where(ui => userInterestIds.Contains(ui.InterestId) && ui.UserId != userId)
+                   .Where(ui => userInterestIds.Contains(ui.InterestId) && ui.UserId != userId
+                   && ui.User.ReceivedFriendships.All(rf=>rf.SenderId!=userId)
+                   && ui.User.SendFriendships.All(rf => rf.ReceiverId != userId))
                    .GroupBy(ui => ui.UserId)
                    .Skip(3 * pageCount)
                    .Take(3)

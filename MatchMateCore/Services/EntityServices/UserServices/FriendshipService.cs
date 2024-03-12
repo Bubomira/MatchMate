@@ -23,19 +23,20 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             await _repository.SaveChangesAsync();
         }
 
-        public Task<bool> CheckIfThereIsARelationShipBetweenUsers(string firstUserId, string secondUserId) =>
+        public Task<bool> CheckIfThereIsARelationShipBetweenUsersAsync(string firstUserId, string secondUserId) =>
             _repository.AllReadOnly<Friendship>()
             .AnyAsync(f => (f.SenderId == firstUserId && f.ReceiverId == secondUserId)
             || (f.SenderId==secondUserId && f.ReceiverId==firstUserId));
 
-        public Task<List<UserCardModel>> GetAllFriendsAsync(string userId, int page) =>
+        public Task<List<UserCardModel>> GetActiveFriendsAsync(string userId, int pageNumber) =>
              _repository.AllReadOnly<Friendship>()
              .Where(f => f.IsActive == true &&
              (f.SenderId == userId || f.ReceiverId == userId))
-              .Skip(15 * page)
-              .Take(15)
+              .Skip(12 * pageNumber)
+              .Take(12)
              .Select(f => new UserCardModel()
              {
+                 IsActiveFriendship = true,
                  UserId = f.SenderId == userId ? f.ReceiverId : f.SenderId,
                  Bio = f.SenderId == userId ? f.Receiver.Bio : f.Sender.Bio,
                  Username = f.SenderId == userId ? f.Receiver.UserName : f.Sender.UserName,
@@ -66,11 +67,14 @@ namespace MatchMateCore.Services.EntityServices.UserServices
 
             await _repository.SaveChangesAsync();
         }
-        public Task<List<UserCardModel>> ViewAllPendingRequestAsync(string receiverId) =>
+        public Task<List<UserCardModel>> ViewPendingRequestsAsync(string receiverId,int pageNumber) =>
             _repository.AllReadOnly<Friendship>()
             .Where(f => f.ReceiverId == receiverId && f.IsActive == false)
+            .Skip(12*pageNumber)
+            .Take(12)
             .Select(f => new UserCardModel()
             {
+                IsPendingFriendship=true,
                 UserId = f.Sender.Id,
                 Bio = f.Sender.Bio,
                 Username = f.Sender.UserName,
