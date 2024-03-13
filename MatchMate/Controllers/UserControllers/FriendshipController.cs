@@ -1,4 +1,5 @@
-﻿using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+﻿using MatchMateCore.Dtos.UsersViewModels;
+using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -18,25 +19,48 @@ namespace MatchMate.Controllers.UserControllers
         [HttpGet]
         public async Task<IActionResult> Index(int pageNumber)
         {
-            var friends = await _friendshipService.GetActiveFriendsAsync(User.Id(), pageNumber - 1);
+            var friendsList = new UserMatchList()
+            {
+                PrevoiusPageNumber = pageNumber -= 1,
+                CurrentPageNumber = pageNumber,
+                NextPageNumber = pageNumber += 1,
+                Users = await _friendshipService.GetActiveFriendsAsync(User.Id(), pageNumber - 1)
+            };
 
-            foreach (var friend in friends)
+            if (friendsList.Users.Count == 0)
+            {
+                RedirectToAction(nameof(Index), new { pageNumber = 1 });
+            }
+
+            foreach (var friend in friendsList.Users)
             {
                 friend.ImageUrl = await _profilePictureService.GetProfilePictureFromMongoAsync(friend.UserId);
             }
 
-            return View(friends);
+            return View(friendsList);
         }
 
         [HttpGet]
         public async Task<IActionResult> Pending(int pageNumber)
         {
-            var pendingRequests = await _friendshipService.ViewPendingRequestsAsync(User.Id(), pageNumber - 1);
-            foreach (var pending in pendingRequests)
+            var pendingList = new UserMatchList()
+            {
+                PrevoiusPageNumber = pageNumber -= 1,
+                CurrentPageNumber = pageNumber,
+                NextPageNumber = pageNumber += 1,
+                Users = await _friendshipService.ViewPendingRequestsAsync(User.Id(), pageNumber - 1)
+            };
+
+            if (pendingList.Users.Count == 0)
+            {
+                RedirectToAction(nameof(Index), new { pageNumber = 1 });
+            }
+
+            foreach (var pending in pendingList.Users)
             {
                 pending.ImageUrl = await _profilePictureService.GetProfilePictureFromMongoAsync(pending.UserId);
             }
-            return View(pendingRequests);
+            return View(pendingList);
         }
 
 
@@ -50,6 +74,26 @@ namespace MatchMate.Controllers.UserControllers
             await _friendshipService.SendFriendRequestAsync(User.Id(), id);
 
             return RedirectToAction(nameof(Pending), new { pageNumber = 1 });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Accept(string userId)
+        {
+            if (!await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), userId))
+            {
+                await _friendshipService.AcceptFriendRequestAsync(userId, User.Id());
+            }
+            return RedirectToAction(nameof(Index), new { pageNumber = 1 });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Reject(string userId)
+        {
+            if (!await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), userId))
+            {
+                await _friendshipService.RejectFriendRequestAsync(userId, User.Id());
+            }
+            return RedirectToAction("Index", "User", new { pageNumber = 1 });
         }
 
     }
