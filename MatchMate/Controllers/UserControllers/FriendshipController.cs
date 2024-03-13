@@ -76,7 +76,25 @@ namespace MatchMate.Controllers.UserControllers
             return RedirectToAction(nameof(Pending), new { pageNumber = 1 });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Accept(string userId)
+        {
+            if (!await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), userId))
+            {
+                await _friendshipService.AcceptFriendRequestAsync(userId, User.Id());
+            }
+            return RedirectToAction(nameof(Index), new { pageNumber = 1 });
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> Reject(string userId)
+        {
+            if (!await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), userId))
+            {
+                await _friendshipService.RejectFriendRequestAsync(userId, User.Id());
+            }
+            return RedirectToAction("Index", "User", new { pageNumber = 1 });
+        }
 
     }
 }
