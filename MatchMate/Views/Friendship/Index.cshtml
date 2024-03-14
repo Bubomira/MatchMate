@@ -1,6 +1,39 @@
-﻿@model UserMatchList
+﻿@model UserFriendshipModelList
 
-@foreach (var userCard in Model.Users)
-{
-    <partial name="_UserCardPartial" model="@userCard" />
-}
+    @if (Model.TotalFriends==0)
+    {
+         <section class="d-flex flex-column align-items-center mt-5 justify-content-start gap-2">
+               <h4>You do not have any friends at the moment.</h4>
+               <section class="d-flex gap-2">
+                  <a class="btn btn-outline-primary" asp-action="Index" asp-controller="User" asp-route-pageNumber=1>Find some friends now!</a>
+                  <a class="btn btn-outline-primary" asp-action="Pending" asp-controller="Friendship" asp-route-pageNumber=1>See your pending requests</a>
+               </section>
+          </section>
+    }
+    else
+    {
+        <h2>Total friends: @Model.TotalFriends</h2>
+        <section class="d-flex justify-content-start gap-2">
+             @foreach (var userCard in Model.Friends)
+             {
+               <partial name="_UserCardPartial" model="@userCard" />
+             }
+        </section>
+        <section class="pagination d-flex justify-content-center gap-3">
+               <a class="page-item @(Model.CurrentPage==1? "disabled ":string.Empty) btn" 
+                  asp-action="Index" 
+                  asp-controller="Friendship"
+                  asp-route-pageNumber ="@Model.CurrentPage-=1"
+                  aria-label="Previous">
+                  &laquo; 
+               </a>
+               <a class="page-item @(Model.CurrentPage==Model.TotalPagesCount? "disabled ":string.Empty) btn"
+                  asp-action="Index" 
+                  asp-controller="Friendship"
+                  asp-route-pageNumber ="@Model.CurrentPage+=1"
+                  aria-label="Next">
+                  &raquo;
+               </a>
+        </section>
+    }
+
