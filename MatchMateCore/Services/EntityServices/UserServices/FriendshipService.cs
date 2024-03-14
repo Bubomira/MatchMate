@@ -26,26 +26,34 @@ namespace MatchMateCore.Services.EntityServices.UserServices
         public Task<bool> CheckIfThereIsARelationShipBetweenUsersAsync(string firstUserId, string secondUserId) =>
             _repository.AllReadOnly<Friendship>()
             .AnyAsync(f => (f.SenderId == firstUserId && f.ReceiverId == secondUserId)
-            || (f.SenderId==secondUserId && f.ReceiverId==firstUserId));
+            || (f.SenderId == secondUserId && f.ReceiverId == firstUserId));
 
-        public Task<List<UserCardModel>> GetActiveFriendsAsync(string userId, int pageNumber) =>
-             _repository.AllReadOnly<Friendship>()
-             .Where(f => f.IsActive == true &&
-             (f.SenderId == userId || f.ReceiverId == userId))
-              .Skip(12 * pageNumber)
-              .Take(12)
-             .Select(f => new UserCardModel()
-             {
-                 IsActiveFriendship = true,
-                 UserId = f.SenderId == userId ? f.ReceiverId : f.SenderId,
-                 Bio = f.SenderId == userId ? f.Receiver.Bio : f.Sender.Bio,
-                 Username = f.SenderId == userId ? f.Receiver.UserName : f.Sender.UserName,
-                 Interests = f.SenderId == userId ?
-                     f.Receiver.UsersInterests.Select(ui => ui.Interest.Name).ToList()
-                     :
-                     f.Sender.UsersInterests.Select(ui => ui.Interest.Name).ToList()
-             })
-            .ToListAsync();
+        public async Task<UserFriendshipModelList> GetActiveFriendsAsync(string userId, int pageNumber)
+        {
+            UserFriendshipModelList model = new UserFriendshipModelList();
+            var activeFriends = _repository.AllReadOnly<Friendship>()
+              .Where(f => f.IsActive == true &&
+              (f.SenderId == userId || f.ReceiverId == userId));
+
+            model.TotalFriends = activeFriends.Count();
+            model.Friends = await activeFriends.Skip(12 * pageNumber)
+             .Take(12)
+            .Select(f => new UserCardModel()
+            {
+                IsActiveFriendship = true,
+                UserId = f.SenderId == userId ? f.ReceiverId : f.SenderId,
+                Bio = f.SenderId == userId ? f.Receiver.Bio : f.Sender.Bio,
+                Username = f.SenderId == userId ? f.Receiver.UserName : f.Sender.UserName,
+                Interests = f.SenderId == userId ?
+                    f.Receiver.UsersInterests.Select(ui => ui.Interest.Name).ToList()
+                    :
+                    f.Sender.UsersInterests.Select(ui => ui.Interest.Name).ToList()
+            })
+           .ToListAsync();
+
+            return model;
+
+        }
 
         public async Task RejectFriendRequestAsync(string senderId, string receiverId)
         {
@@ -67,20 +75,30 @@ namespace MatchMateCore.Services.EntityServices.UserServices
 
             await _repository.SaveChangesAsync();
         }
-        public Task<List<UserCardModel>> ViewPendingRequestsAsync(string receiverId,int pageNumber) =>
-            _repository.AllReadOnly<Friendship>()
-            .Where(f => f.ReceiverId == receiverId && f.IsActive == false)
-            .Skip(12*pageNumber)
+        public async Task<UserFriendshipModelList> GetPendingRequestsAsync(string receiverId, int pageNumber)
+        {
+            UserFriendshipModelList model = new UserFriendshipModelList();
+
+            var pendingRequests = _repository.AllReadOnly<Friendship>()
+            .Where(f => f.ReceiverId == receiverId && f.IsActive == false);
+
+            model.TotalFriends = pendingRequests.Count();
+
+            model.Friends = await pendingRequests.Skip(12 * pageNumber)
             .Take(12)
             .Select(f => new UserCardModel()
             {
-                IsPendingFriendship=true,
+                IsPendingFriendship = true,
                 UserId = f.Sender.Id,
                 Bio = f.Sender.Bio,
                 Username = f.Sender.UserName,
                 Interests = f.Sender.UsersInterests.Select(ui => ui.Interest.Name).ToList(),
             })
             .ToListAsync();
+
+            return model;
+        }
+
 
 
         private Task<Friendship?> FindFriendshipAsync(string senderId, string receiverId) =>
