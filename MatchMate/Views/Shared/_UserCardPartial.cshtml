@@ -19,13 +19,13 @@
         else if (Model.IsPendingFriendship)
         {
              <section class="d-flex gap-2">
-                 <a asp-action="Accept" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Accept</a>
-                 <a asp-action="Reject" asp-controller="Friendshp" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Reject</a>
+                 <a asp-action="Accept" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-outline-success align-self-center">Accept</a>
+                 <a asp-action="Reject" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-outline-danger align-self-center">Reject</a>
             </section>
         }
         else
         {
-            <a asp-action="Add" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Send request!</a>           
+            <a asp-action="SendFriendShipRequest" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Send request!</a>           
         }
   </div>
 </div>
