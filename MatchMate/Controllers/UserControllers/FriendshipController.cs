@@ -44,7 +44,7 @@ namespace MatchMate.Controllers.UserControllers
         {
             var pendingRequests = await _friendshipService.GetPendingRequestsAsync(User.Id(), pageNumber - 1);
            
-            if (pendingRequests.Friends.Count == 0)
+            if (pendingRequests.Friends.Count == 0 && pageNumber!=1)
             {
                 return RedirectToAction(nameof(Pending), new { pageNumber = 1 });
             }
@@ -64,32 +64,29 @@ namespace MatchMate.Controllers.UserControllers
 
         public async Task<IActionResult> SendFriendShipRequest(string id)
         {
-            if (await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), id))
+            if (!await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), id))
             {
-                return RedirectToAction(nameof(Index), new { pageNumber = 1 });
+                await _friendshipService.SendFriendRequestAsync(User.Id(), id);
             }
-
-            await _friendshipService.SendFriendRequestAsync(User.Id(), id);
-
-            return RedirectToAction(nameof(Pending), new { pageNumber = 1 });
+            return RedirectToAction("Index", "User", new { pageNumber = 1 });
         }
 
         [HttpGet]
-        public async Task<IActionResult> Accept(string userId)
+        public async Task<IActionResult> Accept(string id)
         {
-            if (!await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), userId))
+            if (await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), id))
             {
-                await _friendshipService.AcceptFriendRequestAsync(userId, User.Id());
+                await _friendshipService.AcceptFriendRequestAsync(id, User.Id());
             }
             return RedirectToAction(nameof(Index), new { pageNumber = 1 });
         }
 
         [HttpGet]
-        public async Task<IActionResult> Reject(string userId)
+        public async Task<IActionResult> Reject(string id)
         {
-            if (!await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), userId))
+            if (await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), id))
             {
-                await _friendshipService.RejectFriendRequestAsync(userId, User.Id());
+                await _friendshipService.RejectFriendRequestAsync(id, User.Id());
             }
             return RedirectToAction("Index", "User", new { pageNumber = 1 });
         }
