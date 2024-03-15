@@ -102,7 +102,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
 
 
         private Task<Friendship?> FindFriendshipAsync(string senderId, string receiverId) =>
-            _repository.AllReadOnly<Friendship>()
+            _repository.All<Friendship>()
             .FirstOrDefaultAsync(f => f.SenderId == senderId && f.ReceiverId == receiverId);
     }
 }
