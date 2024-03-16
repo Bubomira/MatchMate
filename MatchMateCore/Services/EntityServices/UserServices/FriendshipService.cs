@@ -104,5 +104,17 @@ namespace MatchMateCore.Services.EntityServices.UserServices
         private Task<Friendship?> FindFriendshipAsync(string senderId, string receiverId) =>
             _repository.All<Friendship>()
             .FirstOrDefaultAsync(f => f.SenderId == senderId && f.ReceiverId == receiverId);
+
+        public async Task RemoveFriendAsync(string firstUserId, string secondUserId)
+        {
+            var friendship = await _repository.All<Friendship>().
+                Where(f => (f.SenderId == firstUserId && f.ReceiverId == secondUserId) ||
+                (f.SenderId == secondUserId && f.ReceiverId == firstUserId))
+                .FirstOrDefaultAsync();
+
+            await _repository.Remove<Friendship>(friendship);
+
+            await _repository.SaveChangesAsync();
+        }
     }
 }
