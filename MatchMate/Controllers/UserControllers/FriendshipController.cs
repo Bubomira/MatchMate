@@ -91,5 +91,16 @@ namespace MatchMate.Controllers.UserControllers
             return RedirectToAction("Index", "User", new { pageNumber = 1 });
         }
 
+        public async Task<IActionResult> RemoveFriend(string id)
+        {
+            if (await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), id))
+            {
+                await _friendshipService.RemoveFriendAsync(id, User.Id());
+               return RedirectToAction("Index", "User", new { pageNumber = 1 });
+            }
+
+            return RedirectToAction(nameof(Index), new { pageNumber = 1 });
+        }
+
     }
 }
