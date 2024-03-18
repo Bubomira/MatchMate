@@ -5,7 +5,7 @@ namespace MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces
 {
     public interface IOfferInterface
     {
-        public Task<UserOfferModel?> GetOfferReceiverDetails(string userId);
+        public Task<string?> GetOfferReceiverUsername(string userId);
         public Task<List<OfferPreviewModel>> GetAllPendingOffers(string userId);
         public Task<List<OfferPreviewModel>> GetAllAcceptedOffers(string userId);
         public Task<List<OfferPreviewModel>> GetAllReceivedAndAcceptedOffers(string userId);

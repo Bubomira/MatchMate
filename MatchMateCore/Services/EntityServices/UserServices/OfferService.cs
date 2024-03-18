@@ -24,8 +24,9 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                 Place = offerPostFormModel.Place,
                 Title = offerPostFormModel.Title,
                 Status = OfferStatus.Pending,
+                Time = offerPostFormModel.Time,
                 SuggestingUserId = senderId,
-                ReceivingUserId = offerPostFormModel.ReceiverData.UserId
+                ReceivingUserId = offerPostFormModel.ReceiverId
             };
 
             await _repository.AddAsync<Offer>(offer);
@@ -76,14 +77,10 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             throw new NotImplementedException();
         }
 
-        public Task<UserOfferModel?> GetOfferReceiverDetails(string userId) =>
+        public Task<string?> GetOfferReceiverUsername(string userId) =>
         _repository.AllReadOnly<ApplicationUser>()
         .Where(au => au.Id == userId)
-        .Select(au => new UserOfferModel()
-        {
-            UserId = au.Id,
-            Username = au.UserName
-        })
+        .Select(au => au.UserName)
         .FirstOrDefaultAsync();
 
     }
