@@ -1,0 +1,36 @@
+﻿@model OfferPostFormModel
+
+<section  class="d-flex flex-column gap-3 align-items-center ">
+
+<h2 class="text-center">Create offer for @Model.ReceiverData.Username</h2>
+
+<form class="d-flex flex-column gap-3 w-50" method="post">
+     <div >
+         <label for="title" class="form-label">Title</label>
+         <input class="form-control" id="title" type="text" asp-for="@Model.Title" placeholder="Write the title of your offer here"/>
+         <span class="text-danger" asp-validation-for="@Model.Title" ></span>
+     </div>
+     <div >
+          <label for="description" class="form-label">Description</label>
+         <textarea class="form-control" id="description" type="text" asp-for="@Model.Description" placeholder="Describe what your offer is about, ex. what are you going to do?"></textarea>
+         <span class="text-danger" asp-validation-for="@Model.Description" ></span>
+     </div>
+     <div >
+          <label for="place" class="form-label">Place</label>
+         <input class="form-control" id="place" type="text" asp-for="@Model.Place" placeholder="Where are you going to meet?"/>
+         <span class="text-danger" asp-validation-for="@Model.Place" ></span>
+     </div>
+     <div >
+          <label for="place" class="form-label">Time</label>
+         <input class="form-control" id="place" type="text" asp-for="@Model.Time" placeholder="When is the meeting going to take place?"/>
+         <span class="text-danger" asp-validation-for="@Model.Time" ></span>
+     </div>
+     <div class="align-self-center">
+         <input class="btn btn-outline-primary" value="Submit" type="submit" asp-action="Create" asp-controller="Offer" asp-route-id="@Model.ReceiverData.UserId" />
+     </div>
+</form>
+</section>
+
+@section Scripts{
+     <partial name="_ValidationScriptsPartial"/>
+ }

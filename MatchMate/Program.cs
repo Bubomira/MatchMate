@@ -1,4 +1,6 @@
 
+using MatchMate.ModelBinders;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AttachDbContext(builder.Configuration)
@@ -7,7 +9,8 @@ builder.Services.AttachDbContext(builder.Configuration)
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddMvcOptions(options=>
+      options.ModelBinderProviders.Insert(0,new DateModelBinderProvider()));
 
 var app = builder.Build();
 

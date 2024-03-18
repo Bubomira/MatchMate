@@ -3,6 +3,7 @@
 using static MatchMateInfrastructure.ErrorMessages;
 using static MatchMateInfrastructure.DataConstants.OfferConstants;
 using MatchMateCore.Dtos.UsersViewModels;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace MatchMateCore.Dtos.OfferViewModels
 {
@@ -25,13 +26,9 @@ namespace MatchMateCore.Dtos.OfferViewModels
         public string Place { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public string Time { get; set; } = string.Empty;
-
-        public string SuggestingUserId { get; set; } = string.Empty;
-
-        public string ReceivingUserId { get; set; } = string.Empty;
-
-        public IList<UserOfferModel> Friends { get; set; } = new List<UserOfferModel>();
+        public DateTime Time { get; set; }
+        public string ReceiverId { get; set; } = string.Empty;
+        public string ReceiverUsername { get; set; } = string.Empty;
 
     }
 }
