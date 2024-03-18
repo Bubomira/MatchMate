@@ -26,12 +26,7 @@ namespace MatchMateCore.Dtos.OfferViewModels
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public string Time { get; set; } = string.Empty;
-
-        public string SuggestingUserId { get; set; } = string.Empty;
-
-        public string ReceivingUserId { get; set; } = string.Empty;
-
-        public IList<UserOfferModel> Friends { get; set; } = new List<UserOfferModel>();
+        public UserOfferModel ReceiverData { get; set; } = null!;
 
     }
 }

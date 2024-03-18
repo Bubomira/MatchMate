@@ -1,4 +1,5 @@
 ﻿using MatchMateCore.Dtos.OfferViewModels;
+using MatchMateCore.Dtos.UsersViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateInfrastructure.Enums;
 using MatchMateInfrastructure.Models;
@@ -24,7 +25,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                 Title = offerPostFormModel.Title,
                 Status = OfferStatus.Pending,
                 SuggestingUserId = senderId,
-                ReceivingUserId = offerPostFormModel.ReceivingUserId
+                ReceivingUserId = offerPostFormModel.ReceiverData.UserId
             };
 
             await _repository.AddAsync<Offer>(offer);
@@ -74,5 +75,16 @@ namespace MatchMateCore.Services.EntityServices.UserServices
         {
             throw new NotImplementedException();
         }
+
+        public Task<UserOfferModel?> GetOfferReceiverDetails(string userId) =>
+        _repository.AllReadOnly<ApplicationUser>()
+        .Where(au => au.Id == userId)
+        .Select(au => new UserOfferModel()
+        {
+            UserId = au.Id,
+            Username = au.UserName
+        })
+        .FirstOrDefaultAsync();
+
     }
 }

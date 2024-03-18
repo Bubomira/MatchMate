@@ -1,9 +1,11 @@
 ﻿using MatchMateCore.Dtos.OfferViewModels;
+using MatchMateCore.Dtos.UsersViewModels;
 
 namespace MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces
 {
     public interface IOfferInterface
     {
+        public Task<UserOfferModel?> GetOfferReceiverDetails(string userId);
         public Task<List<OfferPreviewModel>> GetAllPendingOffers(string userId);
         public Task<List<OfferPreviewModel>> GetAllAcceptedOffers(string userId);
         public Task<List<OfferPreviewModel>> GetAllReceivedAndAcceptedOffers(string userId);
