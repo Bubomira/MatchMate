@@ -2,7 +2,7 @@
 
 <section  class="d-flex flex-column gap-3 align-items-center ">
 
-<h2 class="text-center">Create offer for @Model.ReceiverData.Username</h2>
+<h2 class="text-center">Create offer for @Model.ReceiverUsername</h2>
 
 <form class="d-flex flex-column gap-3 w-50" method="post">
      <div >
@@ -21,12 +21,13 @@
          <span class="text-danger" asp-validation-for="@Model.Place" ></span>
      </div>
      <div >
-          <label for="place" class="form-label">Time</label>
-         <input class="form-control" id="place" type="text" asp-for="@Model.Time" placeholder="When is the meeting going to take place?"/>
-         <span class="text-danger" asp-validation-for="@Model.Time" ></span>
+          <label for="time" class="form-label">Time</label>
+         <input class="form-control" id="time" type="datetime" value="dd/MM/yyyy HH:mm" asp-for="@Model.Time" placeholder="Please, use dd/MM/yyyy HH:mm date format"/>
+         <span class="text-danger" asp-validation-for="@Model.Time"></span>
      </div>
+     <input type="hidden" asp-for="@Model.ReceiverId" value="@Model.ReceiverId" />
      <div class="align-self-center">
-         <input class="btn btn-outline-primary" value="Submit" type="submit" asp-action="Create" asp-controller="Offer" asp-route-id="@Model.ReceiverData.UserId" />
+         <input class="btn btn-outline-primary" value="Submit" type="submit" asp-action="Create" asp-controller="Offer" asp-route-id="@Model.ReceiverId" />
      </div>
 </form>
 </section>

@@ -12,13 +12,13 @@ namespace MatchMate.ModelBinders
 
             string value = valueResult.FirstValue;
 
-            if (valueResult != ValueProviderResult.None && string.IsNullOrEmpty(value))
+            if (valueResult != ValueProviderResult.None && !string.IsNullOrEmpty(value))
             {
                 DateTime dateResult = DateTime.Now;
                 bool success = false;
                 try
                 {
-                    DateTime.TryParseExact(value, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateResult);
+                    dateResult = DateTime.ParseExact(value, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
                     success = true;
                 }
                 catch (FormatException fe)

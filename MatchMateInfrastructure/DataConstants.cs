@@ -8,7 +8,7 @@ namespace MatchMateInfrastructure
 {
     public static class DataConstants
     {
-        public const string DateTimeFormat = "dd/MM/yyyy";
+        public const string DateTimeFormat = "dd/MM/yyyy hh:mm";
         public static class InterestDataConstants
         {
             public const int MaxNameLength = 100;
