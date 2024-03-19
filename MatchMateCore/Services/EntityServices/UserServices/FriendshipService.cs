@@ -28,6 +28,11 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             .AnyAsync(f => (f.SenderId == firstUserId && f.ReceiverId == secondUserId)
             || (f.SenderId == secondUserId && f.ReceiverId == firstUserId));
 
+        public Task<bool> CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(string firstUserId, string secondUserId)=>
+             _repository.AllReadOnly<Friendship>()
+            .AnyAsync(f => (f.SenderId == firstUserId && f.ReceiverId == secondUserId && f.IsActive)
+            || (f.SenderId == secondUserId && f.ReceiverId == firstUserId && f.IsActive));
+
         public async Task<UserFriendshipModelList> GetActiveFriendsAsync(string userId, int pageNumber)
         {
             UserFriendshipModelList model = new UserFriendshipModelList();
