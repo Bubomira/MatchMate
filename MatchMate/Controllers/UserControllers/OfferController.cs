@@ -7,10 +7,14 @@ namespace MatchMate.Controllers.UserControllers
 {
     public class OfferController : BaseController
     {
-        private readonly IOfferInterface _offerInterface;
-        public OfferController(IOfferInterface offerInterface)
-        {;
-            _offerInterface = offerInterface;
+        private readonly IOfferInterface _offerService;
+        private readonly IFriendshipInterface _friendshipService;
+        public OfferController(IOfferInterface offerInterface,
+            IFriendshipInterface friendshipInterface)
+        {
+            ;
+            _offerService = offerInterface;
+            _friendshipService = friendshipInterface;
         }
         public async Task<IActionResult> Index()
         {
@@ -20,8 +24,12 @@ namespace MatchMate.Controllers.UserControllers
         [HttpGet]
         public async Task<IActionResult> Create(string id)
         {
+            if (!await _friendshipService.CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(id, User.Id()))
+            {
+                RedirectToAction("Index", "Friendship");
+            }
             OfferPostFormModel model = new OfferPostFormModel();
-            model.ReceiverUsername = await _offerInterface.GetOfferReceiverUsername(id);
+            model.ReceiverUsername = await _offerService.GetOfferReceiverUsername(id);
             model.ReceiverId = id;
 
             return View(model);
@@ -31,12 +39,18 @@ namespace MatchMate.Controllers.UserControllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Create(OfferPostFormModel offerPostFormModel)
         {
+
+            if (!await _friendshipService.CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(offerPostFormModel.ReceiverId, User.Id()))
+            {
+                RedirectToAction("Index", "Friendship");
+            }
+
             if (!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Create));
             }
 
-            await _offerInterface.AddOffer(offerPostFormModel, User.Id());
+            await _offerService.AddOffer(offerPostFormModel, User.Id());
 
             return RedirectToAction(nameof(Index));
         }

@@ -93,7 +93,7 @@ namespace MatchMate.Controllers.UserControllers
 
         public async Task<IActionResult> RemoveFriend(string id)
         {
-            if (await _friendshipService.CheckIfThereIsARelationShipBetweenUsersAsync(User.Id(), id))
+            if (await _friendshipService.CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(User.Id(), id))
             {
                 await _friendshipService.RemoveFriendAsync(id, User.Id());
                return RedirectToAction("Index", "User", new { pageNumber = 1 });
