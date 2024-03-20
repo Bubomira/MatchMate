@@ -16,9 +16,15 @@ namespace MatchMate.Controllers.UserControllers
             _offerService = offerInterface;
             _friendshipService = friendshipInterface;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] OfferIndexModel offerIndexModel)
         {
-            return View();
+            offerIndexModel.Offers = await _offerService.GetOffersAsync(offerIndexModel,User.Id());
+
+            offerIndexModel.NextPageNumber = offerIndexModel.CurrentPageNumber +1;
+            offerIndexModel.PrevoiusPageNumber = offerIndexModel.CurrentPageNumber + 1;
+            offerIndexModel.TotalPageCount =(int) Math.Ceiling((double)offerIndexModel.AllOffersCount / OfferIndexModel.MaxItemsOnPage);
+
+            return View(offerIndexModel);
         }
 
         [HttpGet]
@@ -29,7 +35,7 @@ namespace MatchMate.Controllers.UserControllers
                 RedirectToAction("Index", "Friendship");
             }
             OfferPostFormModel model = new OfferPostFormModel();
-            model.ReceiverUsername = await _offerService.GetOfferReceiverUsername(id);
+            model.ReceiverUsername = await _offerService.GetOfferReceiverUsernameAsync(id);
             model.ReceiverId = id;
 
             return View(model);
@@ -50,7 +56,7 @@ namespace MatchMate.Controllers.UserControllers
                 return RedirectToAction(nameof(Create));
             }
 
-            await _offerService.AddOffer(offerPostFormModel, User.Id());
+            await _offerService.AddOfferAsync(offerPostFormModel, User.Id());
 
             return RedirectToAction(nameof(Index));
         }
