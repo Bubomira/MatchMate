@@ -87,10 +87,10 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                     break;
             }
 
-            string search = offerIndexModel.SearchString.ToLower();
 
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(offerIndexModel.SearchString))
             {
+                string search = offerIndexModel.SearchString.ToLower();
                 offers = offers.Where(o => o.Title.ToLower().Contains(search)
                 || o.Description.ToLower().Contains(search));
             }
@@ -118,16 +118,18 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                     break;
             }
 
+            offerIndexModel.AllOffersCount = offers.Count();
+
             return await offers
             .OrderBy(o=>o.Time)
-            .Skip(offerIndexModel.CurrentPageNumber-1*OfferIndexModel.MaxItemsOnPage)
+            .Skip((offerIndexModel.CurrentPageNumber-1)*OfferIndexModel.MaxItemsOnPage)
             .Take(OfferIndexModel.MaxItemsOnPage)
             .Select(o => new OfferPreviewModel()
             {
                 OfferStatus = o.Status,
                 Id = o.Id,
-                ReceivedBy = o.ReceivingUser.UserName,
-                SuggestedBy = o.SuggestingUser.UserName,
+                ReceivedBy = new UserOfferModel(o.ReceivingUserId,o.ReceivingUser.UserName),
+                SuggestedBy = new UserOfferModel(o.SuggestingUserId, o.SuggestingUser.UserName),
                 Title = o.Title
             })
             .ToListAsync();
