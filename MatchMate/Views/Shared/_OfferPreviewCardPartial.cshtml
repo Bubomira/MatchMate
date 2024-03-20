@@ -1,0 +1,45 @@
+﻿@model OfferPreviewModel
+
+ <div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Title</h5>
+        <p class="card-text">Status: @Model.OfferStatus</p>
+    </div>
+        <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item">From: @Model.SuggestedBy.Username</li>
+            <li class="list-group-item">To: @Model.ReceivedBy.Username</li>
+         </ul>
+        <section class=" card-footer d-flex flex-wrap gap-3 pb-3">
+             <a asp-action="Details" asp-controller="Offer" asp-route-id="@Model.Id" class="btn btn-primary">See details</a>             
+             @if (Model.OfferStatus==OfferStatus.Pending)
+             {
+                 if (Model.ReceivedBy.UserId==User.Id())
+                 {
+                   <a asp-action="Accept" asp-route-id="@Model.Id" asp-controller="Offer" class="btn btn-outline-success">Accept</a>
+                   <a asp-action="Reject" asp-route-id="@Model.Id" asp-controller="Offer" class="btn btn-outline-danger">Reject</a>
+                }
+                else
+                {
+                    <a asp-action="Delete" asp-controller="Offer" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
+                }
+            }
+            else if (Model.OfferStatus==OfferStatus.Accepted)
+            {
+                if (Model.SuggestedBy.UserId != User.Id())
+                {
+                    <a asp-action="Cancel" asp-controller="Offer" asp-route-id="@Model.Id" class="btn btn-outline-warning">Cancel</a>
+                }
+            }
+            else
+            {
+                if (Model.SuggestedBy.UserId==User.Id())
+                {
+                    <a asp-action="Delete" asp-controller="Offer" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
+                }
+                else if(Model.ReceivedBy.UserId==User.Id())
+                {
+                     <a asp-action="Renew" asp-controller="Offer" asp-route-id="@Model.Id" class="btn btn-outline-success">Renew</a>
+                }
+            }
+         </section>
+ </div>
