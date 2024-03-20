@@ -1,4 +1,5 @@
-﻿using MatchMateInfrastructure.Enums;
+﻿using MatchMateCore.Dtos.UsersViewModels;
+using MatchMateInfrastructure.Enums;
 
 
 namespace MatchMateCore.Dtos.OfferViewModels
@@ -12,8 +13,8 @@ namespace MatchMateCore.Dtos.OfferViewModels
 
         public OfferStatus OfferStatus { get; set; }
 
-        public string SuggestedBy { get; set; } = string.Empty;
+        public UserOfferModel SuggestedBy { get; set; } = null!;
 
-        public string ReceivedBy { get; set; } = string.Empty;
+        public UserOfferModel ReceivedBy { get; set; } = null!;
     }
 }

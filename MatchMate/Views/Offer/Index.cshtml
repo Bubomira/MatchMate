@@ -1,0 +1,58 @@
+﻿@model OfferIndexModel
+
+<form class="d-flex gap-3 mt-5 align-items-center" method="get">
+      <section>
+         <select asp-for="@Model.Status" class="form-select">
+             <option value="1">Pending</option>
+             <option value="2">Cancelled</option>
+             <option selected  value="3">Accepted</option>
+         </select>
+    </section>
+    <section class="flex-grow-1">
+        <input asp-for="@Model.SearchString" type="text" class="form-control" id="searchText" placeholder="Search by offer title and description">
+    </section>
+     <section>
+         <select asp-for="@Model.IsOfferReceiver" class="form-select">
+             <option selected value="1">Received offers</option>
+             <option value="2">Sended offers</option>
+             <option value="3">Both</option>
+         </select>
+    </section>
+     <section>
+         <select asp-for="@Model.OfferTimeType" class="form-select" >
+             <option value="1">Offers before @DateTime.Now.ToString("dd/MM/yyyy")</option>
+             <option selected value="2">Offers after @DateTime.Now.ToString("dd/MM/yyyy")</option>
+         </select>
+    </section>
+    <section>
+        <input class="btn btn-primary" type="submit" asp-action="Index" asp-controller="Offer" value="Search..." />
+    </section>
+</form>
+
+@if(Model.Offers.Count!=0){
+    <div class="d-flex flex-wrap gap-3 mt-5">
+        @foreach (var offer in Model.Offers)
+        {
+            <partial name="_OfferPreviewCardPartial" model="@offer"/>            
+        }
+    </div>
+    <section class="pagination d-flex justify-content-center gap-3">
+           <a class="@(Model.CurrentPageNumber==1? "disabled ":string.Empty) page-link btn" 
+              asp-action="Index" 
+              asp-controller="Offer"
+              asp-route-pageNumber ="@Model.PrevoiusPageNumber"
+              aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+           </a>
+           <a class="@(Model.CurrentPageNumber==Model.TotalPageCount? "disabled ":string.Empty)page-link btn"
+              asp-action="Index" 
+              asp-controller="Offer"
+              asp-route-pageNumber ="@Model.NextPageNumber"
+              aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+           </a>
+    </section>
+}else{
+    <h2 class="text-center mt-5">There are no offers...</h2>
+}
+

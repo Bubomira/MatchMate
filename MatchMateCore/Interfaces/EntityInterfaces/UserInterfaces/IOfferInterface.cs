@@ -5,13 +5,11 @@ namespace MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces
 {
     public interface IOfferInterface
     {
-        public Task<string?> GetOfferReceiverUsername(string userId);
-        public Task<List<OfferPreviewModel>> GetAllPendingOffers(string userId);
-        public Task<List<OfferPreviewModel>> GetAllAcceptedOffers(string userId);
-        public Task<List<OfferPreviewModel>> GetAllReceivedAndAcceptedOffers(string userId);
-        public Task AddOffer(OfferPostFormModel offerPostFormModel ,string senderId);
-        public Task EditOffer(OfferEditFormModel offerEditFormModel);
-        public Task DeleteOffer(int offerId);
-        public Task RejectOffer(int  offerId);
+        public Task<string?> GetOfferReceiverUsernameAsync(string userId);
+        public Task<List<OfferPreviewModel>> GetOffersAsync(OfferIndexModel offerIndexModel, string userId);
+        public Task AddOfferAsync(OfferPostFormModel offerPostFormModel ,string senderId);
+        public Task EditOfferAsync(OfferEditFormModel offerEditFormModel);
+        public Task DeleteOfferAsync(int offerId);
+        public Task RejectOfferAsync(int  offerId);
     }
 }

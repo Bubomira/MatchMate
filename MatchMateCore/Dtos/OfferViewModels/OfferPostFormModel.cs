@@ -1,18 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 using static MatchMateInfrastructure.ErrorMessages;
+using static MatchMateInfrastructure.DataConstants;
 using static MatchMateInfrastructure.DataConstants.OfferConstants;
-using MatchMateCore.Dtos.UsersViewModels;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Globalization;
 
 namespace MatchMateCore.Dtos.OfferViewModels
 {
     public class OfferPostFormModel
     {
 
-        [Required(ErrorMessage =RequiredErrorMessage)]
-        [StringLength(MaxTitleLength, MinimumLength =MinTitleLength,
-            ErrorMessage =StringLengthErrorMessage)]
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(MaxTitleLength, MinimumLength = MinTitleLength,
+            ErrorMessage = StringLengthErrorMessage)]
         public string Title { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
