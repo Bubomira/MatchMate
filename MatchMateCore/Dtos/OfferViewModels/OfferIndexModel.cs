@@ -9,11 +9,15 @@ namespace MatchMateCore.Dtos.OfferViewModels
         public const int MaxItemsOnPage = 6;
         public string SearchString { get; set; } = string.Empty;
 
+        public int AllOffersCount { get; set; }
+
         public OfferStatus? Status { get; set; } = OfferStatus.Accepted;
 
         public IsOfferReceiver IsOfferReceiver { get; set; } = IsOfferReceiver.Yes;
 
         public TimeTypeOffer OfferTimeType { get; set; } = TimeTypeOffer.After;
+
+        public int TotalPageCount { get; set; }
 
         public int CurrentPageNumber { get; set; } = 1;
 
