@@ -16,7 +16,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             _repository = repository;
         }
 
-        public async Task AddOffer(OfferPostFormModel offerPostFormModel, string senderId)
+        public async Task AddOfferAsync(OfferPostFormModel offerPostFormModel, string senderId)
         {
             var offer = new Offer()
             {
@@ -35,7 +35,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
 
         }
 
-        public async Task DeleteOffer(int offerId)
+        public async Task DeleteOfferAsync(int offerId)
         {
             var offer = await _repository.All<Offer>()
                 .FirstOrDefaultAsync(o => o.Id == offerId);
@@ -45,7 +45,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             await _repository.SaveChangesAsync();
         }
 
-        public async Task EditOffer(OfferEditFormModel offerEditFormModel)
+        public async Task EditOfferAsync(OfferEditFormModel offerEditFormModel)
         {
             var offer = await _repository.All<Offer>()
                .FirstOrDefaultAsync(o => o.Id == offerEditFormModel.Id);
@@ -57,31 +57,81 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             await _repository.SaveChangesAsync();
         }
 
-        public Task<List<OfferPreviewModel>> GetAllAcceptedOffers(string userId)
+
+        public Task RejectOfferAsync(int offerId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<OfferPreviewModel>> GetAllPendingOffers(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<OfferPreviewModel>> GetAllReceivedAndAcceptedOffers(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task RejectOffer(int offerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string?> GetOfferReceiverUsername(string userId) =>
+        public Task<string?> GetOfferReceiverUsernameAsync(string userId) =>
         _repository.AllReadOnly<ApplicationUser>()
         .Where(au => au.Id == userId)
         .Select(au => au.UserName)
         .FirstOrDefaultAsync();
 
+        public async Task<List<OfferPreviewModel>> GetOffersAsync(OfferIndexModel offerIndexModel, string userId)
+        {
+            var offers = _repository.AllReadOnly<Offer>();
+
+            switch (offerIndexModel.IsOfferReceiver)
+            {
+                case IsOfferReceiver.Yes:
+                    offers = offers.Where(o => o.ReceivingUserId == userId);
+                    break;
+                case IsOfferReceiver.No:
+                    offers = offers.Where(o => o.SuggestingUserId == userId);
+                    break;
+                case IsOfferReceiver.DoesntMatter:
+                    offers = offers.Where(o => o.ReceivingUserId == userId
+                    || o.SuggestingUserId == userId);
+                    break;
+            }
+
+            string search = offerIndexModel.SearchString.ToLower();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                offers = offers.Where(o => o.Title.ToLower().Contains(search)
+                || o.Description.ToLower().Contains(search));
+            }
+
+            switch (offerIndexModel.Status)
+            {
+                case OfferStatus.Pending:
+                    offers = offers.Where(o => o.Status == OfferStatus.Pending);
+                    break;
+                case OfferStatus.Accepted:
+                    offers = offers.Where(o => o.Status == OfferStatus.Accepted);
+                    break;
+                case OfferStatus.Cancelled:
+                    offers = offers.Where(o => o.Status == OfferStatus.Cancelled);
+                    break;
+            }
+
+            switch (offerIndexModel.OfferTimeType)
+            {
+                case TimeTypeOffer.Before:
+                    offers = offers.Where(o => o.Time < DateTime.Now);
+                    break;
+                case TimeTypeOffer.After:
+                    offers = offers.Where(o => o.Time > DateTime.Now);
+                    break;
+            }
+
+            return await offers
+            .OrderBy(o=>o.Time)
+            .Skip(offerIndexModel.CurrentPageNumber-1*OfferIndexModel.MaxItemsOnPage)
+            .Take(OfferIndexModel.MaxItemsOnPage)
+            .Select(o => new OfferPreviewModel()
+            {
+                OfferStatus = o.Status,
+                Id = o.Id,
+                ReceivedBy = o.ReceivingUser.UserName,
+                SuggestedBy = o.SuggestingUser.UserName,
+                Title = o.Title
+            })
+            .ToListAsync();
+
+        }
     }
 }
