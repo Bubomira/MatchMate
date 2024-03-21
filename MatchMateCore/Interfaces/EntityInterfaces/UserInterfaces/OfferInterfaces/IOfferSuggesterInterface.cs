@@ -5,6 +5,7 @@ namespace MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfac
     public interface IOfferSuggesterInterface
     {
         public Task<List<OfferPreviewModel>> GetOffersAsync(OfferIndexModel offerIndexModel, string userId);
+        public Task<OfferDetailsModel> GetOfferDetailsAsync(int offerId);
         public Task AddOfferAsync(OfferPostFormModel offerPostFormModel, string senderId);
         public Task EditOfferAsync(OfferEditFormModel offerEditFormModel);
         public Task DeleteOfferAsync(int offerId);

@@ -8,13 +8,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
 {
-    public class OfferSuggesterService :IOfferSuggesterInterface
+    public class OfferSuggesterService : IOfferSuggesterInterface
     {
         private readonly IRepository _repository;
         public OfferSuggesterService(IRepository repository)
         {
             _repository = repository;
         }
+
+        public Task<OfferDetailsModel> GetOfferDetailsAsync(int offerId) =>
+            _repository.AllReadOnly<Offer>()
+            .Where(o => o.Id == offerId)
+            .Select(o => new OfferDetailsModel(
+                o.Id, o.Title, o.Status,
+                o.SuggestingUserId, o.SuggestingUser.UserName,
+                o.ReceivingUserId, o.ReceivingUser.UserName,
+                o.Description, o.Place, o.Time))
+            .FirstAsync();
 
         public async Task AddOfferAsync(OfferPostFormModel offerPostFormModel, string senderId)
         {
@@ -32,7 +42,6 @@ namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
             await _repository.AddAsync(offer);
 
             await _repository.SaveChangesAsync();
-
         }
 
         public async Task DeleteOfferAsync(int offerId)
@@ -112,26 +121,20 @@ namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
             .OrderBy(o => o.Time)
             .Skip((offerIndexModel.CurrentPageNumber - 1) * OfferIndexModel.MaxItemsOnPage)
             .Take(OfferIndexModel.MaxItemsOnPage)
-            .Select(o => new OfferPreviewModel()
-            {
-                OfferStatus = o.Status,
-                Id = o.Id,
-                ReceivedBy = new UserOfferModel(o.ReceivingUserId, o.ReceivingUser.UserName),
-                SuggestedBy = new UserOfferModel(o.SuggestingUserId, o.SuggestingUser.UserName),
-                Title = o.Title
-            })
-            .ToListAsync();
-
+            .Select(o => new OfferPreviewModel(
+                o.Id, o.Title, o.Status,
+                o.SuggestingUserId, o.SuggestingUser.UserName,
+                o.ReceivingUserId, o.ReceivingUser.UserName))
+                .ToListAsync();
         }
 
         public Task<bool> CheckIfOfferExists(int offerId) =>
             _repository.AllReadOnly<Offer>()
             .AnyAsync(o => o.Id == offerId);
-    
 
-        public Task<bool> CheckIfOfferIsSuggestedByUser(int offerId, string userId)=>
+        public Task<bool> CheckIfOfferIsSuggestedByUser(int offerId, string userId) =>
             _repository.AllReadOnly<Offer>()
-            .AnyAsync(o => o.Id == offerId && o.SuggestingUserId==userId);
+            .AnyAsync(o => o.Id == offerId && o.SuggestingUserId == userId);
 
 
     }

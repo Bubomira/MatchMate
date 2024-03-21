@@ -7,6 +7,17 @@ namespace MatchMateCore.Dtos.OfferViewModels
 
     public class OfferPreviewModel
     {
+        public OfferPreviewModel(int id, string title, OfferStatus offerStatus,
+            string suggestedById,string suggestedByUsername,
+            string receivedById, string receivedByUsername)
+        {
+            Id = id;
+            Title = title;
+            OfferStatus = offerStatus;
+            SuggestedBy = new UserOfferModel(suggestedById, suggestedByUsername);
+            ReceivedBy = new UserOfferModel(receivedById, receivedByUsername);
+        }
+
         public int Id { get; set; }
 
         public string Title { get; set; } = string.Empty;
