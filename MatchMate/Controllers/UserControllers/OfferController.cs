@@ -8,7 +8,7 @@ namespace MatchMate.Controllers.UserControllers
 {
     public class OfferController : BaseController
     {
-        private readonly IOfferSuggesterInterface _offerSuggetserService;
+        private readonly IOfferSuggesterInterface _offerSuggesterService;
         private readonly IOfferReceiverInterface _offerReceiverService;
         private readonly IFriendshipInterface _friendshipService;
         public OfferController(IOfferSuggesterInterface offerInterface,
@@ -16,13 +16,13 @@ namespace MatchMate.Controllers.UserControllers
             IOfferReceiverInterface offerReceiverService)
         {
             ;
-            _offerSuggetserService = offerInterface;
+            _offerSuggesterService = offerInterface;
             _friendshipService = friendshipInterface;
             _offerReceiverService = offerReceiverService;
         }
         public async Task<IActionResult> Index([FromQuery] OfferIndexModel offerIndexModel)
         {
-            offerIndexModel.Offers = await _offerSuggetserService.GetOffersAsync(offerIndexModel,User.Id());
+            offerIndexModel.Offers = await _offerSuggesterService.GetOffersAsync(offerIndexModel,User.Id());
 
             offerIndexModel.NextPageNumber = offerIndexModel.CurrentPageNumber +1;
             offerIndexModel.PrevoiusPageNumber = offerIndexModel.CurrentPageNumber + 1;
@@ -60,7 +60,7 @@ namespace MatchMate.Controllers.UserControllers
                 return RedirectToAction(nameof(Create));
             }
 
-            await _offerSuggetserService.AddOfferAsync(offerPostFormModel, User.Id());
+            await _offerSuggesterService.AddOfferAsync(offerPostFormModel, User.Id());
 
             return RedirectToAction(nameof(Index));
         }
@@ -68,10 +68,14 @@ namespace MatchMate.Controllers.UserControllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            if (await _offerSuggetserService.ch)
+            if (!await _offerSuggesterService.CheckIfOfferExists(id))
             {
-
+                return RedirectToAction(nameof(Index));
             }
+
+            var offerDetails = await _offerSuggesterService.GetOfferDetailsAsync(id);
+
+            return View(offerDetails);
         }
     }
 }
