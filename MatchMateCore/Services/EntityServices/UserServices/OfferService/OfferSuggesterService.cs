@@ -124,14 +124,15 @@ namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
 
         }
 
-        public Task<bool> CheckIfOfferExists(int offerId)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<bool> CheckIfOfferExists(int offerId) =>
+            _repository.AllReadOnly<Offer>()
+            .AnyAsync(o => o.Id == offerId);
+    
 
-        public Task<bool> CheckIfOfferIsSuggestedByUser(int offerId)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<bool> CheckIfOfferIsSuggestedByUser(int offerId, string userId)=>
+            _repository.AllReadOnly<Offer>()
+            .AnyAsync(o => o.Id == offerId && o.SuggestingUserId==userId);
+
+
     }
 }

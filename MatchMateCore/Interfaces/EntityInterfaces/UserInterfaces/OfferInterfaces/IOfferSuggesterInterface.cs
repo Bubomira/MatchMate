@@ -9,6 +9,6 @@ namespace MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfac
         public Task EditOfferAsync(OfferEditFormModel offerEditFormModel);
         public Task DeleteOfferAsync(int offerId);
         public Task<bool> CheckIfOfferExists(int offerId);
-        public Task<bool> CheckIfOfferIsSuggestedByUser(int offerId);
+        public Task<bool> CheckIfOfferIsSuggestedByUser(int offerId,string userId);
     }
 }
