@@ -1,0 +1,42 @@
+﻿@model OfferDetailsModel
+
+<div class="d-flex justify-content-center mt-5">
+   <div class="card w-50">
+      <div class="card-header">
+          <p class="mb-1">From: @Model.SuggestedBy.Username</p>
+          <p>To: @Model.ReceivedBy.Username</p>
+      </div>
+      <div class="card-body">
+          <h5 class="card-text text-center">@Model.Title</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+          <li class="list-group-item">Status: @Model.OfferStatus</li>
+          <li class="list-group-item">What: @Model.Description</li>
+          <li class="list-group-item">Where: @Model.Place</li>
+          <li class="list-group-item">When: @Model.Time</li>
+      </ul>
+      <div class="card-body d-flex justify-content-center gap-3">
+            @if (Model.SuggestedBy.UserId == User.Id())
+            {
+                 <a asp-action="Edit" asp-controller="Offer" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                <a asp-action="Delete" asp-controller="Offer" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+            }
+            else
+            {
+                if (Model.OfferStatus == OfferStatus.Pending)
+                {
+                    <a asp-action="Accept" asp-route-id="@Model.Id" asp-controller="Offer" class="btn btn-success">Accept</a>
+                    <a asp-action="Reject" asp-route-id="@Model.Id" asp-controller="Offer" class="btn btn-danger">Reject</a>
+                }
+                else if(Model.OfferStatus == OfferStatus.Accepted)
+                {
+                    <a asp-action="Cancel" asp-route-id="@Model.Id" asp-controller="Offer" class="btn btn-warning">Cancel</a>
+                }
+                else
+                {
+                     <a asp-action="Renew" asp-controller="Offer" asp-route-id="@Model.Id" class="btn btn-warning">Renew</a>
+                }
+            }          
+        </div>
+   </div>
+</div>
