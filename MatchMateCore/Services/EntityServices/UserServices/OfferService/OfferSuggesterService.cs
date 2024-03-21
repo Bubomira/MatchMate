@@ -1,17 +1,17 @@
 ﻿using MatchMateCore.Dtos.OfferViewModels;
 using MatchMateCore.Dtos.UsersViewModels;
-using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using MatchMateInfrastructure.Enums;
 using MatchMateInfrastructure.Models;
 using MatchMateInfrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
-namespace MatchMateCore.Services.EntityServices.UserServices
+namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
 {
-    public class OfferService : IOfferInterface
+    public class OfferSuggesterService :IOfferSuggesterInterface
     {
         private readonly IRepository _repository;
-        public OfferService(IRepository repository)
+        public OfferSuggesterService(IRepository repository)
         {
             _repository = repository;
         }
@@ -29,7 +29,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                 ReceivingUserId = offerPostFormModel.ReceiverId
             };
 
-            await _repository.AddAsync<Offer>(offer);
+            await _repository.AddAsync(offer);
 
             await _repository.SaveChangesAsync();
 
@@ -56,18 +56,6 @@ namespace MatchMateCore.Services.EntityServices.UserServices
 
             await _repository.SaveChangesAsync();
         }
-
-
-        public Task RejectOfferAsync(int offerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string?> GetOfferReceiverUsernameAsync(string userId) =>
-        _repository.AllReadOnly<ApplicationUser>()
-        .Where(au => au.Id == userId)
-        .Select(au => au.UserName)
-        .FirstOrDefaultAsync();
 
         public async Task<List<OfferPreviewModel>> GetOffersAsync(OfferIndexModel offerIndexModel, string userId)
         {
@@ -121,19 +109,29 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             offerIndexModel.AllOffersCount = offers.Count();
 
             return await offers
-            .OrderBy(o=>o.Time)
-            .Skip((offerIndexModel.CurrentPageNumber-1)*OfferIndexModel.MaxItemsOnPage)
+            .OrderBy(o => o.Time)
+            .Skip((offerIndexModel.CurrentPageNumber - 1) * OfferIndexModel.MaxItemsOnPage)
             .Take(OfferIndexModel.MaxItemsOnPage)
             .Select(o => new OfferPreviewModel()
             {
                 OfferStatus = o.Status,
                 Id = o.Id,
-                ReceivedBy = new UserOfferModel(o.ReceivingUserId,o.ReceivingUser.UserName),
+                ReceivedBy = new UserOfferModel(o.ReceivingUserId, o.ReceivingUser.UserName),
                 SuggestedBy = new UserOfferModel(o.SuggestingUserId, o.SuggestingUser.UserName),
                 Title = o.Title
             })
             .ToListAsync();
 
+        }
+
+        public Task<bool> CheckIfOfferExists(int offerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CheckIfOfferIsSuggestedByUser(int offerId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

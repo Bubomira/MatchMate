@@ -1,8 +1,10 @@
 ﻿using MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using MatchMateCore.Services.EntityServices.AdminServices;
 using MatchMateCore.Services.EntityServices.UserServices;
+using MatchMateCore.Services.EntityServices.UserServices.OfferService;
 using MatchMateCore.Services.MongoServices;
 
  namespace Microsoft.Extensions.DependencyInjection
@@ -17,7 +19,8 @@ using MatchMateCore.Services.MongoServices;
             services.AddScoped<IInterestInterface, InterestService>();
             services.AddScoped<IUserInterface, UserService>();
             services.AddScoped<IFriendshipInterface, FriendshipService>();
-            services.AddScoped<IOfferInterface, OfferService>();
+            services.AddScoped<IOfferSuggesterInterface, OfferSuggesterService>();
+            services.AddScoped<IOfferReceiverInterface, OfferReceiverService>();
 
             //Admin services
             services.AddScoped<IAdminInterestInterface, AdminInterestService>();
