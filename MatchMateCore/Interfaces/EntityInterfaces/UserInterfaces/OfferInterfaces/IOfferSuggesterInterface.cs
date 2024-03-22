@@ -6,7 +6,8 @@ namespace MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfac
     {
         public Task<List<OfferPreviewModel>> GetOffersAsync(OfferIndexModel offerIndexModel, string userId);
         public Task<OfferDetailsModel> GetOfferDetailsAsync(int offerId);
-        public Task AddOfferAsync(OfferPostFormModel offerPostFormModel, string senderId);
+        public Task<OfferEditFormModel> GetOfferEditableDataAsync(int offerId);
+        public Task AddOfferAsync(OfferPostFormModel offerPostFormModel, string senderId,DateTime time);
         public Task EditOfferAsync(OfferEditFormModel offerEditFormModel);
         public Task DeleteOfferAsync(int offerId);
         public Task<bool> CheckIfOfferExists(int offerId);
