@@ -2,7 +2,10 @@
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Security.Claims;
+
+using static MatchMateInfrastructure.DataConstants;
 
 namespace MatchMate.Controllers.UserControllers
 {
@@ -36,7 +39,7 @@ namespace MatchMate.Controllers.UserControllers
         {
             if (!await _friendshipService.CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(id, User.Id()))
             {
-                RedirectToAction("Index", "Friendship");
+               return RedirectToAction("Index", "Friendship", new {pageNumber=1});
             }
             OfferPostFormModel model = new OfferPostFormModel();
             model.ReceiverUsername = await _offerReceiverService.GetOfferReceiverUsernameAsync(id);
@@ -55,12 +58,19 @@ namespace MatchMate.Controllers.UserControllers
                 RedirectToAction("Index", "Friendship");
             }
 
+            var time = DateTime.Now;
+
+            if (DateTime.TryParseExact(offerPostFormModel.Time,DateTimeFormat,CultureInfo.InvariantCulture,DateTimeStyles.None,out time))
+            {
+                ModelState.AddModelError("Time", "Invalid date time format!");
+            }
+
             if (!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Create));
             }
 
-            await _offerSuggesterService.AddOfferAsync(offerPostFormModel, User.Id());
+            await _offerSuggesterService.AddOfferAsync(offerPostFormModel, User.Id(),time);
 
             return RedirectToAction(nameof(Index));
         }
@@ -76,6 +86,20 @@ namespace MatchMate.Controllers.UserControllers
             var offerDetails = await _offerSuggesterService.GetOfferDetailsAsync(id);
 
             return View(offerDetails);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if(!await _offerSuggesterService.CheckIfOfferIsSuggestedByUser(id,User.Id()))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var offerDetailed = await _offerSuggesterService.GetOfferDetailsAsync(id);
+
+            var offerEditModel = await _offerSuggesterService.GetOfferEditableDataAsync(id);
+
+            return View(offerEditModel);
         }
     }
 }
