@@ -15,8 +15,8 @@
              {
                  if (Model.ReceivedBy.UserId==User.Id())
                  {
-                   <a asp-action="Accept" asp-route-id="@Model.Id" asp-controller="Offer" class="btn btn-success">Accept</a>
-                   <a asp-action="Reject" asp-route-id="@Model.Id" asp-controller="Offer" class="btn btn-danger">Reject</a>
+                   <a asp-action="Accept" asp-route-id="@Model.Id" asp-controller="OfferStatus" class="btn btn-success">Accept</a>
+                   <a asp-action="Reject" asp-route-id="@Model.Id" asp-controller="OfferStatus" class="btn btn-danger">Reject</a>
                 }
                 else
                 {
@@ -27,7 +27,7 @@
             {
                 if (Model.SuggestedBy.UserId != User.Id())
                 {
-                    <a asp-action="Cancel" asp-controller="Offer" asp-route-id="@Model.Id" class="btn btn-warning">Cancel</a>
+                    <a asp-action="Cancel" asp-controller="OfferStatus" asp-route-id="@Model.Id" class="btn btn-warning">Cancel</a>
                 }
             }
             else
@@ -38,7 +38,7 @@
                 }
                 else if(Model.ReceivedBy.UserId==User.Id())
                 {
-                     <a asp-action="Renew" asp-controller="Offer" asp-route-id="@Model.Id" class="btn btn-warning">Renew</a>
+                     <a asp-action="Renew" asp-controller="OfferStatus" asp-route-id="@Model.Id" class="btn btn-warning">Renew</a>
                 }
             }
          </section>

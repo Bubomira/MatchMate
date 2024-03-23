@@ -25,16 +25,16 @@
             {
                 if (Model.OfferStatus == OfferStatus.Pending)
                 {
-                    <a asp-action="Accept" asp-route-id="@Model.Id" asp-controller="Offer" class="btn btn-success">Accept</a>
-                    <a asp-action="Reject" asp-route-id="@Model.Id" asp-controller="Offer" class="btn btn-danger">Reject</a>
+                    <a asp-action="Accept" asp-route-id="@Model.Id" asp-controller="OfferStatus" class="btn btn-success">Accept</a>
+                    <a asp-action="Reject" asp-route-id="@Model.Id" asp-controller="OfferStatus" class="btn btn-danger">Reject</a>
                 }
                 else if(Model.OfferStatus == OfferStatus.Accepted)
                 {
-                    <a asp-action="Cancel" asp-route-id="@Model.Id" asp-controller="Offer" class="btn btn-warning">Cancel</a>
+                    <a asp-action="Cancel" asp-route-id="@Model.Id" asp-controller="OfferStatus" class="btn btn-warning">Cancel</a>
                 }
                 else
                 {
-                     <a asp-action="Renew" asp-controller="Offer" asp-route-id="@Model.Id" class="btn btn-warning">Renew</a>
+                     <a asp-action="Renew" asp-controller="OfferStatus" asp-route-id="@Model.Id" class="btn btn-warning">Renew</a>
                 }
             }          
         </div>
