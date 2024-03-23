@@ -107,7 +107,7 @@ namespace MatchMate.Controllers.UserControllers
         {
             var time = DateTime.Now;
 
-            if (DateTime.TryParseExact(offerEditModel.Time, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+            if (!DateTime.TryParseExact(offerEditModel.Time, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
             {
                 ModelState.AddModelError("Time", "Invalid date time format!");
             }
