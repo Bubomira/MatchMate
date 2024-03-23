@@ -60,14 +60,14 @@ namespace MatchMate.Controllers.UserControllers
 
             var time = DateTime.Now;
 
-            if (DateTime.TryParseExact(offerPostFormModel.Time, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+            if (!DateTime.TryParseExact(offerPostFormModel.Time, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
             {
                 ModelState.AddModelError("Time", "Invalid date time format!");
             }
 
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Create));
+                return View(offerPostFormModel);
             }
 
             await _offerSuggesterService.AddOfferAsync(offerPostFormModel, User.Id(), time);
@@ -122,9 +122,21 @@ namespace MatchMate.Controllers.UserControllers
                 return RedirectToAction(nameof(Index));
             }
 
-            await _offerSuggesterService.EditOfferAsync(offerEditModel,time);
+            await _offerSuggesterService.EditOfferAsync(offerEditModel, time);
 
-            return RedirectToAction(nameof(Details), new {id=id});
+            return RedirectToAction(nameof(Details), new { id = id });
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (await _offerSuggesterService.CheckIfOfferIsSuggestedByUser(id, User.Id()))
+            {
+                await _offerSuggesterService.DeleteOfferAsync(id);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
