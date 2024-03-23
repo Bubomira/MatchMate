@@ -67,12 +67,13 @@ namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
             await _repository.SaveChangesAsync();
         }
 
-        public async Task EditOfferAsync(OfferEditFormModel offerEditFormModel)
+        public async Task EditOfferAsync(OfferEditFormModel offerEditFormModel, DateTime time)
         {
             var offer = await _repository.All<Offer>()
                .FirstOrDefaultAsync(o => o.Id == offerEditFormModel.Id);
 
             offer.Title = offerEditFormModel.Title;
+            offer.Time = time;
             offer.Description = offerEditFormModel.Description;
             offer.Place = offerEditFormModel.Place;
 

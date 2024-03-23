@@ -25,11 +25,11 @@ namespace MatchMate.Controllers.UserControllers
         }
         public async Task<IActionResult> Index([FromQuery] OfferIndexModel offerIndexModel)
         {
-            offerIndexModel.Offers = await _offerSuggesterService.GetOffersAsync(offerIndexModel,User.Id());
+            offerIndexModel.Offers = await _offerSuggesterService.GetOffersAsync(offerIndexModel, User.Id());
 
-            offerIndexModel.NextPageNumber = offerIndexModel.CurrentPageNumber +1;
+            offerIndexModel.NextPageNumber = offerIndexModel.CurrentPageNumber + 1;
             offerIndexModel.PrevoiusPageNumber = offerIndexModel.CurrentPageNumber + 1;
-            offerIndexModel.TotalPageCount =(int) Math.Ceiling((double)offerIndexModel.AllOffersCount / OfferIndexModel.MaxItemsOnPage);
+            offerIndexModel.TotalPageCount = (int)Math.Ceiling((double)offerIndexModel.AllOffersCount / OfferIndexModel.MaxItemsOnPage);
 
             return View(offerIndexModel);
         }
@@ -39,7 +39,7 @@ namespace MatchMate.Controllers.UserControllers
         {
             if (!await _friendshipService.CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(id, User.Id()))
             {
-               return RedirectToAction("Index", "Friendship", new {pageNumber=1});
+                return RedirectToAction("Index", "Friendship", new { pageNumber = 1 });
             }
             OfferPostFormModel model = new OfferPostFormModel();
             model.ReceiverUsername = await _offerReceiverService.GetOfferReceiverUsernameAsync(id);
@@ -60,7 +60,7 @@ namespace MatchMate.Controllers.UserControllers
 
             var time = DateTime.Now;
 
-            if (DateTime.TryParseExact(offerPostFormModel.Time,DateTimeFormat,CultureInfo.InvariantCulture,DateTimeStyles.None,out time))
+            if (DateTime.TryParseExact(offerPostFormModel.Time, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
             {
                 ModelState.AddModelError("Time", "Invalid date time format!");
             }
@@ -70,7 +70,7 @@ namespace MatchMate.Controllers.UserControllers
                 return RedirectToAction(nameof(Create));
             }
 
-            await _offerSuggesterService.AddOfferAsync(offerPostFormModel, User.Id(),time);
+            await _offerSuggesterService.AddOfferAsync(offerPostFormModel, User.Id(), time);
 
             return RedirectToAction(nameof(Index));
         }
@@ -91,7 +91,7 @@ namespace MatchMate.Controllers.UserControllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            if(!await _offerSuggesterService.CheckIfOfferIsSuggestedByUser(id,User.Id()))
+            if (!await _offerSuggesterService.CheckIfOfferIsSuggestedByUser(id, User.Id()))
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -100,6 +100,31 @@ namespace MatchMate.Controllers.UserControllers
             var offerEditModel = await _offerSuggesterService.GetOfferEditableDataAsync(id);
 
             return View(offerEditModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, OfferEditFormModel offerEditModel)
+        {
+            var time = DateTime.Now;
+
+            if (DateTime.TryParseExact(offerEditModel.Time, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+            {
+                ModelState.AddModelError("Time", "Invalid date time format!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(offerEditModel);
+            }
+
+            if (!await _offerSuggesterService.CheckIfOfferIsSuggestedByUser(id, User.Id()))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _offerSuggesterService.EditOfferAsync(offerEditModel,time);
+
+            return RedirectToAction(nameof(Details), new {id=id});
         }
     }
 }
