@@ -1,8 +1,8 @@
-﻿@model OfferPostFormModel
+﻿@model OfferEditFormModel
 
 <section  class="d-flex flex-column gap-3 align-items-center ">
 
-<h2 class="text-center">Create offer for @Model.ReceiverUsername</h2>
+<h2 class="text-center">Edit Offer to @Model.ReceiverUsername</h2>
 
 <form class="d-flex flex-column gap-3 w-50" method="post">
      <div >
@@ -22,16 +22,18 @@
      </div>
      <div >
           <label for="time" class="form-label">Time</label>
-         <input class="form-control" id="time" type="datetime" asp-for="@Model.Time" placeholder="Please, use dd/MM/yyyy HH:mm date format"/>
+         <input class="form-control" id="time" type="datetime"  asp-for="@Model.Time" placeholder="Please, use dd/MM/yyyy HH:mm date format"/>
          <span class="text-danger" asp-validation-for="@Model.Time"></span>
      </div>
-     <input type="hidden" asp-for="@Model.ReceiverId" value="@Model.ReceiverId" />
+     <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
      <div class="align-self-center">
-         <input class="btn btn-outline-primary" value="Submit" type="submit" asp-action="Create" asp-controller="Offer" asp-route-id="@Model.ReceiverId" />
+         <input class="btn btn-outline-primary" value="Submit" type="submit" asp-action="Edit" asp-controller="Offer" asp-route-id="@Model.Id" />
      </div>
 </form>
 </section>
 
 @section Scripts{
      <partial name="_ValidationScriptsPartial"/>
+     
  }
+

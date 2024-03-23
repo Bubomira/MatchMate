@@ -2,7 +2,10 @@
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Security.Claims;
+
+using static MatchMateInfrastructure.DataConstants;
 
 namespace MatchMate.Controllers.UserControllers
 {
@@ -22,11 +25,11 @@ namespace MatchMate.Controllers.UserControllers
         }
         public async Task<IActionResult> Index([FromQuery] OfferIndexModel offerIndexModel)
         {
-            offerIndexModel.Offers = await _offerSuggesterService.GetOffersAsync(offerIndexModel,User.Id());
+            offerIndexModel.Offers = await _offerSuggesterService.GetOffersAsync(offerIndexModel, User.Id());
 
-            offerIndexModel.NextPageNumber = offerIndexModel.CurrentPageNumber +1;
+            offerIndexModel.NextPageNumber = offerIndexModel.CurrentPageNumber + 1;
             offerIndexModel.PrevoiusPageNumber = offerIndexModel.CurrentPageNumber + 1;
-            offerIndexModel.TotalPageCount =(int) Math.Ceiling((double)offerIndexModel.AllOffersCount / OfferIndexModel.MaxItemsOnPage);
+            offerIndexModel.TotalPageCount = (int)Math.Ceiling((double)offerIndexModel.AllOffersCount / OfferIndexModel.MaxItemsOnPage);
 
             return View(offerIndexModel);
         }
@@ -36,7 +39,7 @@ namespace MatchMate.Controllers.UserControllers
         {
             if (!await _friendshipService.CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(id, User.Id()))
             {
-                RedirectToAction("Index", "Friendship");
+                return RedirectToAction("Index", "Friendship", new { pageNumber = 1 });
             }
             OfferPostFormModel model = new OfferPostFormModel();
             model.ReceiverUsername = await _offerReceiverService.GetOfferReceiverUsernameAsync(id);
@@ -55,12 +58,19 @@ namespace MatchMate.Controllers.UserControllers
                 RedirectToAction("Index", "Friendship");
             }
 
-            if (!ModelState.IsValid)
+            var time = DateTime.Now;
+
+            if (!DateTime.TryParseExact(offerPostFormModel.Time, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
             {
-                return RedirectToAction(nameof(Create));
+                ModelState.AddModelError("Time", "Invalid date time format!");
             }
 
-            await _offerSuggesterService.AddOfferAsync(offerPostFormModel, User.Id());
+            if (!ModelState.IsValid)
+            {
+                return View(offerPostFormModel);
+            }
+
+            await _offerSuggesterService.AddOfferAsync(offerPostFormModel, User.Id(), time);
 
             return RedirectToAction(nameof(Index));
         }
@@ -77,5 +87,57 @@ namespace MatchMate.Controllers.UserControllers
 
             return View(offerDetails);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (!await _offerSuggesterService.CheckIfOfferIsSuggestedByUser(id, User.Id()))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var offerDetailed = await _offerSuggesterService.GetOfferDetailsAsync(id);
+
+            var offerEditModel = await _offerSuggesterService.GetOfferEditableDataAsync(id);
+
+            return View(offerEditModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, OfferEditFormModel offerEditModel)
+        {
+            var time = DateTime.Now;
+
+            if (!DateTime.TryParseExact(offerEditModel.Time, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+            {
+                ModelState.AddModelError("Time", "Invalid date time format!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(offerEditModel);
+            }
+
+            if (!await _offerSuggesterService.CheckIfOfferIsSuggestedByUser(id, User.Id()))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _offerSuggesterService.EditOfferAsync(offerEditModel, time);
+
+            return RedirectToAction(nameof(Details), new { id = id });
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (await _offerSuggesterService.CheckIfOfferIsSuggestedByUser(id, User.Id()))
+            {
+                await _offerSuggesterService.DeleteOfferAsync(id);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

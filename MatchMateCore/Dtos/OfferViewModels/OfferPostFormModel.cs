@@ -26,7 +26,7 @@ namespace MatchMateCore.Dtos.OfferViewModels
         public string Place { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public DateTime Time { get; set; }
+        public string Time { get; set; }
         public string ReceiverId { get; set; } = string.Empty;
         public string ReceiverUsername { get; set; } = string.Empty;
 

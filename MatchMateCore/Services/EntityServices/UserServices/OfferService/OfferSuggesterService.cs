@@ -1,10 +1,11 @@
 ﻿using MatchMateCore.Dtos.OfferViewModels;
-using MatchMateCore.Dtos.UsersViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using MatchMateInfrastructure.Enums;
 using MatchMateInfrastructure.Models;
 using MatchMateInfrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using static MatchMateInfrastructure.DataConstants;
 
 namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
 {
@@ -15,6 +16,18 @@ namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
         {
             _repository = repository;
         }
+        public async Task<OfferEditFormModel> GetOfferEditableDataAsync(int offerId)=>
+            await _repository.All<Offer>().Where(o => o.Id == offerId)
+              .Select(o => new OfferEditFormModel()
+              {
+                  Id = o.Id,
+                  Description = o.Description,
+                  Place = o.Place,
+                  Time = o.Time.ToString(DateTimeFormat, CultureInfo.InvariantCulture),
+                  ReceiverUsername = o.ReceivingUser.UserName,
+                  Title = o.Title
+              })
+              .FirstAsync();
 
         public Task<OfferDetailsModel> GetOfferDetailsAsync(int offerId) =>
             _repository.AllReadOnly<Offer>()
@@ -26,7 +39,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
                 o.Description, o.Place, o.Time))
             .FirstAsync();
 
-        public async Task AddOfferAsync(OfferPostFormModel offerPostFormModel, string senderId)
+        public async Task AddOfferAsync(OfferPostFormModel offerPostFormModel, string senderId,DateTime time)
         {
             var offer = new Offer()
             {
@@ -34,7 +47,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
                 Place = offerPostFormModel.Place,
                 Title = offerPostFormModel.Title,
                 Status = OfferStatus.Pending,
-                Time = offerPostFormModel.Time,
+                Time = time,
                 SuggestingUserId = senderId,
                 ReceivingUserId = offerPostFormModel.ReceiverId
             };
@@ -54,12 +67,13 @@ namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
             await _repository.SaveChangesAsync();
         }
 
-        public async Task EditOfferAsync(OfferEditFormModel offerEditFormModel)
+        public async Task EditOfferAsync(OfferEditFormModel offerEditFormModel, DateTime time)
         {
             var offer = await _repository.All<Offer>()
                .FirstOrDefaultAsync(o => o.Id == offerEditFormModel.Id);
 
             offer.Title = offerEditFormModel.Title;
+            offer.Time = time;
             offer.Description = offerEditFormModel.Description;
             offer.Place = offerEditFormModel.Place;
 

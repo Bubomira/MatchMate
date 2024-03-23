@@ -1,4 +1,5 @@
 ﻿using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
+using MatchMateInfrastructure.Enums;
 using MatchMateInfrastructure.Models;
 using MatchMateInfrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
@@ -12,15 +13,30 @@ namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
         {
             _repository = repository;
         }
-        public Task AcceptOfferAsync(int offerId)
+        public async Task AcceptOfferAsync(int offerId)
         {
-            throw new NotImplementedException();
+            var offer = await _repository.All<Offer>()
+                .FirstOrDefaultAsync(o => o.Id == offerId);
+
+            offer.Status = OfferStatus.Accepted;
+
+            await _repository.SaveChangesAsync();
         }
 
-        public Task CancelOfferAsync(int offerId)
+        public async Task CancelOfferAsync(int offerId)
         {
-            throw new NotImplementedException();
+            var offer = await _repository.All<Offer>()
+               .FirstOrDefaultAsync(o => o.Id == offerId);
+
+            offer.Status = OfferStatus.Cancelled;
+
+            await _repository.SaveChangesAsync();
         }
+
+        public Task<bool> CheckIfOfferStatusIsCorrectByStatusAsync(int offerId,string receiverId, OfferStatus status) =>
+            _repository.AllReadOnly<Offer>()
+            .AnyAsync(o => o.Id == offerId && o.ReceivingUserId==receiverId && o.Status == status);
+       
 
         public Task<string?> GetOfferReceiverUsernameAsync(string userId) =>
         _repository.AllReadOnly<ApplicationUser>()
@@ -28,9 +44,14 @@ namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
         .Select(au => au.UserName)
         .FirstOrDefaultAsync();
 
-        public Task RejectOfferAsync(int offerId)
+        public async Task RejectOfferAsync(int offerId)
         {
-            throw new NotImplementedException();
+            var offer = await _repository.All<Offer>()
+                .FirstOrDefaultAsync(o => o.Id == offerId);
+
+            await _repository.Remove<Offer>(offer);
+
+            await _repository.SaveChangesAsync();
         }
     }
 }
