@@ -138,5 +138,6 @@ namespace MatchMate.Controllers.UserControllers
 
             return RedirectToAction(nameof(Index));
         }
+
     }
 }
