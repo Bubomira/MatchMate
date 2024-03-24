@@ -27,6 +27,10 @@ namespace MatchMate.Controllers.UserControllers
         {
             offerIndexModel.Offers = await _offerSuggesterService.GetOffersAsync(offerIndexModel, User.Id());
 
+            if (offerIndexModel.Offers.Count()==0)
+            {
+                return RedirectToAction(nameof(Index),new {pageNumber=1});
+            }
             offerIndexModel.NextPageNumber = offerIndexModel.CurrentPageNumber + 1;
             offerIndexModel.PrevoiusPageNumber = offerIndexModel.CurrentPageNumber + 1;
             offerIndexModel.TotalPageCount = (int)Math.Ceiling((double)offerIndexModel.AllOffersCount / OfferIndexModel.MaxItemsOnPage);
