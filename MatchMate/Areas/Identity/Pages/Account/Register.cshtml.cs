@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+
+using static MatchMateInfrastructure.DataConstants;
 
 namespace MatchMate.Areas.Identity.Pages.Account
 {
@@ -85,7 +88,7 @@ namespace MatchMate.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [IsAtLeastSixteen]
-            public DateTime Birthday { get; set; }
+            public string Birthday { get; set; }
         }
 
 
@@ -102,6 +105,10 @@ namespace MatchMate.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                var birthdate = DateTime.ParseExact(Input.Birthday, BirthdateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                user.Birthday = birthdate;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

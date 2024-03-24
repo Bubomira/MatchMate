@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace MatchMateInfrastructure
 {
     public static class DataConstants
     {
         public const string DateTimeFormat = "dd/MM/yyyy hh:mm";
+
+        public const string BirthdateFormat = "dd/MM/yyyy";
         public static class InterestDataConstants
         {
             public const int MaxNameLength = 100;
