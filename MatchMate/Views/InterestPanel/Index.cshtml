@@ -2,16 +2,20 @@
 
 <section class="gap-3  d-flex justify-content-center align-items-center">
    <h2 class="text-center ">Here are all interests!</h2>
-   <a asp-action="Add" asp-controller="InterestPanel" class="btn btn-primary">Add</a>
+   <a data-bs-toggle="modal" data-bs-target="#interestAdminPost" class="btn btn-primary">Add</a>
 </section>
 <h5 class="text-center mb-5">Total count: @Model.TotalInterestsCount</h5>
 
 <div class="d-flex flex-wrap gap-3">
     @foreach (var interest in Model.Interests)
     {
-      <partial name="InterestPanelCardPartial" model="@interest"/>
+      <partial name="_InterestPanelCardPartial" model="@interest"/>
     }
 </div>
+
+<section>
+    <partial name="_InterestAddModalPartial" model="new InterestPostFormModel()"/>
+</section>
 
  <section class="pagination d-flex justify-content-center gap-3 mt-5">
                <a class="@(Model.CurrentPage==1? "disabled ":string.Empty) page-link btn" 

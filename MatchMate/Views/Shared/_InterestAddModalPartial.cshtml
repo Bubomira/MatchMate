@@ -1,0 +1,26 @@
+﻿@model InterestPostFormModel
+
+<div class="modal fade" id="interestAdminPost" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <div class="modal-header">
+           <h4 class="text-center">Add new interest</h4>
+           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>        
+       </div>
+       <div class="modal-body">
+         <form class=" d-flex flex-column align-items-center " method="post">
+             <div class="form-floating mb-3">
+                <input asp-for="@Model.Name" type="text" class="form-control" id="floatingInput" placeholder="What are people interested in nowadays?"/>
+                <label for="floatingInput">Name</label>
+                <span class="text-danger" asp-validation-for="@Model.Name"></span>
+             </div>
+             <input  asp-action="Add" asp-controller="InterestPanel" class="btn btn-primary" type="submit" value="Submit"/>
+         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts{
+     <partial name="_ValidationScriptsPartial"/>
+ }

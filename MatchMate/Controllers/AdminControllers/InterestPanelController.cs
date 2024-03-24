@@ -1,6 +1,5 @@
 ﻿using MatchMateCore.Dtos.InterestViewModels.AdminViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces;
-using MatchMateInfrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,5 +28,19 @@ namespace MatchMate.Controllers.AdminControllers
 
             return View(interestPanelModel);
         }
+
+        public async Task<IActionResult> Add(InterestPostFormModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!await _adminInterestService.CheckIfThereIsAnInterestByNameAsync(model.Name.ToLower()))
+                {
+                    await _adminInterestService.AddNewInterestAsync(model);
+                }
+            }
+
+            return RedirectToAction(nameof(Index), new { pageNumber = 1 });
+        }
+
     }
 }
