@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MatchMateCore.Dtos.InterestViewModels
+namespace MatchMateCore.Dtos.InterestViewModels.AdminViewModels
 {
     public class InterestEditFormModel : InterestPostFormModel
     {

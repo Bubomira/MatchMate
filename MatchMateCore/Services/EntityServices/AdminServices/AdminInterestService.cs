@@ -1,6 +1,4 @@
-﻿
-using MatchMateCore.Dtos.InterestViewModels;
-using MatchMateCore.Dtos.InterestViewModels.AdminViewModels;
+﻿using MatchMateCore.Dtos.InterestViewModels.AdminViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces;
 using MatchMateInfrastructure.Models;
 using MatchMateInfrastructure.UnitOfWork;

@@ -3,7 +3,7 @@ using static MatchMateInfrastructure.DataConstants.InterestDataConstants;
 using static MatchMateInfrastructure.ErrorMessages;
 
 
-namespace MatchMateCore.Dtos.InterestViewModels
+namespace MatchMateCore.Dtos.InterestViewModels.AdminViewModels
 {
     public class InterestPostFormModel
     {
