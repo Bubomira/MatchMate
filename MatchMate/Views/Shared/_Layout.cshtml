@@ -24,7 +24,7 @@
                             @if(User.IsInRole("Administrator"))
                             {
                                 <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-controller="InterestPanel" asp-action="Index">Interest Panel</a>
+                                   <a class="nav-link text-dark" asp-controller="InterestPanel" asp-route-pageNumber="1" asp-action="Index">Interest Panel</a>
                                </li>
                             }
                             else
