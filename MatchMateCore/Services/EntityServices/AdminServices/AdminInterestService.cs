@@ -25,6 +25,7 @@ namespace MatchMateCore.Services.EntityServices.AdminServices
             .Take(InterestPanelList.CountOnPage)
             .Select(i => new InterestGetModel()
             {
+                Id=i.Id,
                 Name = i.Name,
                 PeopleCount = i.UserInterest.Count
             })
