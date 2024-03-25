@@ -10,10 +10,6 @@ namespace MatchMateCore.Dtos.UsersViewModels
 
         public int CurrentPage { get; set; } = 1;
 
-        public int PrevousPage { get; set; }
-
-        public int NextPage { get; set; }
-
         public double TotalPagesCount { get; set; }=0;
     }
 }
