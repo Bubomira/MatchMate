@@ -1,0 +1,28 @@
+﻿@model InterestEditFormModel
+
+<div class="modal fade" id="interestAdminEdit_@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <div class="modal-header">
+           <h4 class="text-center">Edit the already existing interest</h4>
+           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>        
+       </div>
+       <div class="modal-body">
+         <form class=" d-flex flex-column align-items-center" method="post">
+             <div class=" mb-3">
+                <label for="@Model.Id">Name</label>
+                <input asp-for="@Model.Name" type="text" class="form-control" id="@Model.Id" placeholder="What are people interested in nowadays?"/>
+                <span class="text-danger" asp-validation-for="@Model.Name"></span>
+             </div>
+             <input type="hidden" asp-for="@Model.Id"/>
+             <input type="hidden" asp-for="@Model.CurrentPage"/>
+             <input asp-action="Edit" asp-controller="InterestPanel" class="btn btn-warning" type="submit" value="Submit"/>
+         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts{
+     <partial name="_ValidationScriptsPartial"/>
+ }
