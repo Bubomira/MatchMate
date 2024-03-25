@@ -53,7 +53,6 @@ namespace MatchMate.Controllers.UserControllers
         }
 
         [HttpPost]
-        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Create(OfferPostFormModel offerPostFormModel)
         {
 

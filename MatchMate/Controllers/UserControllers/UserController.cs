@@ -68,7 +68,6 @@ namespace MatchMate.Controllers.UserControllers
         }
 
         [HttpPost]
-        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> SetUpBio(UserBioModel userBioModel)
         {
             await _userService.AddUserBio(userBioModel.Bio, User.Id());
@@ -104,7 +103,6 @@ namespace MatchMate.Controllers.UserControllers
         }
 
         [HttpPost]
-        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> SetUpProfilePicture(IFormFile file)
         {
             if (file == null)
@@ -119,7 +117,6 @@ namespace MatchMate.Controllers.UserControllers
         }
 
         [HttpPost]
-        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> ChangeProfilePicture(IFormFile file)
         {
             if (file != null)
