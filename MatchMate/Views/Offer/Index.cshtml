@@ -36,22 +36,7 @@
             <partial name="_OfferPreviewCardPartial" model="@offer"/>            
         }
     </div>
-    <section class=" mt-5 pagination d-flex justify-content-center gap-3">
-           <a class="@(Model.CurrentPageNumber==1? "disabled ":string.Empty) page-link btn" 
-              asp-action="Index" 
-              asp-controller="Offer"
-              asp-route-pageNumber ="@Model.PrevoiusPageNumber"
-              aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-           </a>
-           <a class="@(Model.CurrentPageNumber==Model.TotalPageCount? "disabled ":string.Empty)page-link btn"
-              asp-action="Index" 
-              asp-controller="Offer"
-              asp-route-pageNumber ="@Model.NextPageNumber"
-              aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-           </a>
-    </section>
+    <partial name="_PaginatorPartial" model="new PaginatorModel(OfferController,IndexAction,Model.CurrentPageNumber,Model.TotalPageCount)"/>
 }else{
     <h2 class="text-center mt-5">There are no offers...</h2>
 }

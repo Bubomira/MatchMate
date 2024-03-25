@@ -22,8 +22,6 @@ namespace MatchMate.Controllers.UserControllers
             var activeFriends = await _friendshipService.GetActiveFriendsAsync(User.Id(), pageNumber - 1);
 
             activeFriends.TotalPagesCount = Math.Ceiling(((double)activeFriends.TotalFriends / 12));
-            activeFriends.NextPage = pageNumber + 1;
-            activeFriends.PrevousPage = pageNumber - 1;
             activeFriends.CurrentPage = pageNumber;
 
             if (activeFriends.TotalPagesCount<pageNumber && pageNumber!=1)
@@ -50,8 +48,6 @@ namespace MatchMate.Controllers.UserControllers
             }
 
             pendingRequests.TotalPagesCount = Math.Ceiling(((double)pendingRequests.TotalFriends / 12));
-            pendingRequests.NextPage = pageNumber + 1;
-            pendingRequests.PrevousPage = pageNumber - 1;
             pendingRequests.CurrentPage = pageNumber;
 
             foreach (var pending in pendingRequests.Friends)

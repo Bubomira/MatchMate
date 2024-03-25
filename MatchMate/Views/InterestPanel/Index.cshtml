@@ -6,7 +6,7 @@
 </section>
 <h5 class="text-center mb-5">Total count: @Model.TotalInterestsCount</h5>
 
-<div class="d-flex flex-wrap gap-3">
+<div class="d-flex flex-wrap gap-3 mb-5">
     @foreach (var interest in Model.Interests)
     {
       <partial name="~/Views/Shared/InterestPartials/_InterestPanelCardPartial.cshtml" model="@interest"/>
@@ -18,20 +18,4 @@
     <partial name="~/Views/Shared/InterestPartials/_InterestAddModalPartial.cshtml" model="new InterestPostFormModel()"/>
 </section>
 
-
- <section class="pagination d-flex justify-content-center gap-3 mt-5">
-               <a class="@(Model.CurrentPage==1? "disabled ":string.Empty) page-link btn" 
-                  asp-action="Index" 
-                  asp-controller="InterestPanel"
-                  asp-route-pageNumber ="@Model.PreviousPage"
-                  aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-               </a>
-               <a class="@(Model.CurrentPage==Model.TotalPagesCount? "disabled ":string.Empty)page-link btn"
-                  asp-action="Index" 
-                  asp-controller="InterestPanel"
-                  asp-route-pageNumber ="@Model.NextPage"
-                  aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-               </a>
-</section>
+ <partial name="_PaginatorPartial" model="new PaginatorModel(InterestPanelController,IndexAction,Model.CurrentPage,Model.TotalPagesCount)"/>
