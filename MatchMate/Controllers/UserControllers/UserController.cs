@@ -64,11 +64,10 @@ namespace MatchMate.Controllers.UserControllers
             }
             UserBioModel userBioModel = new UserBioModel() { HasBio = false };
 
-            return View("_SetUpBioPartial", userBioModel);
+            return View("~/Views/Shared/UserSetUpProfilePartials/_SetUpBioPartial.cshtml", userBioModel);
         }
 
         [HttpPost]
-        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> SetUpBio(UserBioModel userBioModel)
         {
             await _userService.AddUserBio(userBioModel.Bio, User.Id());
@@ -100,11 +99,10 @@ namespace MatchMate.Controllers.UserControllers
             {
                 return RedirectToAction(nameof(Profile));
             }
-            return View("_SetUpProfilePicturePartial",true);
+            return View("~/Views/Shared/UserSetUpProfilePartials/_SetUpProfilePicturePartial.cshtml", true);
         }
 
         [HttpPost]
-        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> SetUpProfilePicture(IFormFile file)
         {
             if (file == null)
@@ -119,7 +117,6 @@ namespace MatchMate.Controllers.UserControllers
         }
 
         [HttpPost]
-        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> ChangeProfilePicture(IFormFile file)
         {
             if (file != null)

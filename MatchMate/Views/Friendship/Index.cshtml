@@ -13,27 +13,12 @@
     else
     {
         <h2>Total friends: @Model.TotalFriends</h2>
-        <section class="d-flex justify-content-start gap-2">
+        <section class="d-flex justify-content-start gap-2 mb-4">
              @foreach (var userCard in Model.Friends)
              {
                <partial name="_UserCardPartial" model="@userCard" />
              }
         </section>
-        <section class="pagination d-flex justify-content-center gap-3">
-               <a class="page-item @(Model.CurrentPage==1? "disabled ":string.Empty) btn" 
-                  asp-action="Index" 
-                  asp-controller="Friendship"
-                  asp-route-pageNumber ="@Model.CurrentPage-=1"
-                  aria-label="Previous">
-                  &laquo; 
-               </a>
-               <a class="page-item @(Model.CurrentPage==Model.TotalPagesCount? "disabled ":string.Empty) btn"
-                  asp-action="Index" 
-                  asp-controller="Friendship"
-                  asp-route-pageNumber ="@Model.CurrentPage+=1"
-                  aria-label="Next">
-                  &raquo;
-               </a>
-        </section>
+        <partial name="_PaginatorPartial" model="new PaginatorModel(FriendshipController,IndexAction,Model.CurrentPage,Model.TotalPagesCount)"/>
     }
 

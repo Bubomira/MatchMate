@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using static MatchMateInfrastructure.DataConstants;
 
 namespace MatchMate.Attributes
 {
@@ -14,8 +16,9 @@ namespace MatchMate.Attributes
         {
             if (value != null)
             {
+                var parsedValue = DateTime.ParseExact(value.ToString(), BirthdateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
 
-                if (((DateTime)value).AddYears(16) < date)
+                if (parsedValue.AddYears(16) < date)
                 {
                     return ValidationResult.Success;
                 }

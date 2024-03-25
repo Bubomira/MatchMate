@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -20,18 +21,27 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if(User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="User" asp-action="Index" asp-route-pageNumber="1">Match me, mate!</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Friendship" asp-action="Index" asp-route-pageNumber="1">Friendship board</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Friendship" asp-action="Pending" asp-route-pageNumber="1">Pending requests</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Offer" asp-action="Index" asp-route-pageNumber="1">Offers</a>
-                            </li>
+                            @if(User.IsInRole("Administrator"))
+                            {
+                                <li class="nav-item">
+                                   <a class="nav-link text-dark" asp-controller="InterestPanel" asp-route-pageNumber="1" asp-action="Index">Interest Panel</a>
+                               </li>
+                            }
+                            else
+                            {
+                               <li class="nav-item">
+                                   <a class="nav-link text-dark" asp-controller="User" asp-action="Index" asp-route-pageNumber="1">Match me, mate!</a>
+                               </li>
+                                <li class="nav-item">
+                                   <a class="nav-link text-dark" asp-controller="Friendship" asp-action="Index" asp-route-pageNumber="1">Friendship board</a>
+                               </li>
+                                <li class="nav-item">
+                                   <a class="nav-link text-dark" asp-controller="Friendship" asp-action="Pending" asp-route-pageNumber="1">Pending requests</a>
+                               </li>
+                                <li class="nav-item">
+                                   <a class="nav-link text-dark" asp-controller="Offer" asp-action="Index" asp-route-pageNumber="1">Offers</a>
+                               </li>                             
+                            }
                         }
                         else
                         {

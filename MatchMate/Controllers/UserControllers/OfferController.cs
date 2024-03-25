@@ -27,8 +27,11 @@ namespace MatchMate.Controllers.UserControllers
         {
             offerIndexModel.Offers = await _offerSuggesterService.GetOffersAsync(offerIndexModel, User.Id());
 
-            offerIndexModel.NextPageNumber = offerIndexModel.CurrentPageNumber + 1;
-            offerIndexModel.PrevoiusPageNumber = offerIndexModel.CurrentPageNumber + 1;
+            if (offerIndexModel.Offers.Count()==0 && offerIndexModel.CurrentPageNumber!=1)
+            {
+                return RedirectToAction(nameof(Index),new {pageNumber=1});
+            }
+
             offerIndexModel.TotalPageCount = (int)Math.Ceiling((double)offerIndexModel.AllOffersCount / OfferIndexModel.MaxItemsOnPage);
 
             return View(offerIndexModel);
@@ -49,7 +52,6 @@ namespace MatchMate.Controllers.UserControllers
         }
 
         [HttpPost]
-        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Create(OfferPostFormModel offerPostFormModel)
         {
 

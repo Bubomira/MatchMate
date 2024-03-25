@@ -21,10 +21,6 @@ namespace MatchMateCore.Dtos.OfferViewModels
 
         public int CurrentPageNumber { get; set; } = 1;
 
-        public int PrevoiusPageNumber { get; set; }
-
-        public int NextPageNumber { get; set; }
-
         public IList<OfferPreviewModel> Offers { get; set; } = new List<OfferPreviewModel>();
     }
 }

@@ -25,8 +25,4 @@
     <ProjectReference Include="..\MatchMateCore\MatchMateCore.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\AdminControllers\" />
-  </ItemGroup>
-
 </Project>

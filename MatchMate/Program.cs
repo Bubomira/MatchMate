@@ -1,5 +1,6 @@
 
 using MatchMate.ModelBinders;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +10,11 @@ builder.Services.AttachDbContext(builder.Configuration)
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddControllersWithViews().AddMvcOptions(options=>
-      options.ModelBinderProviders.Insert(0,new DateModelBinderProvider()));
+builder.Services.AddControllersWithViews().AddMvcOptions(options =>
+{
+    options.ModelBinderProviders.Insert(0, new DateModelBinderProvider());
+    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+});
 
 var app = builder.Build();
 

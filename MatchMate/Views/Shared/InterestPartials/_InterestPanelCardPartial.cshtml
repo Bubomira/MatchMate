@@ -1,0 +1,14 @@
+﻿@model InterestGetModel
+
+ <div class="card flex-grow-1">
+          <div class="card-body">
+              <h5>@Model.Name</h5>
+          </div>
+          <ul class="list-group list-group-flush">
+             <li class="list-group-item">Prefered by: @Model.PeopleCount</li>
+          </ul>
+          <div class="card-footer">
+              <a data-bs-toggle="modal" data-bs-target="#interestAdminEdit_@Model.Id"  class="btn btn-outline-warning">Edit</a>
+              <a asp-controller="InterestPanel" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
+          </div>
+</div>

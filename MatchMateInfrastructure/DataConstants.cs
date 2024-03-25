@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace MatchMateInfrastructure
 {
     public static class DataConstants
     {
         public const string DateTimeFormat = "dd/MM/yyyy hh:mm";
+
+        public const string BirthdateFormat = "dd/MM/yyyy";
         public static class InterestDataConstants
         {
             public const int MaxNameLength = 100;
@@ -37,7 +34,18 @@ namespace MatchMateInfrastructure
         {
             public const int MaxBioLength = 100;
             public const int MinBioLength = 10;
+        }
 
+        public static class ControllerWithPaginationNames
+        {
+            public const string InterestPanelController = "InterestPanel";
+            public const string FriendshipController = "Friendship";
+            public const string OfferController = "Offer";
+        }
+        public static class ActionsWithPaginationNames
+        {
+            public const string PendingAction = "Pending";
+            public const string IndexAction = "Index";
         }
     }
 }

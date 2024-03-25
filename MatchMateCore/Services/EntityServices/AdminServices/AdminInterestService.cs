@@ -1,5 +1,4 @@
-﻿
-using MatchMateCore.Dtos.InterestViewModels;
+﻿using MatchMateCore.Dtos.InterestViewModels.AdminViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces;
 using MatchMateInfrastructure.Models;
 using MatchMateInfrastructure.UnitOfWork;
@@ -14,6 +13,25 @@ namespace MatchMateCore.Services.EntityServices.AdminServices
         {
             _repository = repository;
         }
+        public Task<List<InterestGetModel>> GetAllInterestsAsync(InterestPanelList interestPanelModel)
+        {
+            var interests = _repository.AllReadOnly<Interest>()
+            .OrderByDescending(i => i.UserInterest.Count);
+
+            interestPanelModel.TotalInterestsCount = interests.Count();
+
+            return interests
+             .Skip((interestPanelModel.CurrentPage - 1) * InterestPanelList.CountOnPage)
+            .Take(InterestPanelList.CountOnPage)
+            .Select(i => new InterestGetModel()
+            {
+                Id=i.Id,
+                Name = i.Name,
+                PeopleCount = i.UserInterest.Count
+            })
+            .ToListAsync();
+        }
+
         public async Task AddNewInterestAsync(InterestPostFormModel interestPostModel)
         {
             await _repository.AddAsync<Interest>(new Interest() { Name = interestPostModel.Name });
@@ -37,6 +55,13 @@ namespace MatchMateCore.Services.EntityServices.AdminServices
 
             await _repository.SaveChangesAsync();
         }
+        public Task<bool> CheckIfThereIsAnInterestByNameAsync(string name) =>
+            _repository.AllReadOnly<Interest>()
+            .AnyAsync(i => i.Name.ToLower() == name);
+
+        public async Task<bool> CheckIfThereAreAtLeastThreeInterestsAsync() =>
+            _repository.AllReadOnly<Interest>()
+            .Count() >= 3;
 
         private async Task<Interest?> GetInterestByIdAsync(int id) =>
            await _repository.All<Interest>().FirstOrDefaultAsync(i => i.Id == id);

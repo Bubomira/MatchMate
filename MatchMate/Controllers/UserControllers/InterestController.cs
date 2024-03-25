@@ -27,6 +27,10 @@ namespace MatchMate.Controllers.UserControllers
         [HttpPost]
         public async Task<IActionResult> AddMany(IFormCollection formCollection)
         {
+            if (formCollection.Keys.Count-1<3)
+            {
+                return RedirectToAction("SetUpInterests","User");
+            }
             for (int i = 0; i < formCollection.Keys.Count-1; i++)
             {
                 int interestId = int.Parse(formCollection.Keys.ToArray()[i]);
