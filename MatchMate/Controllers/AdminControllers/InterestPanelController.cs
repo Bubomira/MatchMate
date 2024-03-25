@@ -1,5 +1,6 @@
 ﻿using MatchMateCore.Dtos.InterestViewModels.AdminViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces;
+using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,12 @@ namespace MatchMate.Controllers.AdminControllers
     public class InterestPanelController : BaseController
     {
         private readonly IAdminInterestInterface _adminInterestService;
-        public InterestPanelController(IAdminInterestInterface adminInterestInterface)
+        private readonly IInterestInterface _interestService;
+        public InterestPanelController(IAdminInterestInterface adminInterestInterface,
+            IInterestInterface interestInterface)
         {
             _adminInterestService = adminInterestInterface;
+            _interestService = interestInterface;
         }
         public async Task<IActionResult> Index(int pageNumber)
         {
@@ -29,6 +33,7 @@ namespace MatchMate.Controllers.AdminControllers
             return View(interestPanelModel);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Add(InterestPostFormModel model)
         {
             if (ModelState.IsValid)
@@ -39,6 +44,30 @@ namespace MatchMate.Controllers.AdminControllers
                 }
             }
 
+            return RedirectToAction(nameof(Index), new { pageNumber = 1 });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(InterestEditFormModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!await _adminInterestService.CheckIfThereIsAnInterestByNameAsync(model.Name.ToLower())
+                    || await _interestService.CheckIfInterestExists(model.Id))
+                {
+                    await _adminInterestService.EditInterestAsync(model);
+                }
+            }
+
+            return RedirectToAction(nameof(Index), new { pageNumber = model.CurrentPage });
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if(await _interestService.CheckIfInterestExists(id) && await _adminInterestService.CheckIfThereAreAtLeastThreeInterestsAsync())
+            {
+                await _adminInterestService.DeleteInterestAsync(id);
+            }
             return RedirectToAction(nameof(Index), new { pageNumber = 1 });
         }
 

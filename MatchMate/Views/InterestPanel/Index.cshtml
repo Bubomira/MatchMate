@@ -9,13 +9,15 @@
 <div class="d-flex flex-wrap gap-3">
     @foreach (var interest in Model.Interests)
     {
-      <partial name="_InterestPanelCardPartial" model="@interest"/>
+      <partial name="~/Views/Shared/InterestPartials/_InterestPanelCardPartial.cshtml" model="@interest"/>
+      <partial name="~/Views/Shared/InterestPartials/_InterestEditModalPartial.cshtml" model="new InterestEditFormModel(interest.Name,interest.Id,Model.CurrentPage)"/>
     }
 </div>
 
 <section>
-    <partial name="_InterestAddModalPartial" model="new InterestPostFormModel()"/>
+    <partial name="~/Views/Shared/InterestPartials/_InterestAddModalPartial.cshtml" model="new InterestPostFormModel()"/>
 </section>
+
 
  <section class="pagination d-flex justify-content-center gap-3 mt-5">
                <a class="@(Model.CurrentPage==1? "disabled ":string.Empty) page-link btn" 
