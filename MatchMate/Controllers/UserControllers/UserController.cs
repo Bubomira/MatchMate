@@ -64,7 +64,7 @@ namespace MatchMate.Controllers.UserControllers
             }
             UserBioModel userBioModel = new UserBioModel() { HasBio = false };
 
-            return View("_SetUpBioPartial", userBioModel);
+            return View("~/Views/Shared/UserSetUpProfilePartials/_SetUpBioPartial.cshtml", userBioModel);
         }
 
         [HttpPost]
@@ -100,7 +100,7 @@ namespace MatchMate.Controllers.UserControllers
             {
                 return RedirectToAction(nameof(Profile));
             }
-            return View("_SetUpProfilePicturePartial",true);
+            return View("~/Views/Shared/UserSetUpProfilePartials/_SetUpProfilePicturePartial.cshtml", true);
         }
 
         [HttpPost]
