@@ -35,6 +35,11 @@ namespace MatchMateInfrastructure
             public const int MaxBioLength = 100;
             public const int MinBioLength = 10;
         }
+        public static class ReportsConstants
+        {
+            public const int CommentMaxLength = 100;
+            
+        }
 
         public static class ControllerWithPaginationNames
         {
@@ -47,5 +52,6 @@ namespace MatchMateInfrastructure
             public const string PendingAction = "Pending";
             public const string IndexAction = "Index";
         }
+
     }
 }
