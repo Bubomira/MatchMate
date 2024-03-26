@@ -1,6 +1,7 @@
 ﻿using MatchMate.Helpers;
 using MatchMateCore.Dtos.UsersViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

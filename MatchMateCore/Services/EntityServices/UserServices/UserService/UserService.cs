@@ -1,10 +1,10 @@
 ﻿using MatchMateCore.Dtos.UsersViewModels;
-using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.UserInterfaces;
 using MatchMateInfrastructure.Models;
 using MatchMateInfrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
-namespace MatchMateCore.Services.EntityServices.UserServices
+namespace MatchMateCore.Services.EntityServices.UserServices.UserService
 {
     public class UserService : IUserInterface
     {
@@ -44,7 +44,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
 
             return await _repository.AllReadOnly<UserInterest>()
                    .Where(ui => userInterestIds.Contains(ui.InterestId) && ui.UserId != userId
-                   && ui.User.ReceivedFriendships.All(rf=>rf.SenderId!=userId)
+                   && ui.User.ReceivedFriendships.All(rf => rf.SenderId != userId)
                    && ui.User.SendFriendships.All(rf => rf.ReceiverId != userId))
                    .GroupBy(ui => ui.UserId)
                    .Skip(3 * pageCount)
