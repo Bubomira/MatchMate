@@ -46,6 +46,7 @@ namespace MatchMateInfrastructure
             public const string InterestPanelController = "InterestPanel";
             public const string FriendshipController = "Friendship";
             public const string OfferController = "Offer";
+            public const string BlockController = "Block";
         }
         public static class ActionsWithPaginationNames
         {
