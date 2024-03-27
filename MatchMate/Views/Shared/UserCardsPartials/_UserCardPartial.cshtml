@@ -9,24 +9,23 @@
              <p class="card-text">@Model.Bio</p>
              <p class="card-text">@String.Join(", ",Model.Interests)</p>
       </section>
+       <section class="d-flex flex-wrap justify-content-center gap-2">
         @if (Model.IsActiveFriendship)
         {
-            <section class="d-flex flex-wrap justify-content-center gap-2">
-                 <a asp-action="LoadConversation" asp-controller="Message" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Message</a>
-                 <a asp-action="Create" asp-controller="Offer" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Make offfer</a>
-                 <a asp-action="RemoveFriend" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-outline-danger align-self-center">Remove</a>
-            </section>                     
+            <a asp-action="LoadConversation" asp-controller="Message" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Message</a>
+            <a asp-action="Create" asp-controller="Offer" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Make offfer</a>
+            <a asp-action="RemoveFriend" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-outline-danger align-self-center">Remove</a>                              
         }
         else if (Model.IsPendingFriendship)
         {
-             <section class="d-flex justify-content-center gap-2">
-                 <a asp-action="Accept" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-outline-success align-self-center">Accept</a>
-                 <a asp-action="Reject" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-outline-danger align-self-center">Reject</a>
-            </section>
+            <a asp-action="Accept" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-outline-success align-self-center">Accept</a>
+            <a asp-action="Reject" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-outline-danger align-self-center">Reject</a>
         }
         else
         {
             <a asp-action="SendFriendShipRequest" asp-controller="Friendship" asp-route-id="@Model.UserId" class="btn btn-primary align-self-center">Send request!</a>           
         }
+        <a onclick="return confirm('Are you sure you want to block this user?')" asp-action="BlockUser" asp-controller="Block" asp-route-toBeBlockedUserId="@Model.UserId" class="btn btn-warning align-self-center">Block</a>
+        </section> 
   </div>
 </div>

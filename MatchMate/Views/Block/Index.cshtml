@@ -12,7 +12,7 @@
         <section class="d-flex justify-content-start gap-2 mb-4">
              @foreach (var blockedUserCard in Model.BlockedUsers)
              {
-               <partial name="_UserCardPartial" model="@blockedUserCard" />
+               <partial name="~/Views/Shared/UserCardsPartials/_BlockedUserCardPartial.cshtml" model="@blockedUserCard" />
              }
         </section>
         <partial name="_PaginatorPartial" model="new PaginatorModel(BlockController,IndexAction,Model.CurrentPage,Model.TotalPages)"/>

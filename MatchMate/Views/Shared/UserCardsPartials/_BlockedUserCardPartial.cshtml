@@ -1,15 +1,12 @@
 ﻿@model BlockedUserCard
 
-<div class="card" style="width: 18em; height:35em">
+<div class="card" style="width: 18em; height:30em">
        <img src="data:image/png;base64, @Model.ImageUrl" class="card-img-top"
-       style="object-fit:cover" height="50%"  alt="@Model.Username s picture">
-  <div class="card-body d-flex flex-column align-items-center gap-2">
-      <section  style="height:90%">
-             <h5 class="card-title">@Model.Username</h5>
-             <p class="card-text">@Model.Bio</p>
-      </section>
-      <section class="card-footer">
-            <a asp-action="Unblock" asp-controller="Block" asp-route-toBeUnblockedUserId="@Model.Id" class="btn btn-warning align-self-center">Unblock user</a>           
-      </section>
-  </div>
+       style="object-fit:cover" height="60%"  alt="@Model.Username s picture">
+      <div class="card-body d-flex flex-column gap-2">
+           <h5 class="card-title">@Model.Username</h5>
+           <p class="card-text">@Model.Bio</p>
+           <a onclick="return confirm('Are you sure you want to unblock this user?')" asp-action="UnblockUser" asp-controller="Block" asp-route-toBeUnblockedUserId="@Model.Id" class="btn btn-warning align-self-center">Unblock user</a>           
+      </div>
+
 </div>
