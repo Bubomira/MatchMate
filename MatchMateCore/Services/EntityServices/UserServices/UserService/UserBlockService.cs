@@ -47,11 +47,17 @@ namespace MatchMateCore.Services.EntityServices.UserServices.UserService
             await _repository.SaveChangesAsync();
         }
 
-        public Task<List<BlockedUserCard>> ShowAllBlockedUsers(BlockedUserList blockedUserList, string blockerId) =>
-            _repository.AllReadOnly<BlockedUsers>()
+        public Task<List<BlockedUserCard>> ShowAllBlockedUsers(BlockedUserList blockedUserList, string blockerId)
+        {
+            var blockedUsersQuery = _repository.AllReadOnly<BlockedUsers>()
             .Where(bu => bu.BlockerUserId == blockerId)
-            .OrderBy(bu => bu.Id)
+            .OrderBy(bu => bu.Id);
+
+            blockedUserList.TotalBlockedUsersCount = blockedUsersQuery.Count();
+
+            return blockedUsersQuery
             .Skip((blockedUserList.CurrentPage - 1) * BlockedUserList.BlockedUsersOnPage)
+            .Take(BlockedUserList.BlockedUsersOnPage)
             .Select(bu => new BlockedUserCard()
             {
                 Id = bu.BlockedUserId,
@@ -59,13 +65,13 @@ namespace MatchMateCore.Services.EntityServices.UserServices.UserService
                 Bio = bu.BlockedUser.Bio
             })
             .ToListAsync();
-
+        }
 
         public async Task UnblockUser(string wantedToUnblockId, string blockerId)
         {
             var blockedEntity = await _repository.All<BlockedUsers>()
-                .Where(bu => bu.BlockerUserId == blockerId && bu.BlockerUserId == wantedToUnblockId)
-                .FirstAsync();
+                .Where(bu => bu.BlockerUserId == blockerId && bu.BlockedUserId == wantedToUnblockId)
+                .FirstOrDefaultAsync();
 
             await _repository.Remove<BlockedUsers>(blockedEntity);
 

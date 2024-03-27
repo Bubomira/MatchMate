@@ -45,7 +45,10 @@ namespace MatchMateCore.Services.EntityServices.UserServices.UserService
             return await _repository.AllReadOnly<UserInterest>()
                    .Where(ui => userInterestIds.Contains(ui.InterestId) && ui.UserId != userId
                    && ui.User.ReceivedFriendships.All(rf => rf.SenderId != userId)
-                   && ui.User.SendFriendships.All(rf => rf.ReceiverId != userId))
+                   && ui.User.SendFriendships.All(rf => rf.ReceiverId != userId)
+                   && ui.User.BeingBlockedBy.All(bbb=>bbb.BlockerUserId!=userId)
+                   && ui.User.BlockedUsersByMe.All(bubm=>bubm.BlockedUserId!=userId))
+                   .OrderBy(ui=>ui.UserId)
                    .GroupBy(ui => ui.UserId)
                    .Skip(3 * pageCount)
                    .Take(3)
