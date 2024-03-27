@@ -35,17 +35,24 @@ namespace MatchMateInfrastructure
             public const int MaxBioLength = 100;
             public const int MinBioLength = 10;
         }
+        public static class ReportsConstants
+        {
+            public const int CommentMaxLength = 100;
+            
+        }
 
         public static class ControllerWithPaginationNames
         {
             public const string InterestPanelController = "InterestPanel";
             public const string FriendshipController = "Friendship";
             public const string OfferController = "Offer";
+            public const string BlockController = "Block";
         }
         public static class ActionsWithPaginationNames
         {
             public const string PendingAction = "Pending";
             public const string IndexAction = "Index";
         }
+
     }
 }

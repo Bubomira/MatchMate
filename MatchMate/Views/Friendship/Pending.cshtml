@@ -12,7 +12,7 @@
         <section class="d-flex justify-content-start gap-2 mb-4">
              @foreach (var userCard in Model.Friends)
              {
-               <partial name="_UserCardPartial" model="@userCard" />
+               <partial name="~/Views/Shared/UserCardsPartials/_UserCardPartial.cshtml" model="@userCard" />
              }
         </section>
         <partial name="_PaginatorPartial" model="new PaginatorModel(FriendshipController,PendingAction,Model.CurrentPage,Model.TotalPagesCount)"/>

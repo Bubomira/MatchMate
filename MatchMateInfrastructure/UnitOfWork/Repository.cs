@@ -27,6 +27,11 @@ namespace MatchMateInfrastructure.UnitOfWork
             DbSet<T>().Remove(entity);
         }
 
+        public async Task RemoveAll<T>(List<T> entities) where T : class
+        {
+            DbSet<T>().RemoveRange(entities);
+        }
+
         public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();
        
 

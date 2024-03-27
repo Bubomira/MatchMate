@@ -37,5 +37,11 @@ namespace MatchMateInfrastructure.Models
 
         [InverseProperty("Sender")]
         public IList<Message> SendedMessages { get; set; } = new List<Message>();
+
+        [InverseProperty("BlockerUser")]
+        public IList<BlockedUsers> BlockedUsersByMe { get; set; } = new List<BlockedUsers>();
+
+        [InverseProperty("BlockedUser")]
+        public IList<BlockedUsers> BeingBlockedBy { get; set; } = new List<BlockedUsers>();
     }
 }

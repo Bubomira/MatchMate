@@ -51,6 +51,7 @@ namespace MatchMateInfrastructure.Models
 
         [ForeignKey(nameof(ReceivingUserId))]
         public ApplicationUser ReceivingUser { get; set; } = null!;
+        public ReportedOffer? ReportedOffer { get; set; }
 
     }
 }

@@ -16,7 +16,7 @@
   <div class="d-flex flex-wrap card-group justify-content-center gap-4">
       @foreach (var userCard in Model.Users)
       {
-          <partial name="_UserCardPartial" model="@userCard" />
+          <partial name="~/Views/Shared/UserCardsPartials/_UserCardPartial.cshtml" model="@userCard" />
       }
   </div>
   <p class="page-item">
