@@ -19,8 +19,11 @@ namespace Microsoft.Extensions.DependencyInjection
 
             //User services
             services.AddScoped<IInterestInterface, InterestService>();
+
             services.AddScoped<IUserInterface, UserService>();
+            services.AddScoped<IUserBlockInterface, UserBlockService>();
             services.AddScoped<IFriendshipInterface, FriendshipService>();
+
             services.AddScoped<IOfferSuggesterInterface, OfferSuggesterService>();
             services.AddScoped<IOfferReceiverInterface, OfferReceiverService>();
 
