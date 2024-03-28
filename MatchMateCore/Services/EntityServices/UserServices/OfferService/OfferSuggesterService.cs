@@ -82,7 +82,8 @@ namespace MatchMateCore.Services.EntityServices.UserServices.OfferService
 
         public async Task<List<OfferPreviewModel>> GetOffersAsync(OfferIndexModel offerIndexModel, string userId)
         {
-            var offers = _repository.AllReadOnly<Offer>();
+            var offers = _repository.AllReadOnly<Offer>()
+                .Where(o=>o.ReportedOffer==null);
 
             switch (offerIndexModel.IsOfferReceiver)
             {
