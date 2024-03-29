@@ -30,6 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             //Admin services
             services.AddScoped<IAdminInterestInterface, AdminInterestService>();
+            services.AddScoped<IAdminReportOfferInterface, AdminReportService>();
             return services;
         }
     }
