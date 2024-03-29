@@ -23,6 +23,10 @@ namespace MatchMateInfrastructure.Models
         public string? Comment { get; set; }
 
         [Required]
+        [Comment("Shows if admin finds this report a strike towards the suggester resume")]
+        public bool IsReasonable { get; set; } = true;
+
+        [Required]
         [Comment("The id of the reported offer")]
         public int OfferId { get; set; }
 
