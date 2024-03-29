@@ -1,4 +1,5 @@
-﻿using MatchMateCore.Dtos.UsersViewModels;
+﻿using MatchMate.Controllers.BaseControllers;
+using MatchMateCore.Dtos.UsersViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,7 @@ using System.Security.Claims;
 
 namespace MatchMate.Controllers.UserControllers
 {
-    public class FriendshipController : BaseController
+    public class FriendshipController : BaseUserController
     {
         private readonly IFriendshipInterface _friendshipService;
         private readonly IProfilePictureInterface _profilePictureService;

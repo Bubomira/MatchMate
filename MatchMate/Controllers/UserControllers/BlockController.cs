@@ -1,4 +1,5 @@
-﻿using MatchMateCore.Dtos.BlockedUserModels;
+﻿using MatchMate.Controllers.BaseControllers;
+using MatchMateCore.Dtos.BlockedUserModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,7 @@ using System.Security.Claims;
 
 namespace MatchMate.Controllers.UserControllers
 {
-    public class BlockController : Controller
+    public class BlockController : BaseUserController
     {
         private readonly IUserBlockInterface _blockService;
         private readonly IProfilePictureInterface _profilePictureService;

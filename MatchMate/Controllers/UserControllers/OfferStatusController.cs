@@ -1,4 +1,5 @@
-﻿using MatchMateCore.Dtos.OfferViewModels;
+﻿using MatchMate.Controllers.BaseControllers;
+using MatchMateCore.Dtos.OfferViewModels;
 using MatchMateCore.Dtos.OfferViewModels.OfferAdminViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using MatchMateInfrastructure.Enums;
@@ -8,7 +9,7 @@ using System.Security.Claims;
 
 namespace MatchMate.Controllers.UserControllers
 {
-    public class OfferStatusController : BaseController
+    public class OfferStatusController : BaseUserController
     {
         private readonly IOfferReceiverInterface _offerReceiverInterface;
         private readonly IReportOfferInterface _reportOfferService;

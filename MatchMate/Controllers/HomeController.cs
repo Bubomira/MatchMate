@@ -1,12 +1,12 @@
-﻿using MatchMate.Models;
-using MatchMateCore.Interfaces.MongoInterfaces;
+﻿using MatchMate.Controllers.BaseControllers;
+using MatchMate.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatchMate.Controllers
 {
     [AllowAnonymous]
-    public class HomeController : BaseController
+    public class HomeController : BaseUserController
     {
         public HomeController()
         {

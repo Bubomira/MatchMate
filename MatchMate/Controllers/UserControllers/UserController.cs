@@ -1,4 +1,5 @@
-﻿using MatchMate.Helpers;
+﻿using MatchMate.Controllers.BaseControllers;
+using MatchMate.Helpers;
 using MatchMateCore.Dtos.UsersViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.UserInterfaces;
@@ -8,7 +9,7 @@ using System.Security.Claims;
 
 namespace MatchMate.Controllers.UserControllers
 {
-    public class UserController : BaseController
+    public class UserController : BaseUserController
     {
         private readonly IUserInterface _userService;
         private readonly IInterestInterface _interestService;

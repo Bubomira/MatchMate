@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using System.Security.Claims;
+using MatchMate.Controllers.BaseControllers;
 
 namespace MatchMate.Controllers.UserControllers
 {
-    public class InterestController : BaseController
+    public class InterestController : BaseUserController
     {
         private readonly IInterestInterface _interestInterface;
         public InterestController(IInterestInterface interestInterface)
