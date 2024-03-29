@@ -1,4 +1,5 @@
 ﻿using MatchMateCore.Dtos.OfferViewModels;
+using MatchMateCore.Dtos.OfferViewModels.OfferAdminViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using MatchMateInfrastructure.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ namespace MatchMate.Controllers.UserControllers
     public class OfferStatusController : BaseController
     {
         private readonly IOfferReceiverInterface _offerReceiverInterface;
-        private readonly IReportOfferInterface _reportOfferService; 
+        private readonly IReportOfferInterface _reportOfferService;
         public OfferStatusController(IOfferReceiverInterface offerReceiverInterface,
            IReportOfferInterface reportOfferService)
         {
@@ -69,7 +70,7 @@ namespace MatchMate.Controllers.UserControllers
         {
             if (!await _reportOfferService.CheckIfTheCurrentUserCanBeReporter(User.Id(), id))
             {
-                return RedirectToAction("Index","Offer",new {pageNumber=1});
+                return RedirectToAction("Index", "Offer", new { pageNumber = 1 });
             }
             OfferReportPostModel offerReportPostModel = new OfferReportPostModel()
             {
@@ -77,6 +78,16 @@ namespace MatchMate.Controllers.UserControllers
             };
 
             return View(offerReportPostModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Report(int id, OfferReportPostModel offerRepostPostModel)
+        {
+            if (await _reportOfferService.CheckIfTheCurrentUserCanBeReporter(User.Id(), id))
+            {
+                await _reportOfferService.ReportOffer(id, offerRepostPostModel);
+            }
+            return RedirectToAction("Index", "Offer", new { pageNumber = 1 });
         }
     }
 }

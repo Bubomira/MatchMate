@@ -2,9 +2,9 @@
 
 <section class="d-flex flex-column ">
    <h2 class="mb-5 mt-5 text-center">Please, fill out this report form</h2>
-   <form method="post" class="d-flex flex-column ">
+   <form class="d-flex flex-column" method="post">
      <div class="mb-3">
-       <select asp-for="@Model.ReasonForReport" class="form-select" aria-label="Default select example">
+       <select asp-for="@Model.ReasonForReport" class="form-select">
              <option value="0">Hate speech or symbols</option>
              <option value="1">Nudity or sexual context</option>
              <option value="2">Racism</option>
@@ -22,7 +22,7 @@
           <textarea asp-for="@Model.Comment"  class="form-control" id="comment" placeholder="Please, add anything that migth help us understand the problem better..."></textarea>
           <span class="text-danger" asp-validation-for="@Model.Comment"></span>
       </div>
-       <input class="btn btn-warning align-self-center" asp-action="Report" asp-controller="Offer" type="submit" />
+       <input class="btn btn-warning align-self-center" value="Report" asp-action="Report" asp-controller="OfferStatus" asp-route-id="@Model.Id" type="submit" />
    </form>
 </section>
 
