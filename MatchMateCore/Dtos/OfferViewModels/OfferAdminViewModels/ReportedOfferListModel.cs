@@ -8,7 +8,8 @@ namespace MatchMateCore.Dtos.OfferViewModels.OfferAdminViewModels
         public const int MaxItemsOnPage = 10;
         public string SearchString { get; set; } = string.Empty;
         public int AllOffersCount { get; set; }
-        public int TotalPageCount { get; set; }
+        public IsReportReasonable IsReportReasonable { get; set; }
+        public double TotalPageCount { get; set; }
         public int CurrentPageNumber { get; set; } = 1;
         public IList<ReportedOfferModel> ReportedOffers { get; set; } = new List<ReportedOfferModel>();
     }
