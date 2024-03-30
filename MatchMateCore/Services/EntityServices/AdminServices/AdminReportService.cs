@@ -1,11 +1,10 @@
-﻿
-
-using MatchMateCore.Dtos.OfferViewModels;
-using MatchMateCore.Dtos.OfferViewModels.OfferAdminViewModels;
+﻿using MatchMateCore.Dtos.OfferViewModels.OfferAdminViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces;
 using MatchMateInfrastructure.Models;
 using MatchMateInfrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+
+using MatchMateInfrastructure.Enums;
 
 namespace MatchMateCore.Services.EntityServices.AdminServices
 {
@@ -45,6 +44,22 @@ namespace MatchMateCore.Services.EntityServices.AdminServices
         public Task<List<ReportedOfferModel>> GetAllReportedOffers(ReportedOfferListModel reportedOffersModel)
         {
             var query = _repository.AllReadOnly<ReportedOffer>();
+
+            switch (reportedOffersModel.IsReportReasonable)
+            {
+                case IsReportReasonable.Yes:
+                    query = query.Where(ro => ro.IsReasonable);
+                    break;
+                case IsReportReasonable.No:
+                    query = query.Where(ro => ro.IsReasonable==false);
+                    break;
+            }
+
+            if (!String.IsNullOrEmpty(reportedOffersModel.SearchString))
+            {
+                var searchString = reportedOffersModel.SearchString.ToLower();
+                query = query.Where(ro => ro.Offer.Title.ToLower().Contains(searchString));
+            }
 
             reportedOffersModel.AllOffersCount = query.Count();
 
