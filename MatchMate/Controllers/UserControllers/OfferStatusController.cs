@@ -1,17 +1,23 @@
-﻿using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
+﻿using MatchMate.Controllers.BaseControllers;
+using MatchMateCore.Dtos.OfferViewModels;
+using MatchMateCore.Dtos.OfferViewModels.OfferAdminViewModels;
+using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using MatchMateInfrastructure.Enums;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Security.Claims;
 
 namespace MatchMate.Controllers.UserControllers
 {
-    public class OfferStatusController : BaseController
+    public class OfferStatusController : BaseUserController
     {
         private readonly IOfferReceiverInterface _offerReceiverInterface;
-        public OfferStatusController(IOfferReceiverInterface offerReceiverInterface)
+        private readonly IReportOfferInterface _reportOfferService;
+        public OfferStatusController(IOfferReceiverInterface offerReceiverInterface,
+           IReportOfferInterface reportOfferService)
         {
             _offerReceiverInterface = offerReceiverInterface;
+            _reportOfferService = reportOfferService;
         }
 
         public async Task<IActionResult> Accept(int id)
@@ -58,6 +64,31 @@ namespace MatchMate.Controllers.UserControllers
             await _offerReceiverInterface.AcceptOfferAsync(id);
 
             return RedirectToAction("Details", "Offer", new { id = id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Report(int id)
+        {
+            if (!await _reportOfferService.CheckIfTheCurrentUserCanBeReporter(User.Id(), id))
+            {
+                return RedirectToAction("Index", "Offer", new { pageNumber = 1 });
+            }
+            OfferReportPostModel offerReportPostModel = new OfferReportPostModel()
+            {
+                Id = id
+            };
+
+            return View(offerReportPostModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Report(int id, OfferReportPostModel offerRepostPostModel)
+        {
+            if (await _reportOfferService.CheckIfTheCurrentUserCanBeReporter(User.Id(), id))
+            {
+                await _reportOfferService.ReportOffer(id, offerRepostPostModel);
+            }
+            return RedirectToAction("Index", "Offer", new { pageNumber = 1 });
         }
     }
 }

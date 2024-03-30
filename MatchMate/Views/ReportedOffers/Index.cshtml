@@ -1,0 +1,30 @@
+﻿@model ReportedOfferListModel
+
+   <form class=" mb-5 mt-3 gap-3 d-flex align-items-center">
+       <section>
+         <select asp-for="@Model.IsReportReasonable" class="form-select">
+             <option selected value="0">Reasonable</option>
+             <option value="1">Unreasonable</option>
+             <option value="2">All</option>
+         </select>
+       </section>
+       <section class="flex-grow-1">
+         <input class="form-control" asp-for="@Model.SearchString" placeholder="Search by title..." type="text" />
+       </section>
+        <input class="btn btn-primary"  type="submit" asp-action="Index" asp-controller="ReportedOffers" value="Search..." />
+   </form>
+
+@if (Model.ReportedOffers.Count!=0)
+{
+<div class="d-flex flex-wrap gap-3 mb-5">
+    @foreach (var reportedOffer in Model.ReportedOffers)
+    {
+     <partial name="_ReportedOfferPreviewPartial" model="@reportedOffer"/>
+    }
+</div>
+    <partial name="_PaginatorPartial" model="new PaginatorModel(ReportedOffersController,IndexAction,Model.CurrentPageNumber,Model.TotalPageCount)"/>
+}
+else
+{
+    <p>No reported offers found...</p>
+}

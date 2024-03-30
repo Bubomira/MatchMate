@@ -1,13 +1,13 @@
-﻿using MatchMateCore.Dtos.InterestViewModels.AdminViewModels;
+﻿using MatchMate.Controllers.BaseControllers;
+using MatchMateCore.Dtos.InterestViewModels.AdminViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatchMate.Controllers.AdminControllers
 {
-    [Authorize(Roles = "Administrator")]
-    public class InterestPanelController : BaseController
+    public class InterestPanelController :BaseAdminController
     {
         private readonly IAdminInterestInterface _adminInterestService;
         private readonly IInterestInterface _interestService;

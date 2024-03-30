@@ -26,9 +26,11 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddScoped<IOfferSuggesterInterface, OfferSuggesterService>();
             services.AddScoped<IOfferReceiverInterface, OfferReceiverService>();
+            services.AddScoped<IReportOfferInterface,OfferReportService>();
 
             //Admin services
             services.AddScoped<IAdminInterestInterface, AdminInterestService>();
+            services.AddScoped<IAdminReportOfferInterface, AdminReportService>();
             return services;
         }
     }

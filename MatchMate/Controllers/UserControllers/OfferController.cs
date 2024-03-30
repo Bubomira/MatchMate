@@ -1,4 +1,5 @@
-﻿using MatchMateCore.Dtos.OfferViewModels;
+﻿using MatchMate.Controllers.BaseControllers;
+using MatchMateCore.Dtos.OfferViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using static MatchMateInfrastructure.DataConstants;
 
 namespace MatchMate.Controllers.UserControllers
 {
-    public class OfferController : BaseController
+    public class OfferController : BaseUserController
     {
         private readonly IOfferSuggesterInterface _offerSuggesterService;
         private readonly IOfferReceiverInterface _offerReceiverService;
