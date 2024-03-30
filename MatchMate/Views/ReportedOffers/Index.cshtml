@@ -14,12 +14,17 @@
         <input class="btn btn-primary"  type="submit" asp-action="Index" asp-controller="ReportedOffers" value="Search..." />
    </form>
 
+@if (Model.ReportedOffers.Count!=0)
+{
 <div class="d-flex flex-wrap gap-3 mb-5">
     @foreach (var reportedOffer in Model.ReportedOffers)
     {
      <partial name="_ReportedOfferPreviewPartial" model="@reportedOffer"/>
     }
 </div>
-
-
- <partial name="_PaginatorPartial" model="new PaginatorModel(ReportedOffersController,IndexAction,Model.CurrentPageNumber,Model.TotalPageCount)"/>
+    <partial name="_PaginatorPartial" model="new PaginatorModel(ReportedOffersController,IndexAction,Model.CurrentPageNumber,Model.TotalPageCount)"/>
+}
+else
+{
+    <p>No reported offers found...</p>
+}
