@@ -3,8 +3,10 @@ using MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces;
 using MatchMateInfrastructure.Models;
 using MatchMateInfrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
-
 using MatchMateInfrastructure.Enums;
+
+using static MatchMateInfrastructure.DataConstants;
+using System.Globalization;
 
 namespace MatchMateCore.Services.EntityServices.AdminServices
 {
@@ -69,11 +71,30 @@ namespace MatchMateCore.Services.EntityServices.AdminServices
                 .Take(ReportedOfferListModel.MaxItemsOnPage)
                 .Select(ro => new ReportedOfferModel
                 {
-                    Id = ro.Id,
+                    Id = ro.OfferId,
                     ReasonForReport = ro.ReasonForRepport,
                     Title = ro.Offer.Title
                 })
                 .ToListAsync();
         }
+
+        public Task<ReportedOfferDetailsModel> GetReportedOfferDetails(int offerId) =>
+            _repository.AllReadOnly<ReportedOffer>()
+            .Where(ro => ro.OfferId == offerId)
+            .Select(ro => new ReportedOfferDetailsModel
+            {
+                ReportNumber = ro.Id,
+                Title = ro.Offer.Title,
+                Comment = ro.Comment,
+                ReasonForReport = ro.ReasonForRepport,
+                Id = ro.OfferId,
+                SuggesterId = ro.Offer.SuggestingUserId,
+                Description = ro.Offer.Description,
+                Place = ro.Offer.Place,
+                Time = ro.Offer.Time.ToString(DateTimeFormat,CultureInfo.InvariantCulture),
+                IsValidated= ro.IsReasonable
+            })
+            .FirstAsync();
+       
     }
 }
