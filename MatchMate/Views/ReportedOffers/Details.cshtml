@@ -24,7 +24,7 @@
    </section>
 </section>
    <section class="d-flex align-items-center mt-4 justify-content-center gap-3">
-      @if (Model.IsValidated)
+      @if (!Model.IsValidated)
       {
           <a class="btn btn-warning" asp-action="Strike" asp-route-id="@Model.Id" asp-controller="ReportedOffers">Consider a strike</a>
       }
@@ -32,5 +32,8 @@
       {
            <a class="btn btn-warning" asp-action="Unstrike" asp-route-id="@Model.Id" asp-controller="ReportedOffers">Remove strike</a>
       }
-      <a class="btn btn-success" asp-route-id="@Model.SuggesterId" asp-action="CheckOffender" asp-controller="ReportedOffers">Check offender</a>
+    @if (Model.IsSuggesterOffender)
+    {
+       <a class="btn btn-success" asp-route-id="@Model.SuggesterId" asp-action="Details" asp-controller="Offender">Check offender</a>
+    }
    </section>
