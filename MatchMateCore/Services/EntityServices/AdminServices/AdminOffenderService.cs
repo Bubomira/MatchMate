@@ -31,7 +31,7 @@ namespace MatchMateCore.Services.EntityServices.AdminServices
             {
                 Id = au.Id,
                 ReportedOffers = au.SuggestedOffers
-                   .Where(so => so.ReportedOffer != null)
+                   .Where(so => so.ReportedOffer.IsReasonable)
                    .Select(su => new ReportedOfferModel()
                    {
                        Id = su.Id,
