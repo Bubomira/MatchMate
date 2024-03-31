@@ -39,7 +39,32 @@ namespace MatchMate.Controllers.AdminControllers
             var offer = await _adminReportService.GetReportedOfferDetails(id);
 
             return View(offer);
-
         }
+
+        public async Task<IActionResult> Strike(int id)
+        {
+            if (!await _offerService.CheckIfOfferExists(id))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+             await _adminReportService.ValidateReport(id);
+
+            return RedirectToAction(nameof(Details),new {id=id});
+        }
+
+        public async Task<IActionResult> Untsrike(int id)
+        {
+            if (!await _offerService.CheckIfOfferExists(id))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _adminReportService.DisvalidateReport(id);
+
+            return RedirectToAction(nameof(Details), new { id = id });
+        }
+
+
     }
 }
