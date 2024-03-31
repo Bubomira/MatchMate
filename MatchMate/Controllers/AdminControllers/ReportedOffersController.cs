@@ -21,8 +21,8 @@ namespace MatchMate.Controllers.AdminControllers
         public async Task<IActionResult> Index([FromQuery] ReportedOfferListModel reportOfferListModel)
         {
             reportOfferListModel.ReportedOffers = await _adminReportService.GetAllReportedOffers(reportOfferListModel);
-            reportOfferListModel.TotalPageCount = Math.Ceiling((double)reportOfferListModel.AllOffersCount/ ReportedOfferListModel.MaxItemsOnPage);
-            if (reportOfferListModel.AllOffersCount==0 && reportOfferListModel.CurrentPageNumber!=1)
+            reportOfferListModel.TotalPageCount = Math.Ceiling((double)reportOfferListModel.AllOffersCount / ReportedOfferListModel.MaxItemsOnPage);
+            if (reportOfferListModel.AllOffersCount == 0 && reportOfferListModel.CurrentPageNumber != 1)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -31,7 +31,7 @@ namespace MatchMate.Controllers.AdminControllers
 
         public async Task<IActionResult> Details(int id)
         {
-            if (! await _offerService.CheckIfOfferExists(id))
+            if (!await _offerService.CheckIfOfferExists(id))
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -48,12 +48,12 @@ namespace MatchMate.Controllers.AdminControllers
                 return RedirectToAction(nameof(Index));
             }
 
-             await _adminReportService.ValidateReport(id);
+            await _adminReportService.ValidateReport(id);
 
-            return RedirectToAction(nameof(Details),new {id=id});
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
-        public async Task<IActionResult> Untsrike(int id)
+        public async Task<IActionResult> Unstrike(int id)
         {
             if (!await _offerService.CheckIfOfferExists(id))
             {
@@ -64,7 +64,6 @@ namespace MatchMate.Controllers.AdminControllers
 
             return RedirectToAction(nameof(Details), new { id = id });
         }
-
 
     }
 }

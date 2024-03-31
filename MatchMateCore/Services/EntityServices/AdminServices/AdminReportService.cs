@@ -78,7 +78,7 @@ namespace MatchMateCore.Services.EntityServices.AdminServices
             .Where(ro => ro.OfferId == offerId)
             .Select(ro => new ReportedOfferDetailsModel
             {
-                IsSuggesterOffender= ro.Offer.SuggestingUser.SuggestedOffers.Count(so=>so.ReportedOffer!=null)<=1,
+                IsSuggesterOffender= ro.Offer.SuggestingUser.SuggestedOffers.Count(so=>so.ReportedOffer.IsReasonable)>=1,
                 ReportNumber = ro.Id,
                 Title = ro.Offer.Title,
                 Comment = ro.Comment,
