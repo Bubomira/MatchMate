@@ -18,11 +18,6 @@ namespace MatchMateCore.Services.EntityServices.AdminServices
         {
             _repository = repository;
         }
-        public async Task<bool> CheckIfUserHasMoreThanThreeValidlyReportedOffers(string userId) =>
-           _repository.AllReadOnly<ReportedOffer>()
-            .Where(ro => ro.Offer.SuggestingUserId == userId)
-            .Count(ro => ro.IsReasonable == true) >= 3;
-
         public async Task DisvalidateReport(int offerId)
         {
             var reportedOffer = await _repository.All<ReportedOffer>()
@@ -83,6 +78,7 @@ namespace MatchMateCore.Services.EntityServices.AdminServices
             .Where(ro => ro.OfferId == offerId)
             .Select(ro => new ReportedOfferDetailsModel
             {
+                IsSuggesterOffender= ro.Offer.SuggestingUser.SuggestedOffers.Count(so=>so.ReportedOffer!=null)<=1,
                 ReportNumber = ro.Id,
                 Title = ro.Offer.Title,
                 Comment = ro.Comment,
