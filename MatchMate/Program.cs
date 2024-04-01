@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AttachDbContext(builder.Configuration)
     .AttachIdentity()
+    .ConfigureAuthPaths()
     .AttachServices();
 
 builder.Services.AddRazorPages();

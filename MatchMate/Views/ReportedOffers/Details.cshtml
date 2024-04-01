@@ -1,0 +1,39 @@
+﻿@model ReportedOfferDetailsModel
+
+<h2 class="text-center mt-5 mb-4">Report number @Model.ReportNumber</h2>
+<section class="d-flex gap-3 justify-content-center ">
+  <div class="card w-50">
+    <div class="card-header">
+         <h4 >@Model.Title</h4>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">What: @Model.Description</li>
+      <li class="list-group-item">Where: @Model.Place</li>
+      <li class="list-group-item">When: @Model.Time</li>
+    </ul>
+  </div>
+   <section class="card-footer w-50 ">
+       <article>
+         <h5>Reason for report:</h5>
+         <p>@Model.ReasonForReport</p>
+       </article>
+       <article>
+         <h5>Comment:</h5>
+         <p>@(String.IsNullOrEmpty(Model.Comment)? "(no comment)": Model.Comment)</p>
+       </article>
+   </section>
+</section>
+   <section class="d-flex align-items-center mt-4 justify-content-center gap-3">
+      @if (!Model.IsValidated)
+      {
+          <a class="btn btn-warning" asp-action="Strike" asp-route-id="@Model.Id" asp-controller="ReportedOffers">Consider a strike</a>
+      }
+      else
+      {
+           <a class="btn btn-warning" asp-action="Unstrike" asp-route-id="@Model.Id" asp-controller="ReportedOffers">Remove strike</a>
+      }
+    @if (Model.IsSuggesterOffender)
+    {
+       <a class="btn btn-success" asp-route-id="@Model.SuggesterId" asp-action="Details" asp-controller="Offender">Check offender</a>
+    }
+   </section>
