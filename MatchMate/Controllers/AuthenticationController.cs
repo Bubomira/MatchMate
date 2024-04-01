@@ -1,5 +1,6 @@
 ﻿using MatchMateCore.Dtos.AuthenticationViewModels;
 using MatchMateInfrastructure.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
@@ -12,16 +13,19 @@ namespace MatchMate.Controllers
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly ILogger<AuthenticationController> _logger;
 
         public AuthenticationController(SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManafer,
             IUserStore<ApplicationUser> userStore,
             ILogger<AuthenticationController> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _roleManager = roleManafer;
             _userStore = userStore;
             _logger = logger;
         }
@@ -72,16 +76,46 @@ namespace MatchMate.Controllers
         }
 
         [HttpGet]
-        public Task<IActionResult> Login()
+        public async Task<IActionResult> Login(string returnUrl = null)
         {
-            throw new NotImplementedException();
+            LoginModel loginModel = new LoginModel();
 
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            loginModel.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            loginModel.ReturnUrl = Url.Content("~/"); ;
+
+            return View(loginModel);
         }
 
         [HttpPost]
-        public Task<IActionResult> Login(LoginModel loginModel)
+        public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            throw new NotImplementedException();
+            loginModel.ReturnUrl ??= Url.Content("~/");
+
+            loginModel.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User logged in.");
+                    return RedirectToAction("Index", "User", new { pageNumber = 1 });
+                }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("User account locked out.");
+                    return RedirectToPage("./Lockout");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(loginModel);
+                }
+            }
+
+            return View(loginModel);
         }
 
         [HttpGet]
