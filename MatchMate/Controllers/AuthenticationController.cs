@@ -118,11 +118,19 @@ namespace MatchMate.Controllers
             return View(loginModel);
         }
 
-        [HttpGet]
-
-        public Task<IActionResult> Logout()
+        [HttpPost]
+        public async Task<IActionResult> Logout(string returnUrl = null)
         {
-            throw new NotImplementedException();
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            if (returnUrl != null)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         private ApplicationUser CreateUser()
