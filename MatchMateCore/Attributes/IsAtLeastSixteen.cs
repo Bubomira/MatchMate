@@ -2,7 +2,7 @@
 using System.Globalization;
 using static MatchMateInfrastructure.DataConstants;
 
-namespace MatchMate.Attributes
+namespace MatchMateCore.Attributes
 {
     public class IsAtLeastSixteen : ValidationAttribute
     {
