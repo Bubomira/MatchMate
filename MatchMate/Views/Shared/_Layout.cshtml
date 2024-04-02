@@ -24,25 +24,28 @@
                             @if(User.IsInRole("Administrator"))
                             {
                                 <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-controller="InterestPanel" asp-route-pageNumber="1" asp-action="Index">Interest Panel</a>
+                                   <a class="nav-link text-dark" asp-area="Admin" asp-controller="InterestPanel" asp-route-pageNumber="1" asp-action="Index">Interest Panel</a>
+                               </li>
+                                <li class="nav-item">
+                                   <a class="nav-link text-dark" asp-area="Admin" asp-controller="ReportedOffers" asp-route-pageNumber="1" asp-action="Index">Reports</a>
                                </li>
                             }
                             else
                             {
                                <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-controller="User" asp-action="Index" asp-route-pageNumber="1">Match me, mate!</a>
+                                   <a class="nav-link text-dark" asp-area="Matcher" asp-controller="User" asp-action="Index" asp-route-pageNumber="1">Match me, mate!</a>
                                </li>
                                 <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-controller="Friendship" asp-action="Index" asp-route-pageNumber="1">Friendship board</a>
+                                   <a class="nav-link text-dark" asp-area="Matcher" asp-controller="Friendship" asp-action="Index" asp-route-pageNumber="1">Friendship board</a>
                                </li>
                                 <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-controller="Friendship" asp-action="Pending" asp-route-pageNumber="1">Pending requests</a>
+                                   <a class="nav-link text-dark" asp-area="Matcher" asp-controller="Friendship" asp-action="Pending" asp-route-pageNumber="1">Pending requests</a>
                                </li>
                                 <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-controller="Offer" asp-action="Index" asp-route-pageNumber="1">Offers</a>
+                                   <a class="nav-link text-dark" asp-area="Matcher" asp-controller="Offer" asp-action="Index" asp-route-pageNumber="1">Offers</a>
                                </li>  
                                 <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-controller="Block" asp-action="Index" asp-route-pageNumber="1">Blocked users</a>
+                                   <a class="nav-link text-dark" asp-area="Matcher" asp-controller="Block" asp-action="Index" asp-route-pageNumber="1">Blocked users</a>
                                </li>  
                             }
                         }

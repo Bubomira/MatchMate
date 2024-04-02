@@ -63,7 +63,7 @@ namespace MatchMate.Areas.Matcher.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("SetUpBio", "User");
+                    return RedirectToAction("SetUpBio", "User",new {area="Matcher"});
 
                 }
                 foreach (var error in result.Errors)
@@ -101,7 +101,8 @@ namespace MatchMate.Areas.Matcher.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToAction("Index", "User", new { pageNumber = 1 });
+                
+                    return RedirectToAction("Index", "Home");
                 }
                 if (result.IsLockedOut)
                 {
