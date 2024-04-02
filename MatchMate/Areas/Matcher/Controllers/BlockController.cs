@@ -1,11 +1,10 @@
-﻿using MatchMate.Controllers.BaseControllers;
-using MatchMateCore.Dtos.BlockedUserModels;
+﻿using MatchMateCore.Dtos.BlockedUserModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace MatchMate.Controllers.UserControllers
+namespace MatchMate.Areas.Matcher.Controllers
 {
     public class BlockController : BaseUserController
     {
@@ -52,5 +51,4 @@ namespace MatchMate.Controllers.UserControllers
             return RedirectToAction("Index", "User", new { pageNumber = 1 });
         }
     }
-
 }

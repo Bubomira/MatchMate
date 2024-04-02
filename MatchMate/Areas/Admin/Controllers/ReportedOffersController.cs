@@ -1,10 +1,9 @@
-﻿using MatchMate.Controllers.BaseControllers;
-using MatchMateCore.Dtos.OfferViewModels.OfferAdminViewModels;
+﻿using MatchMateCore.Dtos.OfferViewModels.OfferAdminViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MatchMate.Controllers.AdminControllers
+namespace MatchMate.Areas.Admin.Controllers
 {
     public class ReportedOffersController : BaseAdminController
     {
@@ -64,6 +63,5 @@ namespace MatchMate.Controllers.AdminControllers
 
             return RedirectToAction(nameof(Details), new { id = id });
         }
-
     }
 }

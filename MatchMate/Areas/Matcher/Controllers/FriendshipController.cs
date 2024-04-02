@@ -1,11 +1,9 @@
-﻿using MatchMate.Controllers.BaseControllers;
-using MatchMateCore.Dtos.UsersViewModels;
-using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+﻿using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace MatchMate.Controllers.UserControllers
+namespace MatchMate.Areas.Matcher.Controllers
 {
     public class FriendshipController : BaseUserController
     {
@@ -25,7 +23,7 @@ namespace MatchMate.Controllers.UserControllers
             activeFriends.TotalPagesCount = Math.Ceiling(((double)activeFriends.TotalFriends / 12));
             activeFriends.CurrentPage = pageNumber;
 
-            if (activeFriends.TotalPagesCount<pageNumber && pageNumber!=1)
+            if (activeFriends.TotalPagesCount < pageNumber && pageNumber != 1)
             {
                 return RedirectToAction(nameof(Index), new { pageNumber = 1 });
             }
@@ -42,8 +40,8 @@ namespace MatchMate.Controllers.UserControllers
         public async Task<IActionResult> Pending(int pageNumber)
         {
             var pendingRequests = await _friendshipService.GetPendingRequestsAsync(User.Id(), pageNumber - 1);
-           
-            if (pendingRequests.Friends.Count == 0 && pageNumber!=1)
+
+            if (pendingRequests.Friends.Count == 0 && pageNumber != 1)
             {
                 return RedirectToAction(nameof(Pending), new { pageNumber = 1 });
             }
@@ -93,11 +91,10 @@ namespace MatchMate.Controllers.UserControllers
             if (await _friendshipService.CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(User.Id(), id))
             {
                 await _friendshipService.RemoveFriendAsync(id, User.Id());
-               return RedirectToAction("Index", "User", new { pageNumber = 1 });
+                return RedirectToAction("Index", "User", new { pageNumber = 1 });
             }
 
             return RedirectToAction(nameof(Index), new { pageNumber = 1 });
         }
-
     }
 }

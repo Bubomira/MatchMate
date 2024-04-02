@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
-namespace MatchMate.Controllers.BaseControllers
+namespace MatchMate.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Administrator")]
     public class BaseAdminController : Controller

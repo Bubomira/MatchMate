@@ -7,7 +7,7 @@ using System.Globalization;
 
 using static MatchMateInfrastructure.DataConstants;
 
-namespace MatchMate.Controllers
+namespace MatchMate.Areas.Matcher.Controllers
 {
     public class AuthenticationController : Controller
     {

@@ -1,15 +1,12 @@
-﻿using MatchMate.Controllers.BaseControllers;
-using MatchMateCore.Dtos.OfferViewModels;
-using MatchMateCore.Dtos.OfferViewModels.OfferAdminViewModels;
+﻿using MatchMateCore.Dtos.OfferViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using MatchMateInfrastructure.Enums;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Security.Claims;
 
-namespace MatchMate.Controllers.UserControllers
+namespace MatchMate.Areas.Matcher.Controllers.OfferControllers
 {
-    public class OfferStatusController : BaseUserController
+    public class OfferStatusController : Controller
     {
         private readonly IOfferReceiverInterface _offerReceiverInterface;
         private readonly IReportOfferInterface _reportOfferService;

@@ -1,5 +1,4 @@
-﻿using MatchMate.Controllers.BaseControllers;
-using MatchMateCore.Dtos.OfferViewModels;
+﻿using MatchMateCore.Dtos.OfferViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.OfferInterfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +7,9 @@ using System.Security.Claims;
 
 using static MatchMateInfrastructure.DataConstants;
 
-namespace MatchMate.Controllers.UserControllers
+namespace MatchMate.Areas.Matcher.Controllers.OfferControllers
 {
-    public class OfferController : BaseUserController
+    public class OfferController : Controller
     {
         private readonly IOfferSuggesterInterface _offerSuggesterService;
         private readonly IOfferReceiverInterface _offerReceiverService;
@@ -28,9 +27,9 @@ namespace MatchMate.Controllers.UserControllers
         {
             offerIndexModel.Offers = await _offerSuggesterService.GetOffersAsync(offerIndexModel, User.Id());
 
-            if (offerIndexModel.Offers.Count()==0 && offerIndexModel.CurrentPageNumber!=1)
+            if (offerIndexModel.Offers.Count() == 0 && offerIndexModel.CurrentPageNumber != 1)
             {
-                return RedirectToAction(nameof(Index),new {pageNumber=1});
+                return RedirectToAction(nameof(Index), new { pageNumber = 1 });
             }
 
             offerIndexModel.TotalPageCount = (int)Math.Ceiling((double)offerIndexModel.AllOffersCount / OfferIndexModel.MaxItemsOnPage);
@@ -131,7 +130,6 @@ namespace MatchMate.Controllers.UserControllers
         }
 
         [HttpGet]
-
         public async Task<IActionResult> Delete(int id)
         {
             if (await _offerSuggesterService.CheckIfOfferIsSuggestedByUser(id, User.Id()))
@@ -141,6 +139,5 @@ namespace MatchMate.Controllers.UserControllers
 
             return RedirectToAction(nameof(Index));
         }
-
     }
 }

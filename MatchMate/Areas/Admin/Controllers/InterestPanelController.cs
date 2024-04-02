@@ -1,13 +1,11 @@
-﻿using MatchMate.Controllers.BaseControllers;
-using MatchMateCore.Dtos.InterestViewModels.AdminViewModels;
+﻿using MatchMateCore.Dtos.InterestViewModels.AdminViewModels;
 using MatchMateCore.Interfaces.EntityInterfaces.AdminInterfaces;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
-
 using Microsoft.AspNetCore.Mvc;
 
-namespace MatchMate.Controllers.AdminControllers
+namespace MatchMate.Areas.Admin.Controllers
 {
-    public class InterestPanelController :BaseAdminController
+    public class InterestPanelController : BaseAdminController
     {
         private readonly IAdminInterestInterface _adminInterestService;
         private readonly IInterestInterface _interestService;
@@ -64,12 +62,11 @@ namespace MatchMate.Controllers.AdminControllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            if(await _interestService.CheckIfInterestExists(id) && await _adminInterestService.CheckIfThereAreAtLeastThreeInterestsAsync())
+            if (await _interestService.CheckIfInterestExists(id) && await _adminInterestService.CheckIfThereAreAtLeastThreeInterestsAsync())
             {
                 await _adminInterestService.DeleteInterestAsync(id);
             }
             return RedirectToAction(nameof(Index), new { pageNumber = 1 });
         }
-
     }
 }

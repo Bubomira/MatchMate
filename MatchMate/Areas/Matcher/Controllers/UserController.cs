@@ -1,13 +1,12 @@
-﻿using MatchMate.Controllers.BaseControllers;
-using MatchMate.Helpers;
+﻿using MatchMate.Helpers;
 using MatchMateCore.Dtos.UsersViewModels;
-using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces.UserInterfaces;
+using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace MatchMate.Controllers.UserControllers
+namespace MatchMate.Areas.Matcher.Controllers
 {
     public class UserController : BaseUserController
     {
@@ -115,7 +114,7 @@ namespace MatchMate.Controllers.UserControllers
 
             await _profilePictureService.SaveProfilePictureToMongoAsync(User.Id(), stringFile);
 
-            return RedirectToAction(nameof(Index), new {pageNumber=1});
+            return RedirectToAction(nameof(Index), new { pageNumber = 1 });
         }
 
         [HttpPost]
