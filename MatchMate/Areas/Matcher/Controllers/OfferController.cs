@@ -7,9 +7,9 @@ using System.Security.Claims;
 
 using static MatchMateInfrastructure.DataConstants;
 
-namespace MatchMate.Areas.Matcher.Controllers.OfferControllers
+namespace MatchMate.Areas.Matcher.Controllers
 {
-    public class OfferController : Controller
+    public class OfferController : BaseUserController
     {
         private readonly IOfferSuggesterInterface _offerSuggesterService;
         private readonly IOfferReceiverInterface _offerReceiverService;
@@ -126,7 +126,7 @@ namespace MatchMate.Areas.Matcher.Controllers.OfferControllers
 
             await _offerSuggesterService.EditOfferAsync(offerEditModel, time);
 
-            return RedirectToAction(nameof(Details), new { id = id });
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         [HttpGet]

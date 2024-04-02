@@ -19,10 +19,10 @@
 <div class="d-flex flex-wrap gap-3 mb-5">
     @foreach (var reportedOffer in Model.ReportedOffers)
     {
-     <partial name="_ReportedOfferPreviewPartial" model="@reportedOffer"/>
+     <partial name="/Areas/Admin/Views/Shared/_ReportedOfferPreviewPartial.cshtml" model="@reportedOffer"/>
     }
 </div>
-    <partial name="_PaginatorPartial" model="new PaginatorModel(ReportedOffersController,IndexAction,Model.CurrentPageNumber,Model.TotalPageCount)"/>
+    <partial name="/Views/Shared/_PaginatorPartial.cshtml" model="new PaginatorModel(ReportedOffersController,IndexAction,Model.CurrentPageNumber,Model.TotalPageCount)"/>
 }
 else
 {

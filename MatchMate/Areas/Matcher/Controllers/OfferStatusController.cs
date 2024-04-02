@@ -4,9 +4,9 @@ using MatchMateInfrastructure.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace MatchMate.Areas.Matcher.Controllers.OfferControllers
+namespace MatchMate.Areas.Matcher.Controllers
 {
-    public class OfferStatusController : Controller
+    public class OfferStatusController : BaseUserController
     {
         private readonly IOfferReceiverInterface _offerReceiverInterface;
         private readonly IReportOfferInterface _reportOfferService;
@@ -26,7 +26,7 @@ namespace MatchMate.Areas.Matcher.Controllers.OfferControllers
 
             await _offerReceiverInterface.AcceptOfferAsync(id);
 
-            return RedirectToAction("Details", "Offer", new { id = id });
+            return RedirectToAction("Details", "Offer", new { id });
         }
 
         public async Task<IActionResult> Reject(int id)
@@ -48,7 +48,7 @@ namespace MatchMate.Areas.Matcher.Controllers.OfferControllers
 
             await _offerReceiverInterface.CancelOfferAsync(id);
 
-            return RedirectToAction("Details", "Offer", new { id = id });
+            return RedirectToAction("Details", "Offer", new { id });
         }
 
         public async Task<IActionResult> Renew(int id)
@@ -60,7 +60,7 @@ namespace MatchMate.Areas.Matcher.Controllers.OfferControllers
 
             await _offerReceiverInterface.AcceptOfferAsync(id);
 
-            return RedirectToAction("Details", "Offer", new { id = id });
+            return RedirectToAction("Details", "Offer", new { id });
         }
 
         [HttpGet]

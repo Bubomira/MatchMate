@@ -33,7 +33,7 @@
     <div class="d-flex flex-wrap gap-3 mt-5">
         @foreach (var offer in Model.Offers)
         {
-            <partial name="_OfferPreviewCardPartial" model="@offer"/>            
+            <partial name="/Areas/Matcher/Views/Shared/_OfferPreviewCardPartial.cshtml" model="@offer"/>            
         }
     </div>
     <partial name="_PaginatorPartial" model="new PaginatorModel(OfferController,IndexAction,Model.CurrentPageNumber,Model.TotalPageCount)"/>

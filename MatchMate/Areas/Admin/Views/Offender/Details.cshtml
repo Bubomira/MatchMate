@@ -17,7 +17,7 @@
       <div class="d-flex gap-3 flex-wrap justify-content-center">
            @foreach (var reportedOffer in Model.ReportedOffers)
            {
-                <partial name="_ReportedOfferPreviewPartial" model="@reportedOffer"/>
+                <partial name="/Areas/Admin/Views/Shared/_ReportedOfferPreviewPartial.cshtml" model="@reportedOffer"/>
            }
       </div>
     </section>

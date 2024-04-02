@@ -11,12 +11,12 @@
                 <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#profilePictureModal">Change profile picture</button>
                   <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#bioModal">Change Bio</button>
            </div>
-           <partial name="~/Views/Shared/UserSetUpProfilePartials/_SetUpBioPartial.cshtml" model="@(new UserBioModel(){Bio=Model.Bio,HasBio=true})"/>
-           <partial name="~/Views/Shared/UserSetUpProfilePartials/_SetUpProfilePicturePartial.cshtml" model="@false"/>
+           <partial name="/Areas/Matcher/Views/Shared/UserSetUpProfilePartials/_SetUpBioPartial.cshtml" model="@(new UserBioModel(){Bio=Model.Bio,HasBio=true})"/>
+           <partial name="/Areas/Matcher/Views/Shared/UserSetUpProfilePartials/_SetUpProfilePicturePartial.cshtml" model="@false"/>
       </div>
     </aside>
     <section>
-        <partial name="~/Views/Shared/UserSetUpProfilePartials/_InterestChangerPartial.cshtml" model="@Model.Interests" />
+        <partial name="/Areas/Matcher/Views/Shared/UserSetUpProfilePartials/_InterestChangerPartial.cshtml" model="@Model.Interests" />
     </section>
 </section>
 
