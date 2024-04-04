@@ -5,6 +5,10 @@ using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using MatchMateInfrastructure.Models;
+
+using static MatchMateInfrastructure.DataConstants.CustomClaimsType;
 
 namespace MatchMate.Areas.Matcher.Controllers
 {
@@ -13,13 +17,16 @@ namespace MatchMate.Areas.Matcher.Controllers
         private readonly IUserInterface _userService;
         private readonly IInterestInterface _interestService;
         private readonly IProfilePictureInterface _profilePictureService;
+        private readonly UserManager<ApplicationUser> _userManager;
         public UserController(IUserInterface matchingService,
             IInterestInterface interestInterface,
-            IProfilePictureInterface profilePictureInterface)
+            IProfilePictureInterface profilePictureInterface,
+             UserManager<ApplicationUser> userManager)
         {
             _userService = matchingService;
             _interestService = interestInterface;
             _profilePictureService = profilePictureInterface;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -78,6 +85,9 @@ namespace MatchMate.Areas.Matcher.Controllers
                 return RedirectToAction(nameof(Profile));
             }
 
+            var user = await _userManager.FindByIdAsync(User.Id());
+            await _userManager.AddClaimAsync(user, new Claim(HasBio, "true", "Boolean"));
+
             return RedirectToAction(nameof(SetUpInterests));
         }
         [HttpGet]
@@ -113,6 +123,9 @@ namespace MatchMate.Areas.Matcher.Controllers
             string stringFile = FileConverter.ConvertFormFileToString(file);
 
             await _profilePictureService.SaveProfilePictureToMongoAsync(User.Id(), stringFile);
+            
+            var user = await _userManager.FindByIdAsync(User.Id());
+            await _userManager.AddClaimAsync(user, new Claim(HasPfp, "true", "Boolean"));
 
             return RedirectToAction(nameof(Index), new { pageNumber = 1 });
         }

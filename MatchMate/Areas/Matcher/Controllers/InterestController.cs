@@ -1,15 +1,22 @@
 ﻿using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+using MatchMateInfrastructure.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+
+using static MatchMateInfrastructure.DataConstants.CustomClaimsType;
 
 namespace MatchMate.Areas.Matcher.Controllers
 {
     public class InterestController : BaseUserController
     {
         private readonly IInterestInterface _interestInterface;
-        public InterestController(IInterestInterface interestInterface)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public InterestController(IInterestInterface interestInterface,
+            UserManager<ApplicationUser> userManager)
         {
             _interestInterface = interestInterface;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Add(int id)
@@ -34,6 +41,9 @@ namespace MatchMate.Areas.Matcher.Controllers
                 int interestId = int.Parse(formCollection.Keys.ToArray()[i]);
                 await _interestInterface.AddInterestToUserCollectionAsync(interestId, User.Id());
             }
+
+            var user = await _userManager.FindByIdAsync(User.Id());
+            await _userManager.AddClaimAsync(user, new Claim(HasInterests, "true","Boolean"));
             return RedirectToAction("SetUpProfilePicture", "User");
         }
 

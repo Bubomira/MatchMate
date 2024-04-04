@@ -54,6 +54,12 @@ namespace MatchMateInfrastructure
             public const string PendingAction = "Pending";
             public const string IndexAction = "Index";
         }
+        public static class CustomClaimsType
+        {
+            public const string HasBio = "user:hasbio";
+            public const string HasInterests = "user:hasinterests";
+            public const string HasPfp = "user:haspfp";
+        }
 
     }
 }
