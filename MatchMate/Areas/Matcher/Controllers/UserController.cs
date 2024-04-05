@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using MatchMateInfrastructure.Models;
 
 using static MatchMateInfrastructure.DataConstants.CustomClaimsType;
+using MatchMate.Filters;
 
 namespace MatchMate.Areas.Matcher.Controllers
 {
@@ -40,6 +41,7 @@ namespace MatchMate.Areas.Matcher.Controllers
         }
 
         [HttpGet]
+        [FullyActiveProfileFilter]
         public async Task<IActionResult> Index(int pageNumber)
         {
             UserMatchList userPage = new UserMatchList()
@@ -76,6 +78,7 @@ namespace MatchMate.Areas.Matcher.Controllers
         }
 
         [HttpPost]
+        [AttachClaims(HasBio)]
         public async Task<IActionResult> SetUpBio(UserBioModel userBioModel)
         {
             await _userService.AddUserBio(userBioModel.Bio, User.Id());
@@ -84,9 +87,6 @@ namespace MatchMate.Areas.Matcher.Controllers
             {
                 return RedirectToAction(nameof(Profile));
             }
-
-            var user = await _userManager.FindByIdAsync(User.Id());
-            await _userManager.AddClaimAsync(user, new Claim(HasBio, "true", "Boolean"));
 
             return RedirectToAction(nameof(SetUpInterests));
         }
@@ -114,6 +114,7 @@ namespace MatchMate.Areas.Matcher.Controllers
         }
 
         [HttpPost]
+        [AttachClaims(HasPfp)]
         public async Task<IActionResult> SetUpProfilePicture(IFormFile file)
         {
             if (file == null)
@@ -123,9 +124,6 @@ namespace MatchMate.Areas.Matcher.Controllers
             string stringFile = FileConverter.ConvertFormFileToString(file);
 
             await _profilePictureService.SaveProfilePictureToMongoAsync(User.Id(), stringFile);
-            
-            var user = await _userManager.FindByIdAsync(User.Id());
-            await _userManager.AddClaimAsync(user, new Claim(HasPfp, "true", "Boolean"));
 
             return RedirectToAction(nameof(Index), new { pageNumber = 1 });
         }

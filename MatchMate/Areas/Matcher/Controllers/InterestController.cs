@@ -1,4 +1,5 @@
-﻿using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+﻿using MatchMate.Filters;
+using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateInfrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace MatchMate.Areas.Matcher.Controllers
         }
 
         [HttpPost]
+        [AttachClaims(HasInterests)]
         public async Task<IActionResult> AddMany(IFormCollection formCollection)
         {
             if (formCollection.Keys.Count - 1 < 3)
@@ -42,8 +44,6 @@ namespace MatchMate.Areas.Matcher.Controllers
                 await _interestInterface.AddInterestToUserCollectionAsync(interestId, User.Id());
             }
 
-            var user = await _userManager.FindByIdAsync(User.Id());
-            await _userManager.AddClaimAsync(user, new Claim(HasInterests, "true","Boolean"));
             return RedirectToAction("SetUpProfilePicture", "User");
         }
 
