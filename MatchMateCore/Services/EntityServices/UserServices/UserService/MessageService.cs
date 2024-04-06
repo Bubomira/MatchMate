@@ -34,8 +34,9 @@ namespace MatchMateCore.Services.EntityServices.UserServices.UserService
         public async Task GetConversation(ConversationModel conversationModel)
         {
             var messages = _repository.AllReadOnly<Message>()
-             .Where(m => m.SenderId == conversationModel.SenderId && m.ReceiverId == conversationModel.ReceiverId)
-             .OrderByDescending(m => m.DateSend);
+             .Where(m => (m.SenderId == conversationModel.SenderId && m.ReceiverId == conversationModel.ReceiverId)
+             ||(m.SenderId==conversationModel.ReceiverId && m.ReceiverId==conversationModel.SenderId))
+             .OrderBy(m => m.DateSend);
 
             conversationModel.MessagesTotal = await messages.CountAsync();
 
