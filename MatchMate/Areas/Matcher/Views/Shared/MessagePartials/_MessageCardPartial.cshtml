@@ -1,0 +1,8 @@
+﻿@model MessageModel
+
+
+<div class="card @(Model.SenderId == User.Id()? "align-self-end":"align-self-start")">
+  <div class="card-body">
+     @Model.Content
+  </div>
+</div>

@@ -1,0 +1,21 @@
+﻿@model InterestPanelList
+
+<section class="gap-3  d-flex justify-content-center align-items-center">
+   <h2 class="text-center ">Here are all interests!</h2>
+   <a data-bs-toggle="modal" data-bs-target="#interestAdminPost" class="btn btn-primary">Add</a>
+</section>
+<h5 class="text-center mb-5">Total count: @Model.TotalInterestsCount</h5>
+
+<div class="d-flex flex-wrap gap-3 mb-5">
+    @foreach (var interest in Model.Interests)
+    {
+      <partial name="/Areas/Admin/Views/Shared/InterestPartials/_InterestPanelCardPartial.cshtml" model="@interest"/>
+      <partial name="/Areas/Admin/Views/Shared/InterestPartials/_InterestEditModalPartial.cshtml" model="new InterestEditFormModel(interest.Name,interest.Id,Model.CurrentPage)"/>
+    }
+</div>
+
+<section>
+    <partial name="/Areas/Admin/Views/Shared/InterestPartials/_InterestAddModalPartial.cshtml" model="new InterestPostFormModel()"/>
+</section>
+
+ <partial name="/Views/Shared/_PaginatorPartial.cshtml" model="new PaginatorModel(InterestPanelController,IndexAction,Model.CurrentPage,Model.TotalPagesCount)"/>

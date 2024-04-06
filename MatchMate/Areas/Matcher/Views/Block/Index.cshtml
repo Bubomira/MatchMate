@@ -1,0 +1,20 @@
+﻿@model BlockedUserList
+
+    @if (Model.TotalBlockedUsersCount==0)
+    {
+         <section class="d-flex flex-column align-items-center mt-5 justify-content-start gap-2">
+               <h4>You have not blocked anyone</h4>
+          </section>
+    }
+    else
+    {
+        <h2>Total blocked users: @Model.TotalBlockedUsersCount</h2>
+        <section class="d-flex justify-content-start gap-2 mb-4">
+             @foreach (var blockedUserCard in Model.BlockedUsers)
+             {
+               <partial name="/Areas/Matcher/Views/Shared/UserCardsPartials/_BlockedUserCardPartial.cshtml" model="@blockedUserCard" />
+             }
+        </section>
+        <partial name="/Views/Shared/_PaginatorPartial.cshtml" model="new PaginatorModel(BlockController,IndexAction,Model.CurrentPage,Model.TotalPages)"/>
+    }
+

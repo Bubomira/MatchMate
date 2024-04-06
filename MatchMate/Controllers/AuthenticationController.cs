@@ -7,7 +7,7 @@ using System.Globalization;
 
 using static MatchMateInfrastructure.DataConstants;
 
-namespace MatchMate.Controllers
+namespace MatchMate.Areas.Matcher.Controllers
 {
     public class AuthenticationController : Controller
     {
@@ -63,7 +63,7 @@ namespace MatchMate.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("SetUpBio", "User");
+                    return RedirectToAction("SetUpBio", "User",new {area="Matcher"});
 
                 }
                 foreach (var error in result.Errors)
@@ -101,7 +101,8 @@ namespace MatchMate.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToAction("Index", "User", new { pageNumber = 1 });
+                
+                    return RedirectToAction("Index", "Home");
                 }
                 if (result.IsLockedOut)
                 {

@@ -19,6 +19,10 @@ namespace MatchMateInfrastructure.Models
         public string Content { get; set; } = string.Empty;
 
         [Required]
+        [Comment("When the message is sent, used for sorting the chat")]
+        public DateTime DateSend { get; set; } = DateTime.Now;
+
+        [Required]
         [Comment("The id of the person who received the message")]
         public string ReceiverId { get; set; } = string.Empty;
 

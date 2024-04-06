@@ -1,0 +1,15 @@
+﻿@model ConversationModel
+<h2 class="text-center mt-4">Chat with @Model.ReceiverUsername</h2>
+
+
+<section class="d-flex flex-column">
+    @foreach (var message in Model.Messages)
+    {       
+       <partial
+           name="/Areas/Matcher/Views/Shared/MessagePartials/_MessageCardPartial.cshtml" 
+           model="message"
+       />
+    }
+</section>
+
+<partial name="/Areas/Matcher/Views/Shared/MessagePartials/_SendMessageForm.cshtml" model="new MessagePostFormModel()"/>

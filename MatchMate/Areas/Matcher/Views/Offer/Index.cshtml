@@ -1,0 +1,43 @@
+﻿@model OfferIndexModel
+
+<form class="d-flex gap-3 mt-5 align-items-center" method="get">
+      <section>
+         <select asp-for="@Model.Status" class="form-select">
+             <option value="1">Pending</option>
+             <option value="2">Cancelled</option>
+             <option  value="3">Accepted</option>
+         </select>
+    </section>
+    <section class="flex-grow-1">
+        <input asp-for="@Model.SearchString" type="text" class="form-control" id="searchText" placeholder="Search by offer title and description">
+    </section>
+     <section>
+         <select asp-for="@Model.IsOfferReceiver" class="form-select">
+             <option  value="1">Received offers</option>
+             <option value="2">Sended offers</option>
+             <option value="3">Both</option>
+         </select>
+    </section>
+     <section>
+         <select asp-for="@Model.OfferTimeType" class="form-select" >
+             <option value="1">Offers before @DateTime.Now.ToString("dd/MM/yyyy")</option>
+             <option  value="2">Offers after @DateTime.Now.ToString("dd/MM/yyyy")</option>
+         </select>
+    </section>
+    <section>
+        <input class="btn btn-primary" type="submit" asp-action="Index" asp-controller="Offer" value="Search..." />
+    </section>
+</form>
+
+@if(Model.Offers.Count!=0){
+    <div class="d-flex flex-wrap gap-3 mt-5">
+        @foreach (var offer in Model.Offers)
+        {
+            <partial name="/Areas/Matcher/Views/Shared/_OfferPreviewCardPartial.cshtml" model="@offer"/>            
+        }
+    </div>
+    <partial name="_PaginatorPartial" model="new PaginatorModel(OfferController,IndexAction,Model.CurrentPageNumber,Model.TotalPageCount)"/>
+}else{
+    <h2 class="text-center mt-5">There are no offers...</h2>
+}
+
