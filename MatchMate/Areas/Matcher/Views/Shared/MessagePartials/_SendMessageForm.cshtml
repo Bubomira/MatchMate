@@ -1,0 +1,16 @@
+﻿@model MessagePostFormModel
+
+<section>
+    <form class="d-flex gap-3 align-items-center">
+       <div class="flex-grow-1">
+         <input asp-for="@Model.Content" type="text" class="form-control" id="msg-content" placeholder="Send a message...">
+         <span asp-validation-for="@Model.Content"></span>
+       </div>
+       @*To be done with signal R*@
+       <input class="btn btn-primary" type="submit" value="Send"/>
+    </form>
+</section>
+
+ @section Scripts{
+     <partial name="_ValidationScriptsPartial.cshtml"/>
+ }
