@@ -1,8 +1,11 @@
 ﻿@model MessageModel
 
+@{
+    bool isSender = Model.SenderId == User.Id();
+}
 
-<div class="card @(Model.SenderId == User.Id()? "align-self-end":"align-self-start")">
-  <div class="card-body">
-     @Model.Content
-  </div>
+<div class="card 
+     @(isSender? "align-self-end":"align-self-start") rounded-pill px-4 py-2
+     @(isSender? "text-primary bg-white border-primary":"text-white bg-primary")">
+        @Model.Content
 </div>
