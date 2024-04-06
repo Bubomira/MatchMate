@@ -39,6 +39,11 @@ namespace MatchMateCore.Services.EntityServices.UserServices.UserService
 
             conversationModel.MessagesTotal = await messages.CountAsync();
 
+            conversationModel.ReceiverUsername = await _repository.AllReadOnly<ApplicationUser>()
+                .Where(au => au.Id == conversationModel.ReceiverId)
+                .Select(au => au.UserName)
+                .FirstOrDefaultAsync();
+
             conversationModel.Messages = await messages
                  .Take(ConversationModel.messagesOnInit)
                  .Select(m => new MessageModel()
