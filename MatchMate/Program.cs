@@ -1,4 +1,4 @@
-
+using MatchMate.Hubs;
 using MatchMate.ModelBinders;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +11,8 @@ builder.Services.AttachDbContext(builder.Configuration)
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddSignalR();
+
 builder.Services.AddControllersWithViews().AddMvcOptions(options =>
 {
     options.ModelBinderProviders.Insert(0, new DateModelBinderProvider());
@@ -18,6 +20,7 @@ builder.Services.AddControllersWithViews().AddMvcOptions(options =>
 });
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -51,5 +54,7 @@ app.UseEndpoints(endpoints =>
 );
 
 app.MapRazorPages();
+
+app.MapHub<ChatHub>("/ChatHub");
 
 app.Run();
