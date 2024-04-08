@@ -2,7 +2,7 @@
 <h2 class="text-center mt-4">Chat with @Model.ReceiverUsername</h2>
 
 
-<section class="d-flex flex-column">
+<section id="message-container" class="d-flex gap-2 flex-column">
     @foreach (var message in Model.Messages)
     {       
        <partial
@@ -12,4 +12,8 @@
     }
 </section>
 
-<partial name="/Areas/Matcher/Views/Shared/MessagePartials/_SendMessageForm.cshtml" model="new MessagePostFormModel()"/>
+<partial name="/Areas/Matcher/Views/Shared/MessagePartials/_SendMessageForm.cshtml" model="new MessagePostFormModel(){ReceiverId=Model.ReceiverId,SenderId=Model.SenderId}"/>
+
+@section Scripts{
+   <script defer  src="~/js/site.js" asp-append-version="true"></script>
+}

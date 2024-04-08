@@ -16,13 +16,13 @@ namespace MatchMateCore.Services.EntityServices.UserServices.UserService
         {
             _repository = repository;
         }
-        public async Task AddMessage(MessagePostFormModel messagePostFormModel, string senderId)
+        public async Task AddMessage(MessagePostFormModel messagePostFormModel)
         {
             Message message = new Message()
             {
-                SenderId = senderId,
                 DateSend = DateTime.Now,
                 Content = messagePostFormModel.Content,
+                SenderId = messagePostFormModel.SenderId,
                 ReceiverId = messagePostFormModel.ReceiverId
             };
 
@@ -34,8 +34,9 @@ namespace MatchMateCore.Services.EntityServices.UserServices.UserService
         public async Task GetConversation(ConversationModel conversationModel)
         {
             var messages = _repository.AllReadOnly<Message>()
-             .Where(m => m.SenderId == conversationModel.SenderId && m.ReceiverId == conversationModel.ReceiverId)
-             .OrderByDescending(m => m.DateSend);
+             .Where(m => (m.SenderId == conversationModel.SenderId && m.ReceiverId == conversationModel.ReceiverId)
+             || (m.SenderId == conversationModel.ReceiverId && m.ReceiverId == conversationModel.SenderId))
+             .OrderBy(m => m.DateSend);
 
             conversationModel.MessagesTotal = await messages.CountAsync();
 

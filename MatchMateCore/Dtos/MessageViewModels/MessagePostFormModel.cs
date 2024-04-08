@@ -8,6 +8,7 @@ namespace MatchMateCore.Dtos.MessageViewModels
     public class MessagePostFormModel
     {
         public string ReceiverId { get; set; } = string.Empty;
+        public string SenderId { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(MaxContentLength, MinimumLength = MinContentLength,
