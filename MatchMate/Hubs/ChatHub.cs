@@ -9,11 +9,11 @@ namespace MatchMate.Hubs
     {
         private readonly IMessageInterface _messageService;
 
-        public ChatHub(/*IMessageInterface messageInterface*/)
+        public ChatHub()
         {
-            //_messageService = messageInterface;
         }
 
+        //to be improved 
         public async Task SendMessage(MessageModel messageModel)
         {          
             await Clients.All.SendAsync("ReceiveMessage", new {Content=messageModel.Content,IsSender=messageModel.SenderId==Context?.User?.Id()});
