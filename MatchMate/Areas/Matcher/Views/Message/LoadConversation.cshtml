@@ -1,8 +1,7 @@
 ﻿@model ConversationModel
 <h2 class="text-center mt-4">Chat with @Model.ReceiverUsername</h2>
 
-
-<section id="message-container" class="d-flex gap-2 flex-column">
+<section style="overflow-y: scroll; height:25em; scroll-snap-align:end;" id="message-container" class="d-flex gap-2 flex-column">
     @foreach (var message in Model.Messages)
     {       
        <partial

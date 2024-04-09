@@ -36,19 +36,19 @@ namespace MatchMate.Areas.Matcher.Controllers
 
         }
 
-        [HttpPost]
-        [IgnoreAntiforgeryToken]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> AddToDb([FromBody] MessagePostFormModel messagePostModel)
+        public async Task<IActionResult> GetPreviousMessages(ConversationModel conversationModel)
         {
-            if (!await _friendshipService.CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(messagePostModel.SenderId,messagePostModel.ReceiverId))
+            if (!await _friendshipService.CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(conversationModel.SenderId, conversationModel.ReceiverId))
             {
                 return RedirectToAction("Index", "Friendship");
-            }
+            }           
 
-            await _messageService.AddMessage(messagePostModel);
+            var messages = await _messageService.GetMesages(conversationModel);
 
-            return Ok();
+            return Ok(messages);
+
         }
+
+
     }
 }

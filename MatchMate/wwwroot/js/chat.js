@@ -5,43 +5,41 @@ let connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 const messageContainer = document.getElementById('message-container');
 const sendBtn = document.getElementById('sendBtn');
 
-connection.start().catch(e => {
+const messageInput = document.getElementById('msg-content');
+const receiverInput = document.getElementById('receiver-input');
+const senderInput = document.getElementById('sender-input');
+
+const receiverMessageStyle = 'card px-4 rounded-pill py-2 align-self-start text-white bg-primary';
+const senderMessageStyle = 'card px-4 rounded-pill py-2 align-self-end text-primary bg-white border-primary';
+
+connection.start().then(() => {
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+}).catch(e => {
     console.log(e.message);
 })
 
 connection.on("ReceiveMessage", function (messageObj) {
     let div = document.createElement('div');
-    div.className+= ' card px-4 rounded-pill py-2 ';
-    div.className += messageObj.isSender ? 'align-self-end text-primary bg-white border-primary' : 'align-self-start text-white bg-primary';
+
+    div.className = messageObj.isSender ? senderMessageStyle : receiverMessageStyle;
     div.textContent = messageObj.content;
 
     messageContainer.appendChild(div);
+    messageContainer.scrollTop = messageContainer.scrollHeight;
 })
 
 sendBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
     let messageObj = {
-        Content: document.getElementById('msg-content').value,
-        ReceiverId: document.getElementById('receiver-input').value,
-        SenderId: document.getElementById('sender-input').value,
+        Content: messageInput.value,
+        ReceiverId: receiverInput.value,
+        SenderId: senderInput.value,
     }
 
-    document.getElementById('msg-content').value = '';
+    messageInput.value = '';
 
-    fetch('https://localhost:7000/Matcher/Message/AddToDb', {
-        method: 'post',
-        headers: {
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify(messageObj)
-    }).then(res => {
-        if (res.ok) {
-            connection.invoke("SendMessage", messageObj).catch((e => {
-                console.log(e.message);
-            }))
-        }
-    }).catch(e => {
+    connection.invoke("SendMessage", messageObj).catch((e => {
         console.log(e.message);
-    })
+    }))
 })
