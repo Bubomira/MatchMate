@@ -14,8 +14,6 @@ namespace MatchMate.Hubs
         public ChatHub()
         {
         }
-
-        //to be improved 
         public async Task SendMessage(MessagePostFormModel messageModel)
         {
             _friendshipService = Context.GetHttpContext().RequestServices.GetRequiredService<IFriendshipInterface>();
