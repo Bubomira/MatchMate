@@ -36,7 +36,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices.UserService
             var messages = _repository.AllReadOnly<Message>()
              .Where(m => (m.SenderId == conversationModel.SenderId && m.ReceiverId == conversationModel.ReceiverId)
              || (m.SenderId == conversationModel.ReceiverId && m.ReceiverId == conversationModel.SenderId))
-             .OrderBy(m => m.DateSend);
+             .OrderByDescending(m => m.DateSend);
 
             conversationModel.MessagesTotal = await messages.CountAsync();
 
@@ -56,6 +56,9 @@ namespace MatchMateCore.Services.EntityServices.UserServices.UserService
                      SenderId = m.SenderId
                  })
                  .ToListAsync();
+
+            conversationModel.Messages = conversationModel.Messages.Reverse().ToList();
+
         }
 
         public Task<List<MessageModel>> GetMesages(ConversationModel conversationModel) =>
