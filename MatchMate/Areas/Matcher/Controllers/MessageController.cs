@@ -36,5 +36,19 @@ namespace MatchMate.Areas.Matcher.Controllers
 
         }
 
+        public async Task<IActionResult> GetPreviousMessages(ConversationModel conversationModel)
+        {
+            if (!await _friendshipService.CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(conversationModel.SenderId, conversationModel.ReceiverId))
+            {
+                return RedirectToAction("Index", "Friendship");
+            }           
+
+            var messages = await _messageService.GetMesages(conversationModel);
+
+            return Ok(messages);
+
+        }
+
+
     }
 }

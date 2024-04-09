@@ -12,7 +12,9 @@ const senderInput = document.getElementById('sender-input');
 const receiverMessageStyle = 'card px-4 rounded-pill py-2 align-self-start text-white bg-primary';
 const senderMessageStyle = 'card px-4 rounded-pill py-2 align-self-end text-primary bg-white border-primary';
 
-connection.start().catch(e => {
+connection.start().then(() => {
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+}).catch(e => {
     console.log(e.message);
 })
 
@@ -23,6 +25,7 @@ connection.on("ReceiveMessage", function (messageObj) {
     div.textContent = messageObj.content;
 
     messageContainer.appendChild(div);
+    messageContainer.scrollTop = messageContainer.scrollHeight;
 })
 
 sendBtn.addEventListener('click', (e) => {
