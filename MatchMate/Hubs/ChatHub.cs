@@ -28,9 +28,9 @@ namespace MatchMate.Hubs
                 await Clients.User(messageModel.ReceiverId).SendAsync("ReceiveMessage", new
                 {
                     Content = messageModel.Content,
-                    SenderId = messageModel.SenderId,
+                    SenderId = messageModel.ReceiverId,
                     IsSender = false,
-                    ReceiverId = messageModel.ReceiverId,
+                    ReceiverId = messageModel.SenderId,
                 }) ;
 
                 await Clients.User(messageModel.SenderId).SendAsync("ReceiveMessage", new

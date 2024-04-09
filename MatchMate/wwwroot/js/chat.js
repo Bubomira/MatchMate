@@ -20,16 +20,14 @@ connection.start().then(() => {
 
 connection.on("ReceiveMessage", function (messageObj) {
 
-    console.log(`messageobject receiverId: ${messageObj.receiverId} receiverInput: ${receiverInput.value}`)
-    console.log(`messageobject senderId: ${messageObj.senderId} senderInput: ${senderInput.value}`)
     if (messageObj.receiverId == receiverInput.value && messageObj.senderId == senderInput.value) {
-         let div = document.createElement('div');
-       
-         div.className = messageObj.isSender ? senderMessageStyle : receiverMessageStyle;
-         div.textContent = messageObj.content;
-       
-         messageContainer.appendChild(div);
-         messageContainer.scrollTop = messageContainer.scrollHeight;
+        let div = document.createElement('div');
+
+        div.className = messageObj.isSender ? senderMessageStyle : receiverMessageStyle;
+        div.textContent = messageObj.content;
+
+        messageContainer.appendChild(div);
+        messageContainer.scrollTop = messageContainer.scrollHeight;
     }
 })
 
