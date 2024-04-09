@@ -2,6 +2,7 @@
 using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Services.EntityServices.UserServices.UserService;
 using Microsoft.AspNetCore.SignalR;
+using NuGet.Protocol.Plugins;
 using System.Security.Claims;
 
 namespace MatchMate.Hubs
@@ -24,8 +25,21 @@ namespace MatchMate.Hubs
                 await _messageService.AddMessage(messageModel);
 
 
-                await Clients.User(messageModel.ReceiverId).SendAsync("ReceiveMessage", new { Content = messageModel.Content, IsSender = false });
-                await Clients.User(messageModel.SenderId).SendAsync("ReceiveMessage", new { Content = messageModel.Content, IsSender = true });
+                await Clients.User(messageModel.ReceiverId).SendAsync("ReceiveMessage", new
+                {
+                    Content = messageModel.Content,
+                    SenderId = messageModel.SenderId,
+                    IsSender = false,
+                    ReceiverId = messageModel.ReceiverId,
+                }) ;
+
+                await Clients.User(messageModel.SenderId).SendAsync("ReceiveMessage", new
+                {
+                    Content = messageModel.Content,
+                    SenderId = messageModel.SenderId,
+                    IsSender = true,
+                    ReceiverId = messageModel.ReceiverId,
+                });
             }
 
         }
