@@ -25,8 +25,9 @@ namespace MatchMate.Hubs
                 _messageService = Context.GetHttpContext().RequestServices.GetRequiredService<IMessageInterface>();
                 await _messageService.AddMessage(messageModel);
 
-                await Clients.Users(new string[2] { messageModel.ReceiverId, messageModel.SenderId })
-                     .SendAsync("ReceiveMessage", new { Content = messageModel.Content, IsSender = messageModel.SenderId == Context?.User?.Id() });
+
+                await Clients.User(messageModel.ReceiverId).SendAsync("ReceiveMessage", new { Content = messageModel.Content, IsSender = false });
+                await Clients.User(messageModel.SenderId).SendAsync("ReceiveMessage", new { Content = messageModel.Content, IsSender = true });
             }
 
         }
