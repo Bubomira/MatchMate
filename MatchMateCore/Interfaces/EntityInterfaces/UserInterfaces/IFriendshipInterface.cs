@@ -12,6 +12,6 @@ namespace MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces
         public Task<UserFriendshipModelList> GetPendingRequestsAsync(string receiverId,int pageNumber);
         public Task AcceptFriendRequestAsync(string senderId, string receiverId);
         public Task<bool> CheckIfThereIsARelationShipBetweenUsersAsync(string firstUserId, string secondUserId);
-        public Task<UserFriendshipModelList> GetActiveFriendsAsync(string userId,int pageNumber);
+        public Task GetActiveFriendsAsync(string userId, UserFriendshipModelList friendshipModelList);
     }
 }

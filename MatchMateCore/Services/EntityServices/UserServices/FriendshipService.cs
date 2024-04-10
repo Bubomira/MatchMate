@@ -33,16 +33,23 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             .AnyAsync(f => (f.SenderId == firstUserId && f.ReceiverId == secondUserId && f.IsActive)
             || (f.SenderId == secondUserId && f.ReceiverId == firstUserId && f.IsActive));
 
-        public async Task<UserFriendshipModelList> GetActiveFriendsAsync(string userId, int pageNumber)
+        public async Task GetActiveFriendsAsync(string userId, UserFriendshipModelList friendshipModelList)
         {
-            UserFriendshipModelList model = new UserFriendshipModelList();
             var activeFriends = _repository.AllReadOnly<Friendship>()
               .Where(f => f.IsActive == true &&
               (f.SenderId == userId || f.ReceiverId == userId));
 
-            model.TotalFriends = activeFriends.Count();
-            model.Friends = await activeFriends.Skip(12 * pageNumber)
-             .Take(12)
+            friendshipModelList.TotalFriends = activeFriends.Count();
+
+            var searchTerm = friendshipModelList.SearchItem;
+            if (!String.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();
+                activeFriends = activeFriends.Where(f => f.SenderId == userId ? f.Receiver.UserName.ToLower().Contains(searchTerm) : f.Sender.UserName.ToLower().Contains(searchTerm));
+            }
+
+            friendshipModelList.Friends = await activeFriends.Skip(UserFriendshipModelList.friendsOnPage * (friendshipModelList.PageNumber-1))
+             .Take(UserFriendshipModelList.friendsOnPage)
             .Select(f => new UserCardModel()
             {
                 IsActiveFriendship = true,
@@ -55,8 +62,6 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                     f.Sender.UsersInterests.Select(ui => ui.Interest.Name).ToList()
             })
            .ToListAsync();
-
-            return model;
 
         }
 

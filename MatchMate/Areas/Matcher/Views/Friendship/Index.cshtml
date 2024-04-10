@@ -12,13 +12,17 @@
     }
     else
     {
-        <h2>Total friends: @Model.TotalFriends</h2>
+         <h2>Total friends: @Model.TotalFriends</h2>
+         <form class="flex-grow-1 d-flex gap-3 align-items-center" >
+               <input asp-for="@Model.SearchItem" type="text" class="form-control flex-grow-1" id="searchText" placeholder="Search by friend name">
+              <input class="btn btn-primary" type="submit" asp-action="Index" asp-controller="Friendship" value="Search..." />
+         </form>
         <section class="d-flex justify-content-start gap-2 mb-4">
              @foreach (var userCard in Model.Friends)
              {
                <partial name="/Areas/Matcher/Views/Shared/UserCardsPartials/_UserCardPartial.cshtml" model="@userCard" />
              }
         </section>
-        <partial name="/Views/Shared/_PaginatorPartial.cshtml" model="new PaginatorModel(FriendshipController,IndexAction,Model.CurrentPage,Model.TotalPagesCount)"/>
+        <partial name="/Views/Shared/_PaginatorPartial.cshtml" model="new PaginatorModel(FriendshipController,IndexAction,Model.PageNumber,Model.TotalPagesCount)"/>
     }
 
