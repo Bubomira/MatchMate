@@ -7,8 +7,15 @@
       "destination": "wwwroot/lib/microsoft/signalr"
     },
     {
-      "library": "toastr@2.1.4",
-      "destination": "wwwroot/lib/toastr"
+      "provider": "cdnjs",
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr/",
+      "files": [
+        "toastr.min.js",
+        "toastr.min.css",
+        "toastr.js.map",
+        "toastr.css"
+      ]
     }
   ]
 }
