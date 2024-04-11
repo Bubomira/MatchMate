@@ -6,6 +6,7 @@ namespace MatchMateInfrastructure
         public const string DateTimeFormat = "dd/MM/yyyy hh:mm";
 
         public const string BirthdateFormat = "dd/MM/yyyy";
+
         public static class InterestDataConstants
         {
             public const int MaxNameLength = 100;
