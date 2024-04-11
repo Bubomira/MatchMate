@@ -3,7 +3,10 @@ namespace MatchMateInfrastructure
 {
     public static class NotificationMessages
     {
-        public const string UserMessage = "UserMessage";
+        public const string UserSuccessMessage = "UserMessage";
+        public const string UserWarningSuccessMessage = "UserMessage";
+        public const string UserErrorMessage = "UserMessage";
+        public const string UserInfoMessage = "UserMessage";
 
         public static class OfferNotificationMessages
         {
