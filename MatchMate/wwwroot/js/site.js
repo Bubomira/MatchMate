@@ -1,4 +1,4 @@
-﻿let notify = (message) => {
+﻿let notify = function() {
     toastr.options = {
         "closeButton": true,
         "debug": false,
@@ -17,19 +17,19 @@
         "hideMethod": "fadeOut"
     }
 
-    let info = () => {
+    let info = function (message) {
         toastr["info"](message)
     }
 
-    let success = () => {
+    let success = function (message) {
         toastr["success"](message)
     }
 
-    let warning = () => {
+    let warning = function (message) {
         toastr["warning"](message)
     }
 
-    let error = () => {
+    let error = function (message) {
         toastr["error"](message)
     }
 
@@ -38,4 +38,4 @@
     }
 
 
-}
+}();
