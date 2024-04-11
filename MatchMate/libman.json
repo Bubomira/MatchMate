@@ -4,8 +4,11 @@
   "libraries": [
     {
       "library": "@microsoft/signalr@6.0.6",
-      "destination": "wwwroot/lib/microsoft/signalr",
-      
+      "destination": "wwwroot/lib/microsoft/signalr"
+    },
+    {
+      "library": "toastr@2.1.4",
+      "destination": "wwwroot/lib/toastr"
     }
   ]
 }
