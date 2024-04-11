@@ -4,6 +4,9 @@ using MatchMateInfrastructure.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
+using static MatchMateInfrastructure.NotificationMessages;
+using static MatchMateInfrastructure.NotificationMessages.OfferNotificationMessages;
+
 namespace MatchMate.Areas.Matcher.Controllers
 {
     public class OfferStatusController : BaseUserController
@@ -26,6 +29,8 @@ namespace MatchMate.Areas.Matcher.Controllers
 
             await _offerReceiverInterface.AcceptOfferAsync(id);
 
+            TempData[UserSuccessMessage] = AccepedOffer;
+
             return RedirectToAction("Details", "Offer", new { id });
         }
 
@@ -34,6 +39,7 @@ namespace MatchMate.Areas.Matcher.Controllers
             if (await _offerReceiverInterface.CheckIfOfferStatusIsCorrectByStatusAsync(id, User.Id(), OfferStatus.Pending))
             {
                 await _offerReceiverInterface.RejectOfferAsync(id);
+                TempData[UserErrorMessage] = RejectedOffer;
             }
             return RedirectToAction("Index", "Offer");
 
@@ -48,6 +54,8 @@ namespace MatchMate.Areas.Matcher.Controllers
 
             await _offerReceiverInterface.CancelOfferAsync(id);
 
+            TempData[UserInfoMessage] = CancelledOffer;
+
             return RedirectToAction("Details", "Offer", new { id });
         }
 
@@ -59,6 +67,8 @@ namespace MatchMate.Areas.Matcher.Controllers
             }
 
             await _offerReceiverInterface.AcceptOfferAsync(id);
+
+            TempData[UserInfoMessage] = RenewedOffer;
 
             return RedirectToAction("Details", "Offer", new { id });
         }
@@ -84,6 +94,7 @@ namespace MatchMate.Areas.Matcher.Controllers
             if (await _reportOfferService.CheckIfTheCurrentUserCanBeReporter(User.Id(), id))
             {
                 await _reportOfferService.ReportOffer(id, offerRepostPostModel);
+                TempData[UserWarningMessage] = ReportedOffer;
             }
             return RedirectToAction("Index", "Offer", new { pageNumber = 1 });
         }
