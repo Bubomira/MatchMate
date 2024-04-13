@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMate", "MatchMate\MatchMate.csproj", "{DA4DDA41-E1F4-4950-8BD3-0EA8B5EBC2E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchMate", "MatchMate\MatchMate.csproj", "{DA4DDA41-E1F4-4950-8BD3-0EA8B5EBC2E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMateInfrastructure", "MatchMateInfrastructure\MatchMateInfrastructure.csproj", "{2BE3631E-51CF-4771-BFDB-74A967118546}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchMateInfrastructure", "MatchMateInfrastructure\MatchMateInfrastructure.csproj", "{2BE3631E-51CF-4771-BFDB-74A967118546}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMateCore", "MatchMateCore\MatchMateCore.csproj", "{2FFC3F36-5EE0-441D-9E79-84937C45E46C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchMateCore", "MatchMateCore\MatchMateCore.csproj", "{2FFC3F36-5EE0-441D-9E79-84937C45E46C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMateTests", "MatchMateTests\MatchMateTests.csproj", "{97B77C2E-1E41-4A74-A2A9-21F259783AD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{2FFC3F36-5EE0-441D-9E79-84937C45E46C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FFC3F36-5EE0-441D-9E79-84937C45E46C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FFC3F36-5EE0-441D-9E79-84937C45E46C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97B77C2E-1E41-4A74-A2A9-21F259783AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97B77C2E-1E41-4A74-A2A9-21F259783AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97B77C2E-1E41-4A74-A2A9-21F259783AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97B77C2E-1E41-4A74-A2A9-21F259783AD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
