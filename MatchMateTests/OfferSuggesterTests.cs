@@ -1,3 +1,4 @@
+using MatchMateCore.Dtos.OfferViewModels;
 using MatchMateCore.Services.EntityServices.UserServices.OfferService;
 using MatchMateInfrastructure.Data;
 using MatchMateInfrastructure.Enums;
@@ -5,6 +6,7 @@ using MatchMateInfrastructure.Models;
 using MatchMateInfrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using NUnit.Framework;
 using System;
 
 namespace MatchMateTests
@@ -13,7 +15,9 @@ namespace MatchMateTests
     public class OfferSuggesterTests
     {
         private OfferSuggesterService _offerService;
+
         private ApplicationDbContext _context;
+        private Repository _repository;
 
         private List<Offer> _offers;
         private List<ApplicationUser> _users;
@@ -57,9 +61,9 @@ namespace MatchMateTests
             this._context.Offers.AddRange(this._offers);
             this._context.SaveChanges();
 
-            var repository = new Repository(_context);
+            this._repository = new Repository(_context);
 
-            this._offerService = new OfferSuggesterService(repository);
+            this._offerService = new OfferSuggesterService(_repository);
         }
 
         [Test]
@@ -100,6 +104,30 @@ namespace MatchMateTests
             Assert.AreEqual(editableOfferData.Title, _offers[2].Title);
             Assert.AreEqual(editableOfferData.Description, _offers[2].Description);
             Assert.AreEqual(editableOfferData.ReceiverUsername, _offers[1].ReceivingUser.UserName);
+        }
+
+        [Test]
+        public async Task ShouldAddOfferToDb()
+        {
+            var offerModel = new OfferPostFormModel()
+            {
+                Description = "New",
+                Place = "mine",
+                ReceiverId = "1",
+                Title = "Interesting"
+            };
+            await _offerService.AddOfferAsync(offerModel, "3", DateTime.Now);
+
+            Assert.IsTrue(_repository.All<Offer>().Count() == 4);
+        }
+
+        [Test]
+        public async Task ShouldSuccessfullyRemove()
+        {
+
+            await _offerService.DeleteOfferAsync(1);
+
+            Assert.IsTrue(_repository.All<Offer>().Count() == 2);
         }
     }
 }
