@@ -50,6 +50,11 @@ namespace MatchMateTests
                     Status=OfferStatus.Accepted,Time=DateTime.Now,Title="Shopping",
                     ReceivingUser=secondUser,SuggestingUser=firstUser,SuggestingUserId="1",
                     ReceivingUserId="2"},
+
+                   new Offer() {Id=4,Description="Astonishing",Place="chipolet",
+                    Status=OfferStatus.Accepted,Time=DateTime.Now,Title="eating",
+                    ReceivingUser=secondUser,SuggestingUser=firstUser,SuggestingUserId="1",
+                    ReceivingUserId="2"},
             };
 
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -113,21 +118,70 @@ namespace MatchMateTests
             {
                 Description = "New",
                 Place = "mine",
-                ReceiverId = "1",
+                ReceiverId = _users[1].Id,
                 Title = "Interesting"
             };
-            await _offerService.AddOfferAsync(offerModel, "3", DateTime.Now);
+            await _offerService.AddOfferAsync(offerModel, _users[2].Id, DateTime.Now);
 
-            Assert.IsTrue(_repository.All<Offer>().Count() == 4);
+            Assert.IsTrue(_repository.All<Offer>().Count() == 5);
         }
 
         [Test]
         public async Task ShouldSuccessfullyRemove()
         {
 
-            await _offerService.DeleteOfferAsync(1);
+            await _offerService.DeleteOfferAsync(_offers[1].Id);
 
-            Assert.IsTrue(_repository.All<Offer>().Count() == 2);
+            Assert.IsTrue(_repository.All<Offer>().Count() == 3);
         }
+
+        [Test]
+        public async Task ShouldReturnCorrectInformationAboutUserReceivedOffers()
+        {
+            var model = new OfferIndexModel()
+            {
+                IsOfferReceiver = IsOfferReceiver.Yes,
+                OfferTimeType = TimeTypeOffer.Before,
+                Status = OfferStatus.Pending,
+            };
+
+            var offers = await _offerService.GetOffersAsync(model, _users[1].Id);
+
+            Assert.AreEqual(1,offers.Count);
+            Assert.AreEqual(offers[0].Title, _offers[2].Title);
+        }
+
+        [Test]
+        public async Task ShouldReturnCorrectInformationAboutUserSuggestedOffers()
+        {
+            var model = new OfferIndexModel()
+            {
+                IsOfferReceiver = IsOfferReceiver.No,
+                OfferTimeType = TimeTypeOffer.Before,
+                Status = OfferStatus.Pending
+            };
+
+            var offers = await _offerService.GetOffersAsync(model, _users[1].Id);
+
+            Assert.AreEqual(1, offers.Count);
+            Assert.AreEqual(offers[0].Title, _offers[0].Title);
+        }
+
+        [Test]
+        public async Task ShouldExectuteSearchCorrectly()
+        {
+            var model = new OfferIndexModel()
+            {
+                IsOfferReceiver = IsOfferReceiver.DoesntMatter,
+                OfferTimeType = TimeTypeOffer.Before,
+                Status = OfferStatus.Accepted,
+                SearchString = "eati"
+            };
+
+            var offers = await _offerService.GetOffersAsync(model, _users[1].Id);
+
+            Assert.AreEqual(1, offers.Count);
+        }
+
     }
 }
