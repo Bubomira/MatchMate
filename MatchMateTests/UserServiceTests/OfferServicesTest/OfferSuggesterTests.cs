@@ -5,11 +5,12 @@ using MatchMateInfrastructure.Enums;
 using MatchMateInfrastructure.Models;
 using MatchMateInfrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
-using Moq;
-using NUnit.Framework;
-using System;
 
-namespace MatchMateTests
+using static MatchMateTests.SetUpEntities.SetUpUsers;
+using static MatchMateTests.SetUpEntities.SetUpOffers;
+using NUnit.Framework;
+
+namespace MatchMateTests.UserServiceTests.OfferServicesTest
 {
     [TestFixture]
     public class OfferSuggesterTests
@@ -25,50 +26,28 @@ namespace MatchMateTests
         [OneTimeSetUp]
         public void Setup()
         {
-            var firstUser = new ApplicationUser() { Id = "1", UserName = "Mikael" };
-            var secondUser = new ApplicationUser() { Id = "2", UserName = "Sanya" };
-            var thirdUser = new ApplicationUser() { Id = "3", UserName = "Carl" };
-
-            this._users = new List<ApplicationUser>()
+            _users = new List<ApplicationUser>()
             {
-                firstUser,secondUser,thirdUser
+                FirstUser,SecondUser,ThirdUser
             };
 
-            this._offers = new List<Offer>()
+            _offers = new List<Offer>()
             {
-                new Offer() {Id=1,Description="Interesting",Place="mine",
-                    Status=OfferStatus.Pending,Time=DateTime.Now,Title="Title",
-                    ReceivingUser=firstUser,SuggestingUser=secondUser,SuggestingUserId="2",
-                    ReceivingUserId="1"},
-
-                 new Offer() {Id=2,Description="Boring",Place="cafe",
-                    Status=OfferStatus.Cancelled,Time=DateTime.Now,Title="No title",
-                    ReceivingUser=secondUser,SuggestingUser=thirdUser,SuggestingUserId="3",
-                    ReceivingUserId="2"},
-
-                  new Offer() {Id=3,Description="Exciting",Place="mall",
-                    Status=OfferStatus.Accepted,Time=DateTime.Now,Title="Shopping",
-                    ReceivingUser=secondUser,SuggestingUser=firstUser,SuggestingUserId="1",
-                    ReceivingUserId="2"},
-
-                   new Offer() {Id=4,Description="Astonishing",Place="chipolet",
-                    Status=OfferStatus.Accepted,Time=DateTime.Now,Title="eating",
-                    ReceivingUser=secondUser,SuggestingUser=firstUser,SuggestingUserId="1",
-                    ReceivingUserId="2"},
+                FirstOffer,SecondOffer,ThirdOffer,FourthOffer
             };
 
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: "MatchMate")
                 .Options;
 
-            this._context = new ApplicationDbContext(options);
-            this._context.ApplicationUsers.AddRange(this._users);
-            this._context.Offers.AddRange(this._offers);
-            this._context.SaveChanges();
+            _context = new ApplicationDbContext(options);
+            _context.ApplicationUsers.AddRange(_users);
+            _context.Offers.AddRange(_offers);
+            _context.SaveChanges();
 
-            this._repository = new Repository(_context);
+            _repository = new Repository(_context);
 
-            this._offerService = new OfferSuggesterService(_repository);
+            _offerService = new OfferSuggesterService(_repository);
         }
 
         [Test]
@@ -85,7 +64,7 @@ namespace MatchMateTests
         public async Task ShouldSeeIfOfferExists()
         {
             var exists = await _offerService.CheckIfOfferExists(_offers[1].Id);
-            var doesntExist = await _offerService.CheckIfOfferExists(4);
+            var doesntExist = await _offerService.CheckIfOfferExists(34);
 
             Assert.IsFalse(doesntExist);
             Assert.IsTrue(exists);
@@ -118,7 +97,7 @@ namespace MatchMateTests
             {
                 Description = "New",
                 Place = "mine",
-                ReceiverId = _users[1].Id,
+                ReceiverId = _users[0].Id,
                 Title = "Interesting"
             };
             await _offerService.AddOfferAsync(offerModel, _users[2].Id, DateTime.Now);
@@ -132,7 +111,7 @@ namespace MatchMateTests
 
             await _offerService.DeleteOfferAsync(_offers[1].Id);
 
-            Assert.IsTrue(_repository.All<Offer>().Count() == 3);
+            Assert.AreEqual(_repository.All<Offer>().Count(), 4);
         }
 
         [Test]
@@ -145,10 +124,10 @@ namespace MatchMateTests
                 Status = OfferStatus.Pending,
             };
 
-            var offers = await _offerService.GetOffersAsync(model, _users[1].Id);
+            var offers = await _offerService.GetOffersAsync(model, _users[0].Id);
 
-            Assert.AreEqual(1,offers.Count);
-            Assert.AreEqual(offers[0].Title, _offers[2].Title);
+            Assert.AreEqual(2, offers.Count);
+            Assert.AreEqual(_offers[0].Title, offers[0].Title);
         }
 
         [Test]
@@ -181,6 +160,13 @@ namespace MatchMateTests
             var offers = await _offerService.GetOffersAsync(model, _users[1].Id);
 
             Assert.AreEqual(1, offers.Count);
+        }
+
+        [OneTimeTearDown]
+        public async Task TearDown()
+        {
+            await _context.Database.EnsureDeletedAsync();
+            await _context.DisposeAsync();
         }
 
     }
