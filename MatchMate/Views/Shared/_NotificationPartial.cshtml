@@ -1,0 +1,24 @@
+﻿    @if(TempData[UserSuccessMessage]!=null)
+    {
+        <script defer>
+            notify.success('@TempData[UserSuccessMessage]');
+        </script>
+    }
+     @if(TempData[UserErrorMessage]!=null)
+    {
+        <script defer>
+            notify.error('@TempData[UserErrorMessage]');
+        </script>
+    }
+     @if(TempData[UserInfoMessage]!=null)
+    {
+        <script defer>
+            notify.info('@TempData[UserInfoMessage]');
+        </script>
+    }
+       @if(TempData[UserWarningMessage]!=null)
+    {
+        <script defer>
+            notify.warning('@TempData[UserWarningMessage]');
+        </script>
+    }

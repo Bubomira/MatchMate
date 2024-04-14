@@ -12,6 +12,8 @@ const senderInput = document.getElementById('sender-input');
 const receiverMessageStyle = 'card px-4 rounded-pill py-2 align-self-start text-white bg-primary';
 const senderMessageStyle = 'card px-4 rounded-pill py-2 align-self-end text-primary bg-white border-primary';
 
+let scrollCount = 0;
+
 connection.start().then(() => {
     messageContainer.scrollTop = messageContainer.scrollHeight;
 }).catch(e => {
@@ -19,13 +21,16 @@ connection.start().then(() => {
 })
 
 connection.on("ReceiveMessage", function (messageObj) {
-    let div = document.createElement('div');
 
-    div.className = messageObj.isSender ? senderMessageStyle : receiverMessageStyle;
-    div.textContent = messageObj.content;
+    if (messageObj.receiverId == receiverInput.value && messageObj.senderId == senderInput.value) {
+        let div = document.createElement('div');
 
-    messageContainer.appendChild(div);
-    messageContainer.scrollTop = messageContainer.scrollHeight;
+        div.className = messageObj.isSender ? senderMessageStyle : receiverMessageStyle;
+        div.textContent = messageObj.content;
+
+        messageContainer.appendChild(div);
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
 })
 
 sendBtn.addEventListener('click', (e) => {
@@ -42,4 +47,33 @@ sendBtn.addEventListener('click', (e) => {
     connection.invoke("SendMessage", messageObj).catch((e => {
         console.log(e.message);
     }))
+})
+
+messageContainer.addEventListener('scroll', () => {
+    if (messageContainer.scrollTop == 0) {
+        fetch('https://localhost:7000/Matcher/Message/GetPreviousMessages', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                senderId: senderInput.value,
+                receiverId: receiverInput.value,
+                scrollerCount: scrollCount
+            })
+        }).then(res => res.json()).then(messages => {
+            messages.forEach(message => {
+                var div = document.createElement('div');
+
+                div.className = message.senderId == senderInput.value ? senderMessageStyle : receiverMessageStyle;
+                div.textContent = message.content;
+
+                messageContainer.prepend(div);
+            })
+
+            scrollCount++;
+
+        })
+            .catch(e => console.log(e));
+    }
 })

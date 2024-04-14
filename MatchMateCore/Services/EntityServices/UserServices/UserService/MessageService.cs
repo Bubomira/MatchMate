@@ -53,19 +53,20 @@ namespace MatchMateCore.Services.EntityServices.UserServices.UserService
                      DateSent = m.DateSend,
                      Id = m.Id,
                      ReceiverId = m.ReceiverId,
-                     SenderId = m.SenderId
+                     SenderId = m.SenderId,
                  })
                  .ToListAsync();
 
             conversationModel.Messages = conversationModel.Messages.Reverse().ToList();
 
         }
-
+        
         public Task<List<MessageModel>> GetMesages(ConversationModel conversationModel) =>
             _repository.AllReadOnly<Message>()
-             .Where(m => m.SenderId == conversationModel.SenderId && m.ReceiverId == conversationModel.ReceiverId)
+             .Where(m => (m.SenderId == conversationModel.SenderId && m.ReceiverId == conversationModel.ReceiverId)
+                ||(m.SenderId==conversationModel.ReceiverId && m.ReceiverId==conversationModel.SenderId))
              .OrderByDescending(m => m.DateSend)
-            .Skip((conversationModel.ScrollerCount * ConversationModel.messagesOnScroll) + 10)
+            .Skip((conversationModel.ScrollerCount * ConversationModel.messagesOnScroll) + ConversationModel.messagesOnInit)
             .Take(ConversationModel.messagesOnScroll)
              .Select(m => new MessageModel()
              {

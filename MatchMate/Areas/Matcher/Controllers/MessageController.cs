@@ -36,7 +36,9 @@ namespace MatchMate.Areas.Matcher.Controllers
 
         }
 
-        public async Task<IActionResult> GetPreviousMessages(ConversationModel conversationModel)
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> GetPreviousMessages([FromBody]ConversationModel conversationModel)
         {
             if (!await _friendshipService.CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(conversationModel.SenderId, conversationModel.ReceiverId))
             {

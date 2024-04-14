@@ -1,4 +1,5 @@
-﻿using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
+﻿using MatchMateCore.Dtos.UsersViewModels;
+using MatchMateCore.Interfaces.EntityInterfaces.UserInterfaces;
 using MatchMateCore.Interfaces.MongoInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -16,24 +17,23 @@ namespace MatchMate.Areas.Matcher.Controllers
             _profilePictureService = profilePictureInterface;
         }
         [HttpGet]
-        public async Task<IActionResult> Index(int pageNumber)
+        public async Task<IActionResult> Index([FromQuery] UserFriendshipModelList friendshipModelList)
         {
-            var activeFriends = await _friendshipService.GetActiveFriendsAsync(User.Id(), pageNumber - 1);
+            await _friendshipService.GetActiveFriendsAsync(User.Id(), friendshipModelList);
 
-            activeFriends.TotalPagesCount = Math.Ceiling(((double)activeFriends.TotalFriends / 12));
-            activeFriends.CurrentPage = pageNumber;
+            friendshipModelList.TotalPagesCount = Math.Ceiling(((double)friendshipModelList.TotalFriends / UserFriendshipModelList.friendsOnPage));
 
-            if (activeFriends.TotalPagesCount < pageNumber && pageNumber != 1)
+            if (friendshipModelList.TotalPagesCount < friendshipModelList.PageNumber && friendshipModelList.PageNumber != 1)
             {
                 return RedirectToAction(nameof(Index), new { pageNumber = 1 });
             }
 
-            foreach (var friend in activeFriends.Friends)
+            foreach (var friend in friendshipModelList.Friends)
             {
                 friend.ImageUrl = await _profilePictureService.GetProfilePictureFromMongoAsync(friend.UserId);
             }
 
-            return View(activeFriends);
+            return View(friendshipModelList);
         }
 
         [HttpGet]
@@ -47,7 +47,7 @@ namespace MatchMate.Areas.Matcher.Controllers
             }
 
             pendingRequests.TotalPagesCount = Math.Ceiling(((double)pendingRequests.TotalFriends / 12));
-            pendingRequests.CurrentPage = pageNumber;
+            pendingRequests.PageNumber = pageNumber;
 
             foreach (var pending in pendingRequests.Friends)
             {

@@ -7,6 +7,7 @@
     <title>@ViewData["Title"] - MatchMate</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
     </head>
 <body>
     <header>
@@ -38,9 +39,6 @@
                                    <a class="nav-link text-dark" asp-area="Matcher" asp-controller="Friendship" asp-action="Index" asp-route-pageNumber="1">Friendship board</a>
                                </li>
                                 <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-area="Matcher" asp-controller="Friendship" asp-action="Pending" asp-route-pageNumber="1">Pending requests</a>
-                               </li>
-                                <li class="nav-item">
                                    <a class="nav-link text-dark" asp-area="Matcher" asp-controller="Offer" asp-action="Index" asp-route-pageNumber="1">Offers</a>
                                </li>  
                                 <li class="nav-item">
@@ -69,8 +67,12 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+     <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script defer type="module" src="~/js/chat.js" asp-append-version="true"></script>
+    <script  src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <partial name="_NotificationPartial.cshtml"/>
+
 </body>
 </html>
