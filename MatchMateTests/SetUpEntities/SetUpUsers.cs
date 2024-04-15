@@ -11,6 +11,7 @@ namespace MatchMateTests.SetUpEntities
             {
                 Id = "1",
                 UserName = "Mikael",
+                Bio = "I am Mikael"
             };
 
         public static ApplicationUser SecondUser =
@@ -18,6 +19,7 @@ namespace MatchMateTests.SetUpEntities
             {
                 Id = "2",
                 UserName = "Sanya",
+                Bio = "Passionate traveller"
             };
 
         public static ApplicationUser ThirdUser =
@@ -26,5 +28,14 @@ namespace MatchMateTests.SetUpEntities
                 Id = "3",
                 UserName = "Carl",
             };
+
+        public static ApplicationUser FourthUser =
+          new ApplicationUser()
+          {
+              Id = "4",
+              UserName = "Mariya",
+          };
+
+
     }
 }
