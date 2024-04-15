@@ -8,7 +8,6 @@ using static MatchMateTests.SetUpEntities.SetUpUsers;
 using static MatchMateTests.SetUpEntities.SetUpInterests.SetUpInterests;
 using static MatchMateTests.SetUpEntities.SetUpInterests.SetUpUserInterests;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
 
 namespace MatchMateTests.UserServiceTests
 {

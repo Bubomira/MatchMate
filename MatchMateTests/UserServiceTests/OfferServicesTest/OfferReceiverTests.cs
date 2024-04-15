@@ -102,7 +102,7 @@ namespace MatchMateTests.UserServiceTests.OfferServicesTest
         {
             await _offerReceiverService.RejectOfferAsync(_offers[2].Id);
 
-            Assert.IsTrue(await _repository.AllReadOnly<Offer>().CountAsync()==3);
+            Assert.AreEqual(4,await _repository.AllReadOnly<Offer>().CountAsync());
         }
 
 
