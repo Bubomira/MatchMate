@@ -1,4 +1,4 @@
-﻿let notify = function() {
+﻿let notify = function () {
     toastr.options = {
         "closeButton": true,
         "debug": false,

@@ -13,6 +13,7 @@ using NUnit.Framework;
 namespace MatchMateTests.UserServiceTests.OfferServicesTest
 {
     [TestFixture]
+    [Order(1)]
     public class OfferSuggesterTests
     {
         private OfferSuggesterService _offerService;
@@ -28,7 +29,7 @@ namespace MatchMateTests.UserServiceTests.OfferServicesTest
         {
             _users = new List<ApplicationUser>()
             {
-                FirstUser,SecondUser,ThirdUser
+                FirstUser,SecondUser,ThirdUser,FourthUser
             };
 
             _offers = new List<Offer>()
@@ -37,7 +38,7 @@ namespace MatchMateTests.UserServiceTests.OfferServicesTest
             };
 
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "MatchMate")
+                .UseInMemoryDatabase(databaseName: "MatchMateOffers")
                 .Options;
 
             _context = new ApplicationDbContext(options);
@@ -91,30 +92,6 @@ namespace MatchMateTests.UserServiceTests.OfferServicesTest
         }
 
         [Test]
-        public async Task ShouldAddOfferToDb()
-        {
-            var offerModel = new OfferPostFormModel()
-            {
-                Description = "New",
-                Place = "mine",
-                ReceiverId = _users[0].Id,
-                Title = "Interesting"
-            };
-            await _offerService.AddOfferAsync(offerModel, _users[2].Id, DateTime.Now);
-
-            Assert.IsTrue(_repository.All<Offer>().Count() == 5);
-        }
-
-        [Test]
-        public async Task ShouldSuccessfullyRemove()
-        {
-
-            await _offerService.DeleteOfferAsync(_offers[1].Id);
-
-            Assert.AreEqual(_repository.All<Offer>().Count(), 4);
-        }
-
-        [Test]
         public async Task ShouldReturnCorrectInformationAboutUserReceivedOffers()
         {
             var model = new OfferIndexModel()
@@ -126,7 +103,7 @@ namespace MatchMateTests.UserServiceTests.OfferServicesTest
 
             var offers = await _offerService.GetOffersAsync(model, _users[0].Id);
 
-            Assert.AreEqual(2, offers.Count);
+            Assert.AreEqual(1, offers.Count);
             Assert.AreEqual(_offers[0].Title, offers[0].Title);
         }
 
@@ -143,7 +120,7 @@ namespace MatchMateTests.UserServiceTests.OfferServicesTest
             var offers = await _offerService.GetOffersAsync(model, _users[1].Id);
 
             Assert.AreEqual(1, offers.Count);
-            Assert.AreEqual(offers[0].Title, _offers[0].Title);
+            Assert.AreEqual(_offers[0].Title, offers[0].Title);
         }
 
         [Test]
@@ -161,6 +138,30 @@ namespace MatchMateTests.UserServiceTests.OfferServicesTest
 
             Assert.AreEqual(1, offers.Count);
         }
+        [Test]
+        public async Task ShouldAddOfferToDb()
+        {
+            var offerModel = new OfferPostFormModel()
+            {
+                Description = "New",
+                Place = "mine",
+                ReceiverId = _users[3].Id,
+                Title = "Interesting"
+            };
+            await _offerService.AddOfferAsync(offerModel, _users[2].Id, DateTime.Now);
+
+            Assert.IsTrue(_repository.All<Offer>().Count() == 5);
+        }
+
+        [Test]
+        public async Task ShouldSuccessfullyRemove()
+        {
+
+            await _offerService.DeleteOfferAsync(_offers[1].Id);
+
+            Assert.AreEqual(_repository.All<Offer>().Count(), 4);
+        }
+
 
         [OneTimeTearDown]
         public async Task TearDown()

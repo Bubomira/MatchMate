@@ -28,7 +28,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
             .AnyAsync(f => (f.SenderId == firstUserId && f.ReceiverId == secondUserId)
             || (f.SenderId == secondUserId && f.ReceiverId == firstUserId));
 
-        public Task<bool> CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(string firstUserId, string secondUserId)=>
+        public Task<bool> CheckIfThereIsAnActiveFriendshipBetweenUsersAsync(string firstUserId, string secondUserId) =>
              _repository.AllReadOnly<Friendship>()
             .AnyAsync(f => (f.SenderId == firstUserId && f.ReceiverId == secondUserId && f.IsActive)
             || (f.SenderId == secondUserId && f.ReceiverId == firstUserId && f.IsActive));
@@ -48,7 +48,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
                 activeFriends = activeFriends.Where(f => f.SenderId == userId ? f.Receiver.UserName.ToLower().Contains(searchTerm) : f.Sender.UserName.ToLower().Contains(searchTerm));
             }
 
-            friendshipModelList.Friends = await activeFriends.Skip(UserFriendshipModelList.friendsOnPage * (friendshipModelList.PageNumber-1))
+            friendshipModelList.Friends = await activeFriends.Skip(UserFriendshipModelList.friendsOnPage * (friendshipModelList.PageNumber - 1))
              .Take(UserFriendshipModelList.friendsOnPage)
             .Select(f => new UserCardModel()
             {
@@ -69,7 +69,7 @@ namespace MatchMateCore.Services.EntityServices.UserServices
         {
             var friendship = await FindFriendshipAsync(senderId, receiverId);
 
-            _repository.Remove<Friendship>(friendship);
+            await _repository.Remove<Friendship>(friendship);
 
             await _repository.SaveChangesAsync();
         }

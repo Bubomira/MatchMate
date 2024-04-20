@@ -15,6 +15,7 @@ const senderMessageStyle = 'card px-4 rounded-pill py-2 align-self-end text-prim
 let scrollCount = 0;
 
 connection.start().then(() => {
+    console.log("Here!")
     messageContainer.scrollTop = messageContainer.scrollHeight;
 }).catch(e => {
     console.log(e.message);
