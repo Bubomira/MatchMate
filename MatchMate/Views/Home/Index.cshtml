@@ -1,1 +1,14 @@
-﻿<h2>Hello</h2>
+﻿<section class="mt-5">
+  <h1 class="text-center">Match mate</h1>
+  <p class="text-center">The perfect place to find friends with similar interests</p>
+</section>
+<section class="d-flex gap-3 justify-content-center">
+  @if(User.Identity.IsAuthenticated){
+      <a class="btn btn-primary" asp-area="Matcher" asp-action="Index" asp-controller="User">Match me, mate!</a>
+      <a class="btn btn-primary" asp-area="Matcher" asp-action="Index" asp-controller="Friendship">See friendships</a>
+    }
+    else{
+      <a class="btn btn-primary"  asp-action="Register" asp-controller="Authentication">Begin the journey</a>
+      <a class="btn btn-primary"  asp-action="Login" asp-controller="Authentication">Continue</a>
+    }
+</section>
