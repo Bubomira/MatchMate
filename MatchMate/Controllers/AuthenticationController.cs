@@ -53,7 +53,7 @@ namespace MatchMate.Areas.Matcher.Controllers
 
                 user.Birthday = birthdate;
 
-                await _userStore.SetUserNameAsync(user, registerModel.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, registerModel.Username, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, registerModel.Password);
 
                 if (result.Succeeded)
@@ -97,7 +97,7 @@ namespace MatchMate.Areas.Matcher.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(loginModel.Username, loginModel.Password, loginModel.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

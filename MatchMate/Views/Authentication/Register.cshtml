@@ -7,9 +7,9 @@
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating mb-2">
-                <input asp-for="@Model.Email" class="form-control" autocomplete="username" aria-required="true" />
-                <label asp-for="@Model.Email"></label>
-                <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                <input asp-for="@Model.Username" class="form-control" autocomplete="username" aria-required="true" />
+                <label asp-for="@Model.Username"></label>
+                <span asp-validation-for="@Model.Username" class="text-danger"></span>
             </div>
             <div class="form-floating mb-2">
                 <input asp-for="@Model.Password" class="form-control" autocomplete="new-password" aria-required="true" />
